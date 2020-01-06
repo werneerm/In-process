@@ -5,10 +5,21 @@
     <title>Title</title>
 </head>
 <body>
-{% for item in question %}
-<tr>
-    <td>{{item}}</td>
-</tr>
-{% endfor %}
+<table>
+    <tr>
+    <thead>
+    {% for item in header %}
+    <th>{{ item }}</th>
+    </thead>
+        {% endfor %}
+    </tr>
+{% for line in question[1:] %}
+	<tr>
+	{% for item in line %}
+		<td>{{ item if item != None}}</td>
+	{% endfor %}
+	</tr>
+	{% endfor %}
+</table>
 </body>
 </html>
