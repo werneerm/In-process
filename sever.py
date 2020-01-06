@@ -11,6 +11,11 @@ def route_list():
     return render_template('list.html', question=question)
 
 
+@app.route('/questions/<int:id>', methods=['GET','POST'])
+def questions ():
+    if request.method == 'POST':
+        new_question = request.form.to_dict()
+
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',

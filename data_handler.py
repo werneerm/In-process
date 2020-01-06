@@ -11,3 +11,15 @@ def get_all_questions():
     table = [element.replace("\n", "").split("|") for element in lines]
     return table
 
+
+def write_user_story(question):
+    with open(DATA_FILE_PATH, "w") as file:
+        for story in question:
+            row = '|'.join(story)
+            file.write(row + "\n")
+
+
+def add_question(added_line):
+    table = get_all_questions()
+    table.append(list(added_line.values()))
+    write_user_story(table)
