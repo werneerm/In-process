@@ -12,10 +12,15 @@ def route_list():
 
 
 @app.route('/questions/<int:id>', methods=['GET','POST'])
-def questions ():
+def questions(id = None):
     if request.method == 'POST':
         new_question = request.form.to_dict()
+        data_handler.add_question(new_question)
 
+        return redirect("/")
+
+    if id is not None :
+        #itt kell majd updatelni a question-t
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',
