@@ -25,6 +25,23 @@ def questions_site(id = None):
     if id is not None :
         answer = data_handler.index_finder(id)
         return render_template('/questions.html', answer=answer)
+
+@app.route('/add-question', methods=['GET', 'POST'])
+def add_question():
+    if request.method == 'POST':
+        title = request.form['title']
+        message = request.form['message']
+        new_quest_list = []
+        new_quest_list.append('something like ID')
+        new_quest_list.append('421421421521')
+        new_quest_list.append('0')
+        new_quest_list.append('0')
+        new_quest_list.append(title)
+        new_quest_list.append(message)
+        data_handler.write_user_story(new_quest_list)
+        return redirect('/')
+    return render_template('add-question.html')
+
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',

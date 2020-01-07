@@ -21,8 +21,7 @@ def question_dict(table):
 def write_user_story(question):
     with open(DATA_FILE_PATH, "w") as file:
         for story in question:
-            row = '|'.join(story)
-            file.write(row + "\n")
+            file.write(story + ';')
 
 
 def add_question(added_line):
