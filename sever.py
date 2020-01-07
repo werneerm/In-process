@@ -15,15 +15,16 @@ def route_list():
 
 
 @app.route('/questions/<int:id>', methods=['GET','POST'])
-def questions(id = None):
+def questions_site(id = None):
     if request.method == 'POST':
         new_question = request.form.to_dict()
         data_handler.add_question(new_question)
 
         return redirect("/")
 
-    #if id is not None :
-        #itt kell majd updatelni a question-t
+    if id is not None :
+        question = data_handler.get_all_questions()
+        return render_template('/questions.html', question = question)
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',
