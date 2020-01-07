@@ -26,8 +26,9 @@ def questions_site(id = None):
         return redirect("/")
 
     if id is not None :
+        the_question, the_message = data_handler.question_finder(id)
         answer = data_handler.index_finder(id)
-        return render_template('/questions.html', answer=answer,id=id)
+        return render_template('/questions.html', answer=answer,id=id, question=the_question, message=the_message)
 
 
 @app.route('/questions/<int:id>', methods=['GET', 'POST'])
@@ -39,7 +40,7 @@ def add_answer(id=None):
         message = request.form['message']
         table = data_handler.get_all_answer()
         new_answer_list = []
-        new_answer_list.append('3')
+        new_answer_list.append(data_handler.id_generator(table))
         new_answer_list.append('submission time')
         new_answer_list.append('vote number')
         new_answer_list.append(str(id))
@@ -47,9 +48,9 @@ def add_answer(id=None):
         new_answer_list.append('image')
         table.append(new_answer_list)
         data_handler.write_user_story(DATA_FILE_PATH_ANSWER, table)
-        answer = data_handler.index_finder(id)
-        return render_template('/questions.html',answer=answer,id=id)
-
+        #answer = data_handler.index_finder(id)
+        #return render_template('/questions.html',answer=answer,id=id, question=the_question, message=the_message)
+        return redirect(url_for('questions_site', id=id))
 @app.route('/add-question', methods=['GET', 'POST'])
 def add_question():
     if request.method == 'POST':
@@ -57,7 +58,7 @@ def add_question():
         message = request.form['message']
         table = data_handler.get_all_questions()
         new_quest_list = []
-        new_quest_list.append('something like ID')
+        new_quest_list.append(data_handler.id_generator(table))
         new_quest_list.append('421421421521')
         new_quest_list.append('0')
         new_quest_list.append('0')
@@ -65,7 +66,7 @@ def add_question():
         new_quest_list.append(message)
         table.append(new_quest_list)
         data_handler.write_user_story(DATA_FILE_PATH_QUESTION, table)
-        return redirect('/')
+        return redirect(url_for('questions_site', id=table[-1][0]))
     return render_template('add-question.html')
 
 if __name__ == '__main__':

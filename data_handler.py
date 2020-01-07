@@ -47,3 +47,12 @@ def id_generator(table):
     old_id = table[-1][0]
     new_id = int(old_id) + 1
     return str(new_id)
+def question_finder(ID):
+    quests = get_all_questions()
+    the_question = ""
+    the_message = ""
+    for i in quests:
+        if i[0] == str(ID):
+            the_question = i[4]
+            the_message = i[5]
+    return the_question, the_message

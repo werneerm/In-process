@@ -6,12 +6,17 @@
 </head>
 <body>
 <table>
+    <tr>
+        <td>
+            {{ question }} ------- {{ message }}
+        </td>
+    </tr>
     {% for i in answer %}
     <tr>
         <td>{{i}}</td>
     </tr>
     {% endfor %}
-    <a href="/questions/{{id}}/answer-question"> <button>Answer this question</button></a>
 </table>
+<a href="/questions/{{id}}/answer-question"> <button>Answer this question</button></a>
 </body>
 </html>
