@@ -3,6 +3,9 @@ from flask import Flask, render_template, request, redirect, url_for
 import data_handler
 
 DATA_HEADER = ['id', 'submisson_time', 'view_number', 'vote_number', 'title', 'message', 'image']
+DATA_FILE_PATH_QUESTION = "./sample_data/question.csv"
+DATA_FILE_PATH_ANSWER = "./sample_data/answer.csv"
+
 
 app = Flask(__name__)
 
@@ -31,6 +34,7 @@ def add_question():
     if request.method == 'POST':
         title = request.form['title']
         message = request.form['message']
+        table = data_handler.get_all_questions()
         new_quest_list = []
         new_quest_list.append('something like ID')
         new_quest_list.append('421421421521')
@@ -38,7 +42,8 @@ def add_question():
         new_quest_list.append('0')
         new_quest_list.append(title)
         new_quest_list.append(message)
-        data_handler.write_user_story(new_quest_list)
+        table.append(new_quest_list)
+        data_handler.write_user_story(DATA_FILE_PATH_QUESTION, table)
         return redirect('/')
     return render_template('add-question.html')
 

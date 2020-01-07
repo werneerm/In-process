@@ -9,7 +9,6 @@ def get_all_questions():
     with open(DATA_FILE_PATH, "r") as file:
         lines = file.readlines()
     table = [element.replace("\n", "").split(";") for element in lines]
-    question_dict = { i : table[i] for i in range(0, len(table) ) }
     return table
 
 def question_dict(table):
@@ -18,10 +17,14 @@ def question_dict(table):
 
 
 
-def write_user_story(question):
-    with open(DATA_FILE_PATH, "w") as file:
-        for story in question:
-            file.write(story + ';')
+def write_user_story(file_path, data):
+    with open(file_path, "w") as file:
+        for record in data:
+            row = ';'.join(record)
+            file.write(row + "\n")
+
+def add_question_v2():
+    pass
 
 
 def add_question(added_line):
@@ -42,3 +45,7 @@ def index_finder(ID):
     for i in answer :
         if i[3] == str(ID):
             return i[4]
+def id_generator(table):
+    old_id = table[-1][0]
+    new_id = int(old_id) + 1
+    return str(new_id)
