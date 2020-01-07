@@ -6,9 +6,12 @@
 </head>
 <body>
 <table>
+    {% for i in answer %}
     <tr>
-        {{answer}}
+        <td>{{i}}</td>
     </tr>
+    {% endfor %}
+    <a href="/questions/{{id}}/answer-question"> <button>Answer this question</button></a>
 </table>
 </body>
 </html>
