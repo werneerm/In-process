@@ -24,7 +24,7 @@ def questions_site(id = None):
 
     if id is not None :
         answer = data_handler.index_finder(id)
-        return render_template('/questions.html', answer=answer)
+        return render_template('/questions.html', answer=answer,id=id)
 
 @app.route('/add-question', methods=['GET', 'POST'])
 def add_question():
