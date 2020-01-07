@@ -8,8 +8,8 @@ DATA_HEADER = ['id', 'submisson_time', 'view_number', 'vote_number', 'title', 'm
 def get_all_questions():
     with open(DATA_FILE_PATH, "r") as file:
         lines = file.readlines()
-    table = [element.replace("\n", "").split(",") for element in lines]
-    return table , real_question
+    table = [element.replace("\n", "").split(";") for element in lines]
+    return table
 
 
 def write_user_story(question):

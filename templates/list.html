@@ -3,21 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <style>
-        table, th, td {
-  border: 1px solid black;
-}
-    </style>
 </head>
 <body>
+<h1>Ask Mate</h1>
 <table>
-   {% for item in question %}
-    <td>
-        {{item}}
-    </td>
+    <tr>
+   <th> Questions </th>
+    </tr>
+    {% for line in question %}
+    <tr>
+        <td> {{line[4]}} </td>
+    </tr>
     {% endfor %}
 </table>
-
-
 </body>
 </html>
