@@ -9,7 +9,13 @@ def get_all_questions():
     with open(DATA_FILE_PATH, "r") as file:
         lines = file.readlines()
     table = [element.replace("\n", "").split(";") for element in lines]
+    question_dict = { i : table[i] for i in range(0, len(table) ) }
     return table
+
+def question_dict(table):
+    question_dict = {i: table[i] for i in range(0, len(table))}
+    return question_dict
+
 
 
 def write_user_story(question):
