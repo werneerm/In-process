@@ -39,15 +39,11 @@ def get_all_answer():
 def index_finder(ID):
     answer = get_all_answer()
     final_answer = []
-    for i in answer :
+    for i in answer:
         if i[3] == str(ID):
-<<<<<<< HEAD
-            return i[4]
+            final_answer.append(i[4])
+    return final_answer
 def id_generator(table):
     old_id = table[-1][0]
     new_id = int(old_id) + 1
     return str(new_id)
-=======
-            final_answer.append(i[4])
-    return final_answer
->>>>>>> ec0eddf14253d0baf0e319dd7a7c0255d15bae49
