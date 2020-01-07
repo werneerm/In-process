@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 
 import data_handler
+import time
 
 DATA_HEADER = ['id', 'submisson_time', 'view_number', 'vote_number', 'title', 'message', 'image']
 DATA_FILE_PATH_QUESTION = "./sample_data/question.csv"
@@ -40,7 +41,7 @@ def add_answer(id=None):
         table = data_handler.get_all_answer()
         new_answer_list = []
         new_answer_list.append('3')
-        new_answer_list.append('submission time')
+        new_answer_list.append(str(time.time()))
         new_answer_list.append('vote number')
         new_answer_list.append(str(id))
         new_answer_list.append(message)
@@ -48,7 +49,7 @@ def add_answer(id=None):
         table.append(new_answer_list)
         data_handler.write_user_story(DATA_FILE_PATH_ANSWER, table)
         answer = data_handler.index_finder(id)
-        return render_template('/questions.html',answer=answer,id=id)
+        return redirect(f'/questions/{id}')
 
 @app.route('/add-question', methods=['GET', 'POST'])
 def add_question():
@@ -57,8 +58,8 @@ def add_question():
         message = request.form['message']
         table = data_handler.get_all_questions()
         new_quest_list = []
-        new_quest_list.append('something like ID')
-        new_quest_list.append('421421421521')
+        new_quest_list.append(data_handler.id_generator(table))
+        new_quest_list.append(str(time.time()))
         new_quest_list.append('0')
         new_quest_list.append('0')
         new_quest_list.append(title)
