@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Answer</title>
+</head>
+<body>
+<form action="/questions/<int:id>/answer-question", method="post">
+    <p>Message:</p>
+	<p><input type="text" name="title" id="title" cols=40 rows=3></p>
+    <p>Image:</p>
+    <input type='file' onchange="readURL(this);" />
+    <img id="blah" src="http://placehold.it/180" alt="your image" />
+</form>
+</body>
+</html>
