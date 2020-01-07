@@ -29,3 +29,16 @@ def add_question(added_line):
     table = get_all_questions()
     table.append(list(added_line.values()))
     write_user_story(table)
+
+def get_all_answer():
+    with open('./sample_data/answer.csv', "r") as file:
+        lines = file.readlines()
+    table = [element.replace("\n", "").split(";") for element in lines]
+    question_dict = {i: table[i] for i in range(0, len(table))}
+    return table
+
+def index_finder(ID):
+    answer = get_all_answer()
+    for i in answer :
+        if i[3] == str(ID):
+            return i[4]

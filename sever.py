@@ -23,8 +23,8 @@ def questions_site(id = None):
         return redirect("/")
 
     if id is not None :
-        question = data_handler.get_all_questions()
-        return render_template('/questions.html', question = question)
+        answer = data_handler.index_finder(id)
+        return render_template('/questions.html', answer=answer)
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',
