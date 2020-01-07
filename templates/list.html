@@ -3,23 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        table, th, td {
+  border: 1px solid black;
+}
+    </style>
 </head>
 <body>
 <table>
-    <tr>
-    <thead>
-    {% for item in header %}
-    <th>{{ item }}</th>
-    </thead>
-        {% endfor %}
-    </tr>
-{% for line in question[1:] %}
-	<tr>
-	{% for item in line %}
-		<td>{{ item if item != None}}</td>
-	{% endfor %}
-	</tr>
-	{% endfor %}
+   {% for item in question %}
+    <td>
+        {{item}}
+    </td>
+    {% endfor %}
 </table>
+
+
 </body>
 </html>

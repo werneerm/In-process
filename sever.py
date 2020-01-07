@@ -9,9 +9,12 @@ app = Flask(__name__)
 @app.route('/')
 @app.route('/list')
 def route_list():
-    question = data_handler.get_all_questions()
+    question , real_question = data_handler.get_all_questions()
+
     header = question[0]
-    return render_template('list.html', question=question, header=header)
+    actual_questions = []
+
+    return render_template('list.html', question=real_question, header=header)
 
 
 @app.route('/questions/<int:id>', methods=['GET','POST'])
