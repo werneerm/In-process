@@ -26,7 +26,7 @@ def questions_site(id = None):
         return redirect("/")
 
     if id is not None :
-        the_question, the_message = data_handler.question_finder(id)
+        the_question, the_message, the_image = data_handler.question_finder(id)
         answer = data_handler.index_finder(id)
         return render_template('/questions.html', answer=answer,id=id, question=the_question, message=the_message)
 
@@ -68,6 +68,35 @@ def add_question():
         data_handler.write_user_story(DATA_FILE_PATH_QUESTION, table)
         return redirect(url_for('questions_site', id=table[-1][0]))
     return render_template('add-question.html')
+
+@app.route('/questions/<int:id>', methods=['GET', 'POST'])
+@app.route('/questions/<int:id>/edit-question', methods=['GET', 'POST'])
+def edit_question(id=None):
+    if request.method == 'GET':
+        question, message, image = data_handler.question_finder(id)
+        return render_template('edit-question.html', id=id, question=question, message=message, image=image)
+    elif request.method == 'POST':
+        table = data_handler.get_all_questions()
+        changed_title = request.form['title']
+        changed_message = request.form['message']
+        changed_image = request.form['image']
+        data_handler.question_change(changed_title, changed_message, changed_image, table, id)
+        return redirect(url_for('questions_site', id=id))
+
+@app.route('/questions/<int:id>/d', methods=['GET', 'POST'])
+@app.route('/questions/<int:id>/delete-question', methods=['GET', 'POST'])
+def delete_question(id=None):
+    if request.method == 'POST':
+        option = request.form['pick']
+        if option == 'yes':
+            table = data_handler.get_all_questions()
+            data_handler.delete_question(id, table)
+            return redirect(url_for('route_list'))
+        elif option == 'no':
+            return redirect(url_for('questions_site', id=id))
+    if request.method == 'GET':
+        return render_template('question-delete.html', id=id)
+
 
 if __name__ == '__main__':
     app.run(
