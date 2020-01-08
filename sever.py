@@ -9,7 +9,6 @@ DATA_FILE_PATH_ANSWER = "./sample_data/answer.csv"
 
 
 app = Flask(__name__)
-
 @app.route('/')
 @app.route('/list')
 def route_list():
@@ -38,14 +37,15 @@ def add_answer(id=None):
         return render_template('/new_answer.html',id=id)
     if request.method == 'POST':
         message = request.form['message']
+        image = request.form['image']
         table = data_handler.get_all_answer()
         new_answer_list = []
-        new_answer_list.append('3')
+        new_answer_list.append(str(int(table[-1][0]) + 1))
         new_answer_list.append(str(time.time()))
-        new_answer_list.append('vote number')
+        new_answer_list.append('0')
         new_answer_list.append(str(id))
         new_answer_list.append(message)
-        new_answer_list.append('image')
+        new_answer_list.append(image)
         table.append(new_answer_list)
         data_handler.write_user_story(DATA_FILE_PATH_ANSWER, table)
         answer = data_handler.index_finder(id)
@@ -68,6 +68,49 @@ def add_question():
         data_handler.write_user_story(DATA_FILE_PATH_QUESTION, table)
         return redirect('/')
     return render_template('add-question.html')
+
+@app.route('/questions/<int:id>/vote_up')
+def upvote(id = None):
+     table = data_handler.get_all_answer()
+     if id is not None:
+        question_id = ""
+        vote_num = ""
+        line_num = None
+        for idx , line in enumerate(table):
+            for ans_id in line:
+                if str(id) == ans_id:
+                    question_id = line[3]
+                    vote_num = line[2]
+                    line_num = idx
+
+        int_vote_num = int(vote_num)
+        int_vote_num += 1
+        str_vote_num = str(int_vote_num)
+        table[line_num][2] = str_vote_num
+        data_handler.write_user_story(DATA_FILE_PATH_ANSWER, table)
+        return redirect(f'/questions/{question_id}')
+
+@app.route('/questions/<int:id>/vote_down')
+def downvote(id=None):
+    table = data_handler.get_all_answer()
+    if id is not None:
+        question_id = ""
+        vote_num = ""
+        line_num = None
+        for idx, line in enumerate(table):
+            for ans_id in line:
+                if str(id) == ans_id:
+                    question_id = line[3]
+                    vote_num = line[2]
+                    line_num = idx
+
+        int_vote_num = int(vote_num)
+        int_vote_num = int_vote_num - 1
+        str_vote_num = str(int_vote_num)
+        table[line_num][2] = str_vote_num
+        data_handler.write_user_story(DATA_FILE_PATH_ANSWER, table)
+        return redirect(f'/questions/{question_id}')
+
 
 if __name__ == '__main__':
     app.run(

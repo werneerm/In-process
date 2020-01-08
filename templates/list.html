@@ -8,12 +8,24 @@
 <h1>Ask Mate</h1>
 <table>
     <tr>
-   <th> Questions </th>
+        <th> ID </th>
+        <th> Submission Time </th>
+        <th> View number </th>
+        <th> Vote number </th>
+        <th> Title </th>
+        <th> Message </th>
+        <th> Image </th>
     </tr>
     {% for line in question %}
     <tr>
+        <td> {{line[0]}} </td>
+        <td> {{line[1]}} </td>
+        <td> {{line[2]}} </td>
+        <td> {{line[3]}} </td>
         <td> {{line[4]}} </td>
-        <td><a href='/questions/{{line[0]}}'> Answer</a></td>
+        <td> {{line[5]}} </td>
+        <td> {{line[6]}} </td>
+        <td><a href='/questions/{{line[0]}}'> Answers</a></td>
     </tr>
     {% endfor %}
 </table>

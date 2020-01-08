@@ -1,19 +1,16 @@
 id;submission_time;vote_number;question_id;message;image
-0;1493398154;4;0;"You need to use brackets: my_list = []"
-1;1493088154;35;0;"Look it up in the Python docs"
-3;submission time;vote number;0;szia;image
-3;submission time;vote number;0;szia;image
-3;submission time;vote number;0;szia;image
-3;submission time;vote number;0;szia;image
-3;submission time;vote number;0;hali;image
-3;submission time;vote number;0;hali;image
-3;submission time;vote number;0;nem;image
-3;submission time;vote number;0;jani;image
-3;submission time;vote number;0;cica;image
-3;submission time;vote number;0;ádám kikapott hsben mert béna;image
-3;submission time;vote number;0;tudom;image
-3;submission time;vote number;1;babapopó;image
-3;submission time;vote number;0;haha;image
-3;submission time;vote number;0;haha;image
-3;submission time;vote number;0;redirect babe;image
-3;submission time;vote number;0;redirect babe 2;image
+1;1493398154;4;0;"You need to use brackets: my_list = []"
+2;1493088154;45;0;"Look it up in the Python docs"
+3;submission time;10;2;szia;image
+4;submission time;3;6;cica;image
+5;submission time;7;6;ádám kikapott hsben mert béna;image
+6;submission time;22;4;BLYYYYYYYYYYYYAT;image
+7;submission time;24;4;ZSAZSAZSAZSAZSAZSA;image
+8;1578494382.4344738;37;1;anyád;
+9;1578497248.4495866;55;3;kfjvbakjsdbv;
+10;1578497397.5517726;28;1;hguz;
+11;1578500585.5021222;0;5;faszom
+12;1578500679.7590563;-2;5;uigutdfuz;
+13;1578500715.465733;3;7;jhgfuzfizl;
+14;1578500736.3076775;1;7;hjgfukzfuzf;
+15;1578500756.3279793;2;2;gcugcuzhjv;

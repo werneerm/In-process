@@ -41,7 +41,7 @@ def index_finder(ID):
     final_answer = []
     for i in answer:
         if i[3] == str(ID):
-            final_answer.append(i[4])
+            final_answer.append(i)
     return final_answer
 def id_generator(table):
     old_id = table[-1][0]
