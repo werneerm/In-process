@@ -58,7 +58,7 @@ def question_finder(ID):
         if i[0] == str(ID):
             the_question = i[4]
             the_message = i[5]
-            the_image = i[6]
+            # the_image = i[6]
     return the_question, the_message, the_image
 
 def question_change(title, message, image, table, id):
@@ -69,8 +69,19 @@ def question_change(title, message, image, table, id):
             line[6] = image
     write_user_story('./sample_data/question.csv', table)
 
-def delete_question(id, table):
+def delete_question(id, table, answers):
     for line in table:
         if line[0] == str(id):
             table.remove(line)
+            for i in answers:
+                if line[0] == i[3]:
+                    answers.remove(line)
     write_user_story("./sample_data/question.csv",table)
+    write_user_story("./sample_data/answers.csc", answers)
+
+
+def delete_answer(id, table):
+    for line in table:
+        if line[3] == str(id):
+            table.remove(line)
+    write_user_story("./sample_data/answer.csv", table)

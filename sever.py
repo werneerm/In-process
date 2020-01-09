@@ -6,36 +6,36 @@ DATA_HEADER = ['id', 'submisson_time', 'view_number', 'vote_number', 'title', 'm
 DATA_FILE_PATH_QUESTION = "./sample_data/question.csv"
 DATA_FILE_PATH_ANSWER = "./sample_data/answer.csv"
 
-
 app = Flask(__name__)
+
 
 @app.route('/')
 @app.route('/list')
 def route_list():
     question = data_handler.get_all_questions()
 
-    return render_template('list.html', question= question,)
+    return render_template('list.html', question=question, )
 
 
-@app.route('/questions/<int:id>', methods=['GET','POST'])
-def questions_site(id = None):
+@app.route('/questions/<int:id>', methods=['GET', 'POST'])
+def questions_site(id=None):
     if request.method == 'POST':
         new_question = request.form.to_dict()
         data_handler.add_question(new_question)
 
         return redirect("/")
 
-    if id is not None :
+    if id is not None:
         the_question, the_message, the_image = data_handler.question_finder(id)
         answer = data_handler.index_finder(id)
-        return render_template('/questions.html', answer=answer,id=id, question=the_question, message=the_message)
+        return render_template('/questions.html', answer=answer, id=id, question=the_question, message=the_message)
 
 
 @app.route('/questions/<int:id>', methods=['GET', 'POST'])
 @app.route('/questions/<int:id>/answer-question', methods=['GET', 'POST'])
 def add_answer(id=None):
     if request.method == 'GET':
-        return render_template('/new_answer.html',id=id)
+        return render_template('/new_answer.html', id=id)
     if request.method == 'POST':
         message = request.form['message']
         table = data_handler.get_all_answer()
@@ -48,9 +48,11 @@ def add_answer(id=None):
         new_answer_list.append('image')
         table.append(new_answer_list)
         data_handler.write_user_story(DATA_FILE_PATH_ANSWER, table)
-        #answer = data_handler.index_finder(id)
-        #return render_template('/questions.html',answer=answer,id=id, question=the_question, message=the_message)
+        # answer = data_handler.index_finder(id)
+        # return render_template('/questions.html',answer=answer,id=id, question=the_question, message=the_message)
         return redirect(url_for('questions_site', id=id))
+
+
 @app.route('/add-question', methods=['GET', 'POST'])
 def add_question():
     if request.method == 'POST':
@@ -69,6 +71,7 @@ def add_question():
         return redirect(url_for('questions_site', id=table[-1][0]))
     return render_template('add-question.html')
 
+
 @app.route('/questions/<int:id>', methods=['GET', 'POST'])
 @app.route('/questions/<int:id>/edit-question', methods=['GET', 'POST'])
 def edit_question(id=None):
@@ -83,6 +86,7 @@ def edit_question(id=None):
         data_handler.question_change(changed_title, changed_message, changed_image, table, id)
         return redirect(url_for('questions_site', id=id))
 
+
 @app.route('/questions/<int:id>/d', methods=['GET', 'POST'])
 @app.route('/questions/<int:id>/delete-question', methods=['GET', 'POST'])
 def delete_question(id=None):
@@ -90,12 +94,32 @@ def delete_question(id=None):
         option = request.form['pick']
         if option == 'yes':
             table = data_handler.get_all_questions()
-            data_handler.delete_question(id, table)
+
+            answers = data_handler.get_all_answer()
+            # for i in answers:
+            #     if id == i[3]:
+
+            data_handler.delete_question(id, table, answers)
             return redirect(url_for('route_list'))
         elif option == 'no':
             return redirect(url_for('questions_site', id=id))
     if request.method == 'GET':
         return render_template('question-delete.html', id=id)
+
+
+@app.route('/questions/<int:id>/a', methods=['GET', 'POST'])
+@app.route('/questions/<int:id>/delete_answer', methods=['GET', 'POST'])
+def delete_answer(id=None):
+    if request.method == 'POST':
+        option = request.form['choose']
+        if option == 'yes':
+            table = data_handler.get_all_answer()
+            data_handler.delete_answer(id, table)
+            return redirect(url_for('questions_site', id=id))
+        elif option == 'no':
+            return redirect(url_for('questions_site', id=id))
+    if request.method == 'GET':
+        return render_template('delete_answer.html', id=id)
 
 
 if __name__ == '__main__':
