@@ -3,15 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <style>
-body  {
-  background-image: url("paper.gif");
-  background-color: #cccccc;
-}
-</style>
+    <link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-<h1>{{ question }} ------- {{ message }}</h1>
+<h4>{{ question }} ------- {{ message }}</h4>
 <table>
     <tr>
         <th> ID </th>
@@ -30,9 +25,11 @@ body  {
         <td> {{line[4]}} </td>
         <td> <img src ="{{line[5]}}"style="width:104px;height:142px;"> </td>
         <td>
-            <a href='/answers/{{line[0]}}/vote_up'> <button>upvote</button></a>
+            <div style="font-size:1.5em">
+            <a href='/answers/{{line[0]}}/vote_up'class="button5" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#B22222">upvote</a>
             <a href='/answers/{{line[0]}}/vote_down'> <button>downvote</button></a>
             <a href="/questions/{{line[0]}}/delete_answer"> <button>Delete</button></a>
+            </div>
         </td>
     {% endfor %}
     </tr>
