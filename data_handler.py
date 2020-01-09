@@ -83,11 +83,14 @@ def delete_question(id, table, answers):
     write_user_story("./sample_data/answer.csv", answers)
 
 
-def delete_answer(id, table):
+def delete_answer(id, table,):
+    question_id = ""
     for line in table:
-        if line[3] == str(id):
+        if str(line[0]) == str(id):
+            question_id = line[3]
             table.remove(line)
     write_user_story("./sample_data/answer.csv", table)
+    return question_id
 
 def sorting_things(sorted_item):
     table =  get_all_questions()
