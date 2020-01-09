@@ -14,6 +14,9 @@
     {% for i in answer %}
     <tr>
         <td>{{i}}</td>
+        <form action="/question/{{ id }}/delete-answer" method="post">
+            <td><button type="submit">Delete</button></td>
+        </form>
     </tr>
     {% endfor %}
 </table>

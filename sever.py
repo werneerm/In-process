@@ -48,14 +48,13 @@ def add_answer(id=None):
         new_answer_list.append('image')
         table.append(new_answer_list)
         data_handler.write_user_story(DATA_FILE_PATH_ANSWER, table)
-        #answer = data_handler.index_finder(id)
-        #return render_template('/questions.html',answer=answer,id=id, question=the_question, message=the_message)
         return redirect(url_for('questions_site', id=id))
 @app.route('/add-question', methods=['GET', 'POST'])
 def add_question():
     if request.method == 'POST':
         title = request.form['title']
         message = request.form['message']
+        image = request.form['image']
         table = data_handler.get_all_questions()
         new_quest_list = []
         new_quest_list.append(data_handler.id_generator(table))
@@ -64,6 +63,7 @@ def add_question():
         new_quest_list.append('0')
         new_quest_list.append(title)
         new_quest_list.append(message)
+        new_quest_list.append(image)
         table.append(new_quest_list)
         data_handler.write_user_story(DATA_FILE_PATH_QUESTION, table)
         return redirect(url_for('questions_site', id=table[-1][0]))
@@ -97,6 +97,9 @@ def delete_question(id=None):
     if request.method == 'GET':
         return render_template('question-delete.html', id=id)
 
+@app.route('/questions/<int:id>/delete-answer', methods=['GET', 'POST'])
+def delete_answer(id=None):
+    pass
 
 if __name__ == '__main__':
     app.run(
