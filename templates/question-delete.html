@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Question</title>
+</head>
+<body>
+<h1>Are u sure?</h1>
+<form action="/questions/{{ id }}/d" method="post">
+  <input type="radio" name="pick" id="option1" value="yes" checked> Yes<br>
+  <input type="radio" name="pick" id="option2" value="no"> No<br>
+     <button type="submit">Do it</button>
+</form>
+</body>
+</html>

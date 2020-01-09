@@ -43,19 +43,39 @@ def index_finder(ID):
         if i[3] == str(ID):
             final_answer.append(i)
     return final_answer
+
 def id_generator(table):
     old_id = table[-1][0]
     new_id = int(old_id) + 1
     return str(new_id)
+
 def question_finder(ID):
     quests = get_all_questions()
     the_question = ""
     the_message = ""
+    the_image = ""
     for i in quests:
         if i[0] == str(ID):
             the_question = i[4]
             the_message = i[5]
-    return the_question, the_message
+            the_image = i[6]
+    return the_question, the_message, the_image
+
+def question_change(title, message, image, table, id):
+    for line in table:
+        if line[0] == str(id):
+            line[4] = title
+            line[5] = message
+            line[6] = image
+    write_user_story('./sample_data/question.csv', table)
+
+
+def delete_question(id, table):
+    for line in table:
+        if line[0] == str(id):
+            table.remove(line)
+    write_user_story("./sample_data/question.csv",table)
+
 
 def sorting_things(sorted_item):
     table =  get_all_questions()
@@ -77,4 +97,3 @@ def sorting_things(sorted_item):
                     table[j] = table[j + 1]
                     table[j + 1] = tempo
         return table
-

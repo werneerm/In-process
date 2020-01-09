@@ -14,9 +14,14 @@
     {% for i in answer %}
     <tr>
         <td>{{i}}</td>
+        <form action="/question/{{ id }}/delete-answer" method="post">
+            <td><button type="submit">Delete</button></td>
+        </form>
     </tr>
     {% endfor %}
 </table>
 <a href="/questions/{{id}}/answer-question"> <button>Answer this question</button></a>
+<a href="/questions/{{id}}/edit-question"> <button>Edit this question</button></a>
+<a href="/questions/{{id}}/delete-question"><button>Delete This, NOW</button></a>
 </body>
 </html>
