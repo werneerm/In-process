@@ -77,7 +77,7 @@ def delete_question(id, table, answers):
                 if line[0] == i[3]:
                     answers.remove(line)
     write_user_story("./sample_data/question.csv",table)
-    write_user_story("./sample_data/answers.csc", answers)
+    write_user_story("./sample_data/answer.csc", answers)
 
 
 def delete_answer(id, table):
