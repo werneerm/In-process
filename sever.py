@@ -48,8 +48,8 @@ def add_answer(id=None):
         new_answer_list.append('image')
         table.append(new_answer_list)
         data_handler.write_user_story(DATA_FILE_PATH_ANSWER, table)
-        # answer = data_handler.index_finder(id)
-        # return render_template('/questions.html',answer=answer,id=id, question=the_question, message=the_message)
+        #answer = data_handler.index_finder(id)
+        #return render_template('/questions.html',answer=answer,id=id, question=the_question, message=the_message)
         return redirect(url_for('questions_site', id=id))
 
 
@@ -58,6 +58,7 @@ def add_question():
     if request.method == 'POST':
         title = request.form['title']
         message = request.form['message']
+        image = request.form['image']
         table = data_handler.get_all_questions()
         new_quest_list = []
         new_quest_list.append(data_handler.id_generator(table))
@@ -66,6 +67,7 @@ def add_question():
         new_quest_list.append('0')
         new_quest_list.append(title)
         new_quest_list.append(message)
+        new_quest_list.append(image)
         table.append(new_quest_list)
         data_handler.write_user_story(DATA_FILE_PATH_QUESTION, table)
         return redirect(url_for('questions_site', id=table[-1][0]))
@@ -120,6 +122,32 @@ def delete_answer(id=None):
             return redirect(url_for('questions_site', id=id))
     if request.method == 'GET':
         return render_template('delete_answer.html', id=id)
+
+@app.route('/list/ID',methods=['GET'])
+@app.route('/list/SubmissionTime',methods=['GET'])
+@app.route('/list/ViewNumber',methods=['GET'])
+@app.route('/list/VoteNumber',methods=['GET'])
+@app.route('/list/Title',methods=['GET'])
+@app.route('/list/Message',methods=['GET'])
+def sorting():
+    if request.path == '/list/ID':
+        question = data_handler.sorting_things('id')
+        return render_template('list.html',question=question)
+    elif request.path == '/list/SubmissionTime':
+        question = data_handler.sorting_things('submisson_time')
+        return render_template('list.html',question=question)
+    elif request.path == '/list/ViewNumber':
+        question = data_handler.sorting_things('view_number')
+        return render_template('list.html',question=question)
+    elif request.path == '/list/VoteNumber':
+        question = data_handler.sorting_things('vote_number')
+        return render_template('list.html',question=question)
+    elif request.path == '/list/Title':
+        question = data_handler.sorting_things('title')
+        return render_template('list.html',question=question)
+    elif request.path == '/list/Message':
+        question = data_handler.sorting_things('message')
+        return render_template('list.html',question=question)
 
 
 if __name__ == '__main__':
