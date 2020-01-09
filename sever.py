@@ -69,6 +69,33 @@ def add_question():
         return redirect(url_for('questions_site', id=table[-1][0]))
     return render_template('add-question.html')
 
+
+@app.route('/list/ID',methods=['GET'])
+@app.route('/list/SubmissionTime',methods=['GET'])
+@app.route('/list/ViewNumber',methods=['GET'])
+@app.route('/list/VoteNumber',methods=['GET'])
+@app.route('/list/Title',methods=['GET'])
+@app.route('/list/Message',methods=['GET'])
+def sorting():
+    if request.path == '/list/ID':
+        question = data_handler.sorting_things('id')
+        return render_template('list.html',question=question)
+    elif request.path == '/list/SubmissionTime':
+        question = data_handler.sorting_things('submisson_time')
+        return render_template('list.html',question=question)
+    elif request.path == '/list/ViewNumber':
+        question = data_handler.sorting_things('view_number')
+        return render_template('list.html',question=question)
+    elif request.path == '/list/VoteNumber':
+        question = data_handler.sorting_things('vote_number')
+        return render_template('list.html',question=question)
+    elif request.path == '/list/Title':
+        question = data_handler.sorting_things('title')
+        return render_template('list.html',question=question)
+    elif request.path == '/list/Message':
+        question = data_handler.sorting_things('message')
+        return render_template('list.html',question=question)
+
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',

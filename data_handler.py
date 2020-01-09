@@ -41,7 +41,7 @@ def index_finder(ID):
     final_answer = []
     for i in answer:
         if i[3] == str(ID):
-            final_answer.append(i[4])
+            final_answer.append(i)
     return final_answer
 def id_generator(table):
     old_id = table[-1][0]
@@ -56,3 +56,25 @@ def question_finder(ID):
             the_question = i[4]
             the_message = i[5]
     return the_question, the_message
+
+def sorting_things(sorted_item):
+    table =  get_all_questions()
+    index = DATA_HEADER.index(sorted_item)
+    l = len(table)
+    if sorted_item == 'message' or sorted_item == 'title':
+        for i in range(0, l):
+            for j in range(0, l - i - 1):
+                if (table[j][index] > table[j + 1][index]):
+                    tempo = table[j]
+                    table[j] = table[j + 1]
+                    table[j + 1] = tempo
+        return table
+    elif sorted_item == 'id' or 'submisson_time' or 'view_number' or 'vote_number':
+        for i in range(0, l):
+            for j in range(0, l - i - 1):
+                if (int(table[j][index]) > int(table[j + 1][index])):
+                    tempo = table[j]
+                    table[j] = table[j + 1]
+                    table[j + 1] = tempo
+        return table
+
