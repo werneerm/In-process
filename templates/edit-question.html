@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Question</title>
+</head>
+<body>
+<h1>Edit Page</h1>
+<form action="/questions/{{ id }}/edit-question", method="post">
+    <p>Question Title:</p>
+	<p><input type="text" name="title" id="title" size="20", value="{{ question }}"></p>
+    <p>Message:</p>
+	<p><textarea name="message" id="message" cols=40 rows=3>{{ message }}</textarea></p>
+    <p>Image URL:</p>
+    <p><input type="text" name="image" id="image" size="20", value="{{ image }}"></p>
+    <p><input type="submit" value="Edit question"></p>
+</form>
+</body>
+</html>

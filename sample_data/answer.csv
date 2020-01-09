@@ -1,17 +1,7 @@
 id;submission_time;vote_number;question_id;message;image
-1;1493398154;4;0;"You need to use brackets: my_list = []"
-2;1493088154;45;0;"Look it up in the Python docs"
-3;submission time;11;2;szia;image
-4;submission time;3;6;cica;image
-5;submission time;7;6;ádám kikapott hsben mert béna;image
-6;submission time;22;4;BLYYYYYYYYYYYYAT;image
-7;submission time;24;4;ZSAZSAZSAZSAZSAZSA;image
-8;1578494382.4344738;36;1;anyád;
-9;1578497248.4495866;58;3;kfjvbakjsdbv;
-10;1578497397.5517726;31;1;hguz;
-11;1578500585.5021222;5;5;faszom
-12;1578500679.7590563;-2;5;uigutdfuz;
-13;1578500715.465733;13;7;jhgfuzfizl;
-14;1578500736.3076775;6;7;hjgfukzfuzf;
-15;1578500756.3279793;4;2;gcugcuzhjv;
-16;1578509624.4723697;6;1;dljfhKLFBÍLKDFB ;64ef0c04574ecd39350e37d0f84dfe49_duck-face-mona-lisa-mona-lisa-meme-face_500-400.jpg
+0;1493398154;4;1;"You need to use brackets: my_list = []"
+1;1493088154;35;1;"Look it up in the Python docs"
+3;submission time;vote number;0;ádám kikapott hsben mert béna;image
+4;1578575145.6692538;3;1;test;
+5;1578575159.9822803;3;1;jkfbadlikhvb;
+6;1578575609.3789005;0;5;gahaha;

@@ -25,12 +25,17 @@
         <td>
             <a href='/answers/{{line[0]}}/vote_up'> <button>upvote</button></a>
             <a href='/answers/{{line[0]}}/vote_down'> <button>downvote</button></a>
+            <a href="/questions/{{id}}/delete_answer"> <button>Delete</button></a>
         </td>
     {% endfor %}
     <a href="/questions/{{id}}/answer-question"> <button>Answer this question</button></a>
+    </tr>
 </table>
 <form>
     <input type="button" onclick="window.location.href = '/list';" value="back"/>
 </form>
+<a href="/questions/{{id}}/answer-question"> <button>Answer this question</button></a>
+<a href="/questions/{{id}}/edit-question"> <button>Edit this question</button></a>
+<a href="/questions/{{id}}/delete-question"><button>Delete This, NOW</button></a>
 </body>
 </html>
