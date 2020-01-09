@@ -23,14 +23,8 @@
         <td> {{line[4]}} </td>
         <td> {{line[5]}} </td>
         <td>
-            <!--<form action = "/questions/{{id}}" , method = "post">
-            <button type=" submit " >upvote</button>
-            </form>
-            <form action = "/questions/{{id}}" , method = "post">
-                <button type=" submit " >downvote</button>
-            </form>-->
-            <a href='/questions/{{line[0]}}/vote_up'> <button>upvote</button></a>
-            <a href='/questions/{{line[0]}}/vote_down'> <button>downvote</button></a>
+            <a href='/answers/{{line[0]}}/vote_up'> <button>upvote</button></a>
+            <a href='/answers/{{line[0]}}/vote_down'> <button>downvote</button></a>
         </td>
     {% endfor %}
     <a href="/questions/{{id}}/answer-question"> <button>Answer this question</button></a>

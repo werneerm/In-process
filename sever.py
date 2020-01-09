@@ -69,16 +69,15 @@ def add_question():
         return redirect('/')
     return render_template('add-question.html')
 
-@app.route('/questions/<int:id>/vote_up')
-def upvote(id = None):
+@app.route('/answers/<int:id>/vote_up')
+def ans_upvote(id = None):
      table = data_handler.get_all_answer()
      if id is not None:
         question_id = ""
         vote_num = ""
         line_num = None
         for idx , line in enumerate(table):
-            for ans_id in line:
-                if str(id) == ans_id:
+                if str(id) == line[0]:
                     question_id = line[3]
                     vote_num = line[2]
                     line_num = idx
@@ -90,16 +89,15 @@ def upvote(id = None):
         data_handler.write_user_story(DATA_FILE_PATH_ANSWER, table)
         return redirect(f'/questions/{question_id}')
 
-@app.route('/questions/<int:id>/vote_down')
-def downvote(id=None):
-    table = data_handler.get_all_answer()
+@app.route('/answers/<int:id>/vote_down')
+def ans_downvote(id=None):
+    answers = data_handler.get_all_answer()
     if id is not None:
         question_id = ""
         vote_num = ""
         line_num = None
-        for idx, line in enumerate(table):
-            for ans_id in line:
-                if str(id) == ans_id:
+        for idx, line in enumerate(answers):
+                if str(id) == line[0]:
                     question_id = line[3]
                     vote_num = line[2]
                     line_num = idx
@@ -107,9 +105,45 @@ def downvote(id=None):
         int_vote_num = int(vote_num)
         int_vote_num = int_vote_num - 1
         str_vote_num = str(int_vote_num)
-        table[line_num][2] = str_vote_num
-        data_handler.write_user_story(DATA_FILE_PATH_ANSWER, table)
+        answers[line_num][2] = str_vote_num
+        data_handler.write_user_story(DATA_FILE_PATH_ANSWER, answers)
         return redirect(f'/questions/{question_id}')
+
+
+@app.route('/questions/<int:id>/vote_up')
+def ques_upvote(id=None):
+    table = data_handler.get_all_questions()
+    if id is not None:
+        vote_num = ""
+        line_num = None
+        for idx, line in enumerate(table):
+                if str(id) == line[0]:
+                    vote_num = line[3]
+                    line_num = idx
+        int_vote_num = int(vote_num)
+        int_vote_num += 1
+        str_vote_num = str(int_vote_num)
+        table[line_num][3] = str_vote_num
+        data_handler.write_user_story(DATA_FILE_PATH_QUESTION, table)
+        return redirect('/list')
+    return redirect(url_for('questions_site', id=id))
+
+@app.route('/questions/<int:id>/vote_down')
+def ques_down(id=None):
+    table = data_handler.get_all_questions()
+    if id is not None:
+        vote_num = ""
+        line_num = None
+        for idx, line in enumerate(table):
+                if str(id) == line[0]:
+                    vote_num = line[3]
+                    line_num = idx
+        int_vote_num = int(vote_num)
+        int_vote_num = int_vote_num - 1
+        str_vote_num = str(int_vote_num)
+        table[line_num][3] = str_vote_num
+        data_handler.write_user_story(DATA_FILE_PATH_QUESTION, table)
+        return redirect('/list')
 
 
 if __name__ == '__main__':
