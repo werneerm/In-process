@@ -70,14 +70,17 @@ def question_change(title, message, image, table, id):
     write_user_story('./sample_data/question.csv', table)
 
 def delete_question(id, table, answers):
+    answers_to_delete = []
     for line in table:
         if line[0] == str(id):
             table.remove(line)
-            for i in answers:
-                if line[0] == i[3]:
-                    answers.remove(line)
+    for line in answers:
+        if str(id) == line[3]:
+            answers_to_delete.append(line)
+    for item in answers_to_delete:
+        answers.remove(item)
     write_user_story("./sample_data/question.csv",table)
-    write_user_story("./sample_data/answer.csc", answers)
+    write_user_story("./sample_data/answer.csv", answers)
 
 
 def delete_answer(id, table):

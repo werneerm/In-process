@@ -5,6 +5,7 @@
     <title>Title</title>
 </head>
 <body>
+<h1>{{ question }} ------- {{ message }}</h1>
 <table>
     <tr>
         <th> ID </th>
@@ -28,7 +29,6 @@
             <a href="/questions/{{id}}/delete_answer"> <button>Delete</button></a>
         </td>
     {% endfor %}
-    <a href="/questions/{{id}}/answer-question"> <button>Answer this question</button></a>
     </tr>
 </table>
 <form>
