@@ -1,9 +1,10 @@
 1;1493368154;29;15;"How to make lists in Python?";"I am totally new to this, any hints?";
 2;1493068124;15;11;"Wordpress loading multiple jQuery Versions";"I developed a plugin that uses the jquery booklet plugin (http://builtbywill.com/booklet/#/) this plugin binds a function to $ so I cann call $('.myBook').booklet(), I could easy managing the loading order with wp_enqueue_script so first I load jquery then I load booklet so everything is fine.BUT in my theme i also using jquery via webpack so the loading order is now following:jquery booklet,app.js (bundled file with webpack, including jquery)";"images/image1.png";
 3;1493015432;1364;59;"Drawing canvas with an image picked with Cordova Camera Plugin";"I'm getting an image from device and drawing a canvas with filters using Pixi JS. It works all well using computer to get an image. But when I'm on IOS, it throws errors such as cross origin issue, or that I'm trying to use an unknown format.This is the code I'm using to draw the image (that works on web/desktop but not cordova built ios app)";
-4;421421421521;0;1;yolo;swaf
-5;421421421521;0;1;CYKA BLYAT;TRIPALOVSKI TRIPA TRIPA TRIPALOVSKI
-6;1578477531;0;1;rfhakj;jakfnkilfb
-7;1578500707;0;1;jgftzgcuzv;jhfufzv
-8;1578575478;0;0;helpful host, fully recommended.;test;
-9;1578576733;0;0;baba;testetetsts;
+4;1578585532;0;0;What is the correct JSON content type?;I've been messing around with JSON for some time, just pushing it out as text and it hasn't hurt anybody (that I know of), but I'd like to start doing things properly.;
+5;1578585723;0;0;How do I rename a local Git branch?;How can I rename a local branch which hasn't been pushed to a remote branch?;
+6;1578585983;0;0;What is variable shadowing? (context: variable scope);;
+8;1578586187;0;1;Adding data to pandas dataframe with no header;I am trying to add a row(list of int) to pandas dataframe but i am somehow unable to append it. The thing is the dataframe has no header and everywhere the put data through specifying column names. I dont understand how to do it without header.;
+9;1578586275;0;0;How to expand variables in bash jobs list;;
+10;1578586395;0;0;What is a NullPointerException, and how do I fix it?;What are Null Pointer Exceptions (java.lang.NullPointerException) and what causes them?;
+11;1578586469;0;0;How do I compare strings in Java?;I've been using the == operator in my program to compare all my strings so far. However, I ran into a bug, changed one of them into .equals() instead, and it fixed the bug.;
