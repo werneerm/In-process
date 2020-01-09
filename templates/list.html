@@ -26,6 +26,10 @@
         <td> {{line[5]}} </td>
         <td> {{line[6]}} </td>
         <td><a href='/questions/{{line[0]}}'> Answers</a></td>
+        <td>
+            <a href='/questions/{{line[0]}}/vote_up'> <button>upvote</button></a>
+            <a href='/questions/{{line[0]}}/vote_down'> <button>downvote</button></a>
+        </td>
     </tr>
     {% endfor %}
 </table>

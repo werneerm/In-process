@@ -1,12 +1,7 @@
 id;submission_time;vote_number;question_id;message;image
-2;1493088154;35;0;"Look it up in the Python docs"
-2;submission time;vote number;2;szia;image
-3;submission time;vote number;6;cica;image
-4;submission time;vote number;6;ádám kikapott hsben mert béna;image
-5;submission time;vote number;4;BLYYYYYYYYYYYYAT;image
-6;submission time;vote number;4;ZSAZSAZSAZSAZSAZSA;image
-7;submission time;vote number;4;yolo;image
-8;submission time;vote number;4;jo;image
-9;submission time;vote number;5;szerintem ez ugy butaság;image
-7;submission time;vote number;1;futyi;image
-8;submission time;vote number;1;haló;image
+0;1493398154;4;1;"You need to use brackets: my_list = []"
+1;1493088154;35;1;"Look it up in the Python docs"
+3;submission time;vote number;0;ádám kikapott hsben mert béna;image
+4;1578575145.6692538;3;1;test;
+5;1578575159.9822803;3;1;jkfbadlikhvb;
+6;1578575609.3789005;0;5;gahaha;
