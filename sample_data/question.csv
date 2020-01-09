@@ -4,7 +4,7 @@
 4;1578585532;0;0;What is the correct JSON content type?;I've been messing around with JSON for some time, just pushing it out as text and it hasn't hurt anybody (that I know of), but I'd like to start doing things properly.;
 5;1578585723;0;0;How do I rename a local Git branch?;How can I rename a local branch which hasn't been pushed to a remote branch?;
 6;1578585983;0;0;What is variable shadowing? (context: variable scope);;
-8;1578586187;0;0;Adding data to pandas dataframe with no header;I am trying to add a row(list of int) to pandas dataframe but i am somehow unable to append it. The thing is the dataframe has no header and everywhere the put data through specifying column names. I dont understand how to do it without header.;
+8;1578586187;0;1;Adding data to pandas dataframe with no header;I am trying to add a row(list of int) to pandas dataframe but i am somehow unable to append it. The thing is the dataframe has no header and everywhere the put data through specifying column names. I dont understand how to do it without header.;
 9;1578586275;0;0;How to expand variables in bash jobs list;;
 10;1578586395;0;0;What is a NullPointerException, and how do I fix it?;What are Null Pointer Exceptions (java.lang.NullPointerException) and what causes them?;
 11;1578586469;0;0;How do I compare strings in Java?;I've been using the == operator in my program to compare all my strings so far. However, I ran into a bug, changed one of them into .equals() instead, and it fixed the bug.;
