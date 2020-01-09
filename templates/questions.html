@@ -7,7 +7,7 @@
 </head>
 <body>
 <h4>{{ question }} ------- {{ message }}</h4>
-<table>
+<table id="table">
     <tr>
         <th> ID </th>
         <th> Submission Time </th>
@@ -26,7 +26,7 @@
         <td> <img src ="{{line[5]}}"style="width:104px;height:142px;"> </td>
         <td>
             <div style="font-size:1.5em">
-            <a href='/answers/{{line[0]}}/vote_up'class="button5" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#B22222">upvote</a>
+            <a href='/answers/{{line[0]}}/vote_up'> <button>upvote</button></a>
             <a href='/answers/{{line[0]}}/vote_down'> <button>downvote</button></a>
             <a href="/questions/{{line[0]}}/delete_answer"> <button>Delete</button></a>
             </div>
@@ -37,8 +37,10 @@
 <form>
     <input type="button" onclick="window.location.href = '/list';" value="back"/>
 </form>
-<a href="/questions/{{id}}/answer-question"> <button>Answer this question</button></a>
-<a href="/questions/{{id}}/edit-question"> <button>Edit this question</button></a>
-<a href="/questions/{{id}}/delete-question"><button>Delete This, NOW</button></a>
+<div></div>
+<a href="/questions/{{id}}/answer-question" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Answer this Question</a>
+<a href="/questions/{{id}}/edit-question" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Edit this Question</a>
+<a href="/questions/{{id}}/delete-question" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Delete this Question</a>
+</div>
 </body>
 </html>
