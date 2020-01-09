@@ -3,6 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+body  {
+  background-image: url("paper.gif");
+  background-color: #cccccc;
+}
+</style>
 </head>
 <body>
 <h1>{{ question }} ------- {{ message }}</h1>
@@ -22,11 +28,11 @@
         <td> {{line[2]}} </td>
         <td> {{line[3]}} </td>
         <td> {{line[4]}} </td>
-        <td> {{line[5]}} </td>
+        <td> <img src ="{{line[5]}}"style="width:104px;height:142px;"> </td>
         <td>
             <a href='/answers/{{line[0]}}/vote_up'> <button>upvote</button></a>
             <a href='/answers/{{line[0]}}/vote_down'> <button>downvote</button></a>
-            <a href="/questions/{{id}}/delete_answer"> <button>Delete</button></a>
+            <a href="/questions/{{line[0]}}/delete_answer"> <button>Delete</button></a>
         </td>
     {% endfor %}
     </tr>

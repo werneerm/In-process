@@ -116,12 +116,16 @@ def delete_question(id=None):
 def delete_answer(id=None):
     if request.method == 'POST':
         option = request.form['choose']
+        table = data_handler.get_all_answer()
         if option == 'yes':
-            table = data_handler.get_all_answer()
-            data_handler.delete_answer(id, table)
-            return redirect(url_for('questions_site', id=id))
+            question_id = data_handler.delete_answer(id, table)
+            return redirect(url_for('questions_site', id=question_id))
         elif option == 'no':
-            return redirect(url_for('questions_site', id=id))
+            question_id = ""
+            for line in table:
+                if str(line[0]) == str(id):
+                    question_id = line[3]
+            return redirect(url_for('questions_site', id=question_id))
     if request.method == 'GET':
         return render_template('delete_answer.html', id=id)
 

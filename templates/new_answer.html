@@ -3,15 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Add Answer</title>
+<link rel="stylesheet" type="text/css" href="/style.css">
 </head>
 <body>
+ <div class="col pat-1"></div>
+<div class="col pat-2"></div>
 <form action="/questions/{{id}}/answer-question", method="post">
     <label>Message</label><br>
         <p><textarea name="message" id="message" cols=40 rows=3></textarea></p>
     <p><input type="submit" value="Add Answer"></p>
     <p>Image:</p>
-    <input type='file' name="image" onchange="readURL(this);" />
-    <img id="blah" src="http://placehold.it/180" alt="your image" />
+    <input type='text' name="image" onchange="readURL(this);" />
     <p><input type="submit" value="Save"></p>
     <br><br>
 </form>
