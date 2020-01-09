@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Edit Question</title>
+    <link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 <h1>Edit Page</h1>
@@ -10,7 +11,7 @@
     <p>Question Title:</p>
 	<p><input type="text" name="title" id="title" size="20", value="{{ question }}"></p>
     <p>Message:</p>
-	<p><textarea name="message" id="message" cols=40 rows=3>{{ message }}</textarea></p>
+	<p><textarea name="message" id="message" cols=60 rows=5>{{ message }}</textarea></p>
     <p>Image URL:</p>
     <p><input type="text" name="image" id="image" size="20", value="{{ image }}"></p>
     <p><input type="submit" value="Edit question"></p>
