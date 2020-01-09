@@ -6,7 +6,7 @@
     <link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-<h1>Ask Mate</h1>
+<p id="maintitle">Ask Mate</p>
 <table>
     <tr>
         <th><a href="/list/ID"> ID </a> </th>
@@ -16,6 +16,8 @@
         <th><a href="/list/Title" > Title </a></th>
         <th><a href="/list/Message" >Message</a> </th>
         <th><a href="/list/Image" >Image</a> </th>
+        <th>GoToQuestion</th>
+        <th>Vote</th>
     </tr>
     {% for line in question %}
     <tr>

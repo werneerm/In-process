@@ -6,6 +6,9 @@
     <link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+<form>
+    <input type="button" onclick="window.location.href = '/list';" value="Back to Main Menu"/>
+</form>
 <h1>{{ question }} ------- {{ message }}</h1>
 <table id="table">
     <tr>
@@ -15,6 +18,7 @@
         <th> Question ID </th>
         <th> Message </th>
         <th> Image </th>
+        <th>Vote&Delete</th>
     </tr>
         {% for line in answer %}
     <tr>
@@ -32,9 +36,7 @@
     {% endfor %}
     </tr>
 </table>
-<form>
-    <input type="button" onclick="window.location.href = '/list';" value="back"/>
-</form>
+<br>
 <a href="/questions/{{id}}/answer-question"> <button>Answer this question</button></a>
 <a href="/questions/{{id}}/edit-question"> <button>Edit this question</button></a>
 <a href="/questions/{{id}}/delete-question"><button>Delete This, NOW</button></a>
