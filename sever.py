@@ -43,7 +43,7 @@ def add_answer(id=None):
         table = data_handler.get_all_answer()
         new_answer_list = []
         new_answer_list.append(str(int(table[-1][0]) + 1))
-        new_answer_list.append(str(time.time()))
+        new_answer_list.append(str(int(time.time())))
         new_answer_list.append('0')
         new_answer_list.append(str(id))
         new_answer_list.append(message)
@@ -64,7 +64,7 @@ def add_question():
         table = data_handler.get_all_questions()
         new_quest_list = []
         new_quest_list.append(data_handler.id_generator(table))
-        new_quest_list.append(str(time.time()))
+        new_quest_list.append(str(int(time.time())))
         new_quest_list.append('0')
         new_quest_list.append('0')
         new_quest_list.append(title)
