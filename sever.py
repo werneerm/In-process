@@ -14,8 +14,8 @@ app = Flask(__name__)
 @app.route('/list')
 def route_list():
     question = data_handler.get_all_questions()
-
-    return render_template('list.html', question=question, )
+    data = data_handler.get_all()
+    return render_template('list.html', question=question, data=data)
 
 
 @app.route('/questions/<int:id>', methods=['GET', 'POST'])

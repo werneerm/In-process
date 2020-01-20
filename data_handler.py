@@ -1,5 +1,8 @@
 import sample_data
 import os
+import connection
+import psycopg2
+import psycopg2.extras
 
 DATA_FILE_PATH = "./sample_data/question.csv"
 DATA_HEADER = ['id', 'submisson_time', 'view_number', 'vote_number', 'title', 'message', 'image']
@@ -112,3 +115,10 @@ def sorting_things(sorted_item):
                     table[j] = table[j + 1]
                     table[j + 1] = tempo
         return table
+@connection.connection_handler
+def get_all(cursor):
+    cursor.execute("""
+        SELECT * FROM question
+    """)
+    data = cursor.fetchall()
+    return data
