@@ -22,13 +22,6 @@
 
     {% for line in question %}
     <tr>
-<!--        <td> {{line[0]}} </td>-->
-<!--        <td> {{line[1]}} </td>-->
-<!--        <td> {{line[2]}} </td>-->
-<!--        <td> {{line[3]}} </td>-->
-<!--        <td> {{line[4]}} </td>-->
-<!--        <td> {{line[5]}} </td>-->
-<!--        <td> {{line[6]}} </td>-->
             <td> {{line.id}} </td>
             <td> {{line.submission_time}} </td>
             <td> {{line.view_number}} </td>
@@ -36,7 +29,7 @@
             <td> {{line.title}} </td>
             <td> {{line.message}} </td>
             <td> {{line.image}} </td>
-        <td><a href='/questions/{{line[0]}}'> Answers</a></td>
+        <td><a href='/questions/{{line.id}}'> Answers</a></td>
         <td>
             <a href='/questions/{{line[0]}}/vote_up' class = "buttonvote">upvote <p style="color:#008000"> &#8613;</p></a>
             <a href='/questions/{{line[0]}}/vote_down' class = "buttonvote" >downvote <p style="color:#8B0000"> &#8615;</p></a>
@@ -46,6 +39,5 @@
 </table>
 <br>
 <a href="/add-question" class = "buttonanswer bouncy" >Ask a question</a>
-{{ data }}
 </body>
 </html>

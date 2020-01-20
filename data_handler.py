@@ -6,14 +6,6 @@ import database_common
 
 DATA_FILE_PATH = "./sample_data/question.csv"
 DATA_HEADER = ['id', 'submisson_time', 'view_number', 'vote_number', 'title', 'message', 'image']
-from datetime import datetime
-
-def get_all_questions():
-    with open(DATA_FILE_PATH, "r") as file:
-        lines = file.readlines()
-    table = [element.replace("\n", "").split(";") for element in lines]
-    return table
-
 
 @connection.connection_handler
 def get_all_question_sql(cursor):
@@ -22,27 +14,7 @@ def get_all_question_sql(cursor):
                    """,
                    )
     names = cursor.fetchall()
-
     return names
-
-
-def question_dict(table):
-    question_dict = {i: table[i] for i in range(0, len(table))}
-    return question_dict
-
-
-
-def write_user_story(file_path, data):
-    with open(file_path, "w") as file:
-        for record in data:
-            row = ';'.join(record)
-            file.write(row + "\n")
-
-
-def add_question(added_line):
-    table = get_all_questions()
-    table.append(list(added_line.values()))
-    write_user_story(table)
 
 def get_all_answer():
     with open('./sample_data/answer.csv', "r") as file:
@@ -128,14 +100,28 @@ def sorting_things(sorted_item):
                     table[j + 1] = tempo
         return table
 @connection.connection_handler
-def add_SQL_question(cursor, vote_num, view_num, title, message, image):
-    dt = datetime.now()
-    id = 5
-    cursor.execute("""
-            INSERT INTO question (submission_time,view_number,vote_number,title,message,image)
-            VALUES ( TIMESTAMP %(dt)s, %(vote_num)s, %(view_num)s, %(title)s, %(message)s, %(image)s);
-            """, {'id':id,'dt': dt, 'vote_num': vote_num, 'view_num': view_num, 'title': title, 'message': message, 'image': image})
+def add_SQL_question(cursor, time, vote_num, view_num, title, message, image):
 
+    cursor.execute("""
+            INSERT INTO question (submission_time, view_number, vote_number, title, message, image)
+            VALUES (TIMESTAMP %(time)s, %(vote_num)s, %(view_num)s, %(title)s, %(message)s, %(image)s);
+            """, {'time': time, 'vote_num': vote_num, 'view_num': view_num, 'title': title, 'message': message, 'image': image})
+@connection.connection_handler
+def get_question_SQL(cursor, id):
+    cursor.execute("""
+    SELECT * FROM question
+    WHERE id=%(id)s;
+    """, {'id': id})
+    question = cursor.fetchall()
+    return question
+@connection.connection_handler
+def get_answer_for_question_SQL(cursor, id):
+    cursor.execute("""
+        SELECT * FROM answer
+        WHERE question_id=%(id)s;
+    """, {'id': id})
+    answer = cursor.fetchall()
+    return answer
 @connection.connection_handler
 def delete_SQL_question(cursor,ID):
     cursor.execute("""
@@ -153,4 +139,3 @@ def delete_SQL_answer(cursor,ID):
                             WHERE  question_id=%(ID)s;
                            """,{'ID':ID}
                    )
-
