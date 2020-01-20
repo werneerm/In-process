@@ -73,7 +73,7 @@ def add_question():
         # new_quest_list.join(title + ";")
         # new_quest_list.join(message + ";")
         # new_quest_list.join(image + ";")
-        data_handler.add_SQL_question(time, view_number, vote_number, title, message, image)
+        data_handler.add_SQL_question(view_number, vote_number, title, message, image)
         # data_handler.add_SQL_question(new_quest_list)
         return redirect(url_for('questions_site', id=table[-1][0]))
     return render_template('add-question.html')
