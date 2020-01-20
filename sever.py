@@ -70,8 +70,7 @@ def add_question():
         new_quest_list.append(title)
         new_quest_list.append(message)
         new_quest_list.append(image)
-        table.append(new_quest_list)
-        data_handler.write_user_story(DATA_FILE_PATH_QUESTION, table)
+        data_handler.add_sql_question(new_quest_list)
         return redirect(url_for('questions_site', id=table[-1][0]))
     return render_template('add-question.html')
 

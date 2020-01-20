@@ -1,5 +1,7 @@
 import sample_data
 import os
+import connection
+from psycopg2 import sql
 
 DATA_FILE_PATH = "./sample_data/question.csv"
 DATA_HEADER = ['id', 'submisson_time', 'view_number', 'vote_number', 'title', 'message', 'image']
@@ -112,3 +114,11 @@ def sorting_things(sorted_item):
                     table[j] = table[j + 1]
                     table[j + 1] = tempo
         return table
+
+@connection.connection_handler
+def add_sql_question(cursor,new_question):
+    cursor.execute(
+        sql.SQL("select {col} from {question} ").
+            format(col=sql.Identifier('DATA_HEADER'),
+                   table=sql.Identifier('new_question'))
+    )
