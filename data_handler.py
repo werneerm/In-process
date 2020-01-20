@@ -1,8 +1,8 @@
 import sample_data
 import os
 import connection
-import psycopg2
-import psycopg2.extras
+from psycopg2 import sql
+import database_common
 
 DATA_FILE_PATH = "./sample_data/question.csv"
 DATA_HEADER = ['id', 'submisson_time', 'view_number', 'vote_number', 'title', 'message', 'image']
@@ -13,6 +13,18 @@ def get_all_questions():
         lines = file.readlines()
     table = [element.replace("\n", "").split(";") for element in lines]
     return table
+
+
+@connection.connection_handler
+def get_all_question_sql(cursor):
+    cursor.execute("""
+                    SELECT * FROM question;
+                   """,
+                   )
+    names = cursor.fetchall()
+
+    return names
+
 
 def question_dict(table):
     question_dict = {i: table[i] for i in range(0, len(table))}
@@ -116,9 +128,9 @@ def sorting_things(sorted_item):
                     table[j + 1] = tempo
         return table
 @connection.connection_handler
-def get_all(cursor):
+def add_SQL_question(cursor, time, vote_num, view_num, title, message, image):
+
     cursor.execute("""
-        SELECT * FROM question
-    """)
-    data = cursor.fetchall()
-    return data
+            INSERT INTO question
+            VALUES (TIMESTAMP %(time)s, %(vote_num)s, %(view_num)s, %(title)s, %(message)s, %(image)s);
+            """, {'time': time, 'vote_num': vote_num, 'view_num': view_num, 'title': title, 'message': message, 'image': image})

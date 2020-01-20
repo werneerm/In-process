@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
-
 import data_handler
 import time
+from datetime import datetime
 
 DATA_HEADER = ['id', 'submisson_time', 'view_number', 'vote_number', 'title', 'message', 'image']
 DATA_FILE_PATH_QUESTION = "./sample_data/question.csv"
@@ -14,8 +14,8 @@ app = Flask(__name__)
 @app.route('/list')
 def route_list():
     question = data_handler.get_all_questions()
-    data = data_handler.get_all()
-    return render_template('list.html', question=question, data=data)
+    #data = data_handler.get_all()
+    return render_template('list.html', question=question)
 
 
 @app.route('/questions/<int:id>', methods=['GET', 'POST'])
@@ -48,8 +48,8 @@ def add_answer(id=None):
         new_answer_list.append(str(id))
         new_answer_list.append(message)
         new_answer_list.append(image)
-        table.append(new_answer_list)
-        data_handler.write_user_story(DATA_FILE_PATH_ANSWER, table)
+        #table.append(new_answer_list)
+        #data_handler.write_user_story(DATA_FILE_PATH_ANSWER, table)
         # answer = data_handler.index_finder(id)
         # return render_template('/questions.html',answer=answer,id=id, question=the_question, message=the_message)
         return redirect(url_for('questions_site', id=id))
@@ -62,16 +62,19 @@ def add_question():
         message = request.form['message']
         image = request.form['image']
         table = data_handler.get_all_questions()
-        new_quest_list = []
-        new_quest_list.append(data_handler.id_generator(table))
-        new_quest_list.append(str(int(time.time())))
-        new_quest_list.append('0')
-        new_quest_list.append('0')
-        new_quest_list.append(title)
-        new_quest_list.append(message)
-        new_quest_list.append(image)
-        table.append(new_quest_list)
-        data_handler.write_user_story(DATA_FILE_PATH_QUESTION, table)
+        vote_number = 0
+        view_number = 0
+        time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        # new_quest_list = ""
+        # new_quest_list.join(data_handler.id_generator(table)+ ';')
+        # new_quest_list.join(time.time() + ";")
+        # new_quest_list.join('0'+ ";")
+        # new_quest_list.join('0' + ";")
+        # new_quest_list.join(title + ";")
+        # new_quest_list.join(message + ";")
+        # new_quest_list.join(image + ";")
+        data_handler.add_SQL_question(time, view_number, vote_number, title, message, image)
+        # data_handler.add_SQL_question(new_quest_list)
         return redirect(url_for('questions_site', id=table[-1][0]))
     return render_template('add-question.html')
 
