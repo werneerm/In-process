@@ -132,6 +132,25 @@ def add_SQL_question(cursor, vote_num, view_num, title, message, image):
     dt = datetime.now()
     id = 5
     cursor.execute("""
-            INSERT INTO question
-            VALUES ( %(id)s,TIMESTAMP %(dt)s, %(vote_num)s, %(view_num)s, %(title)s, %(message)s, %(image)s);
+            INSERT INTO question (submission_time,view_number,vote_number,title,message,image)
+            VALUES ( TIMESTAMP %(dt)s, %(vote_num)s, %(view_num)s, %(title)s, %(message)s, %(image)s);
             """, {'id':id,'dt': dt, 'vote_num': vote_num, 'view_num': view_num, 'title': title, 'message': message, 'image': image})
+
+@connection.connection_handler
+def delete_SQL_question(cursor,ID):
+    cursor.execute("""
+            DELETE FROM question 
+            WHERE  id=%(ID)s;
+            """,{'ID':ID}
+                   )
+
+
+
+@connection.connection_handler
+def delete_SQL_answer(cursor,ID):
+    cursor.execute("""
+                            DELETE FROM answer 
+                            WHERE  question_id=%(ID)s;
+                           """,{'ID':ID}
+                   )
+

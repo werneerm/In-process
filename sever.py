@@ -106,7 +106,7 @@ def delete_question(id=None):
             # for i in answers:
             #     if id == i[3]:
 
-            data_handler.delete_question(id, table, answers)
+            data_handler.delete_SQL_question(id)
             return redirect(url_for('route_list'))
         elif option == 'no':
             return redirect(url_for('questions_site', id=id))
