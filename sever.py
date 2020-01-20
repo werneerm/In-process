@@ -63,15 +63,19 @@ def add_question():
         message = request.form['message']
         image = request.form['image']
         table = data_handler.get_all_questions()
-        new_quest_list = []
-        new_quest_list.append(data_handler.id_generator(table))
-        new_quest_list.append(str(int(time.time())))
-        new_quest_list.append('0')
-        new_quest_list.append('0')
-        new_quest_list.append(title)
-        new_quest_list.append(message)
-        new_quest_list.append(image)
-        data_handler.add_sql_question(new_quest_list)
+        vote_number = 0
+        view_number = 0
+        submission_time = 0
+        # id = 10
+        # new_quest_list = []
+        # new_quest_list.append(data_handler.id_generator(table))
+        # new_quest_list.append(str(int(time.time())))
+        # new_quest_list.append('0')
+        # new_quest_list.append('0')
+        # new_quest_list.append(title)
+        # new_quest_list.append(message)
+        # new_quest_list.append(image)
+        data_handler.add_sql_question(id=id, title=title, message=message, image=image, submission_time=submission_time, view_number=view_number, vote_number=vote_number))
         return redirect(url_for('questions_site', id=table[-1][0]))
     return render_template('add-question.html')
 

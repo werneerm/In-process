@@ -129,18 +129,18 @@ def sorting_things(sorted_item):
         return table
 
 @connection.connection_handler
-def add_sql_question(cursor, new_question):
+def add_sql_question(cursor, id, submission_time, view_number, vote_number, title, message, image):
     # cursor.execute(
-    #     sql.SQL("select {col} from {question} ").
-    #         format(col=sql.Identifier('DATA_HEADER'),
-    #                table=sql.Identifier('new_question'))
-    # )
+    #     sql.SQL("select {col} from {table} ").
+    #         format(col=sql.Identifier('message'),
+    #                table=sql.Identifier('question'))
+    )
 
     cursor.execute("""
                     INSERT INTO question (id, submission_time, view_number, vote_number, title, message, image)
-                    VALUES (new_question[0], new_question[1], new_question[2], new_question[3], new_question[4], new_question[5], new_question[6]);
+                    VALUES %(id)s), %(submission_time)s), %(view_number)s), %(vote_number)s), %(title)s), %(message)s), %(image)s);
                    """,
-                {'new_question': new_question})
+                {'id': id})
     names = cursor.fetchall()
 
     return names
