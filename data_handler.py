@@ -111,6 +111,14 @@ def get_question_SQL(cursor, id):
     cursor.execute("""
     SELECT * FROM question
     WHERE id=%(id)s;
-    """)
+    """, {'id': id})
     question = cursor.fetchall()
     return question
+@connection.connection_handler
+def get_answer_for_question_SQL(cursor, id):
+    cursor.execute("""
+        SELECT * FROM answer
+        WHERE question_id=%(id)s;
+    """, {'id': id})
+    answer = cursor.fetchall()
+    return answer

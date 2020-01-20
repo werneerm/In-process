@@ -27,8 +27,9 @@ def questions_site(id=None):
 
     if id is not None:
         #the_question, the_message, the_image = data_handler.question_finder(id)
-        answer = data_handler.get_question_SQL(id)
-        return render_template('/questions.html', answer=answer, id=id)
+        question = data_handler.get_question_SQL(id)
+        answer = data_handler.get_answer_for_question_SQL(id)
+        return render_template('/questions.html', question=question, id=id, answer=answer)
 
 
 @app.route('/questions/<int:id>', methods=['GET', 'POST'])
