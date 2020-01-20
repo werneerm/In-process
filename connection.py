@@ -1,10 +1,14 @@
+import os
+import psycopg2
+import psycopg2.extras
+
 def get_connection_string():
     # setup connection string
     # to do this, please define these environment variables first
-    user_name = 'mark'
-    password = ''
+    user_name = 'postgres'
+    password = 'Gz1996828'
     host = 'localhost'
-    database_name = 'sql_assigment'
+    database_name = 'askMate2'
 
     env_variables_defined = user_name and password and host and database_name
 

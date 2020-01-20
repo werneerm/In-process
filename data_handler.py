@@ -1,5 +1,7 @@
 import sample_data
 import os
+import connection
+from psycopg2 import sql
 import database_common
 
 DATA_FILE_PATH = "./sample_data/question.csv"
@@ -13,7 +15,7 @@ def get_all_questions():
     return table
 
 
-@database_common.connection_handler
+@connection.connection_handler
 def get_all_question_sql(cursor):
     cursor.execute("""
                     SELECT * FROM question;
@@ -125,3 +127,21 @@ def sorting_things(sorted_item):
                     table[j] = table[j + 1]
                     table[j + 1] = tempo
         return table
+
+@connection.connection_handler
+def add_sql_question(cursor, new_question):
+    # cursor.execute(
+    #     sql.SQL("select {col} from {question} ").
+    #         format(col=sql.Identifier('DATA_HEADER'),
+    #                table=sql.Identifier('new_question'))
+    # )
+
+    cursor.execute("""
+                    INSERT INTO question (id, submission_time, view_number, vote_number, title, message, image)
+                    VALUES (new_question[0], new_question[1], new_question[2], new_question[3], new_question[4], new_question[5], new_question[6]);
+                   """,
+                {'new_question': new_question})
+    names = cursor.fetchall()
+
+    return names
+
