@@ -13,8 +13,7 @@ app = Flask(__name__)
 @app.route('/')
 @app.route('/list')
 def route_list():
-    question = data_handler.get_all_questions()
-    #data = data_handler.get_all()
+    question = data_handler.get_all_question_sql()
     return render_template('list.html', question=question)
 
 
@@ -27,9 +26,9 @@ def questions_site(id=None):
         return redirect("/")
 
     if id is not None:
-        the_question, the_message, the_image = data_handler.question_finder(id)
-        answer = data_handler.index_finder(id)
-        return render_template('/questions.html', answer=answer, id=id, question=the_question, message=the_message)
+        #the_question, the_message, the_image = data_handler.question_finder(id)
+        answer = data_handler.get_question_SQL(id)
+        return render_template('/questions.html', answer=answer, id=id)
 
 
 @app.route('/questions/<int:id>', methods=['GET', 'POST'])

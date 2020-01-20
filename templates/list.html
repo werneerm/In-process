@@ -22,13 +22,6 @@
 
     {% for line in question %}
     <tr>
-<!--        <td> {{line[0]}} </td>-->
-<!--        <td> {{line[1]}} </td>-->
-<!--        <td> {{line[2]}} </td>-->
-<!--        <td> {{line[3]}} </td>-->
-<!--        <td> {{line[4]}} </td>-->
-<!--        <td> {{line[5]}} </td>-->
-<!--        <td> {{line[6]}} </td>-->
             <td> {{line.id}} </td>
             <td> {{line.submission_time}} </td>
             <td> {{line.view_number}} </td>
@@ -46,6 +39,5 @@
 </table>
 <br>
 <a href="/add-question" class = "buttonanswer bouncy" >Ask a question</a>
-{{ data }}
 </body>
 </html>
