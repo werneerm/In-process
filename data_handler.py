@@ -6,7 +6,7 @@ import database_common
 
 DATA_FILE_PATH = "./sample_data/question.csv"
 DATA_HEADER = ['id', 'submisson_time', 'view_number', 'vote_number', 'title', 'message', 'image']
-
+from datetime import datetime
 
 def get_all_questions():
     with open(DATA_FILE_PATH, "r") as file:
@@ -127,7 +127,6 @@ def sorting_things(sorted_item):
                     table[j] = table[j + 1]
                     table[j + 1] = tempo
         return table
-
 @connection.connection_handler
 def add_sql_question(cursor, id, submission_time, view_number, vote_number, title, message, image):
     # cursor.execute(
@@ -136,6 +135,9 @@ def add_sql_question(cursor, id, submission_time, view_number, vote_number, titl
     #                table=sql.Identifier('question'))
     )
 
+def add_SQL_question(cursor, vote_num, view_num, title, message, image):
+    dt = datetime.now()
+    id = 5
     cursor.execute("""
                     INSERT INTO question (id, submission_time, view_number, vote_number, title, message, image)
                     VALUES %(id)s), %(submission_time)s), %(view_number)s), %(vote_number)s), %(title)s), %(message)s), %(image)s);
@@ -145,3 +147,7 @@ def add_sql_question(cursor, id, submission_time, view_number, vote_number, titl
 
     return names
 
+
+            INSERT INTO question
+            VALUES ( %(id)s,TIMESTAMP %(dt)s, %(vote_num)s, %(view_num)s, %(title)s, %(message)s, %(image)s);
+            """, {'id':id,'dt': dt, 'vote_num': vote_num, 'view_num': view_num, 'title': title, 'message': message, 'image': image})

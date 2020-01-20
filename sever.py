@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
-
 import data_handler
 import time
+from datetime import datetime
 
 DATA_HEADER = ['id', 'submisson_time', 'view_number', 'vote_number', 'title', 'message', 'image']
 DATA_FILE_PATH_QUESTION = "./sample_data/question.csv"
@@ -13,10 +13,9 @@ app = Flask(__name__)
 @app.route('/')
 @app.route('/list')
 def route_list():
-    # question = data_handler.get_all_questions()
-    question = data_handler.get_all_question_sql()
-
-    return render_template('list.html', question=question, )
+    question = data_handler.get_all_questions_sql()
+    #data = data_handler.get_all()
+    return render_template('list.html', question=question)
 
 
 @app.route('/questions/<int:id>', methods=['GET', 'POST'])
@@ -49,8 +48,8 @@ def add_answer(id=None):
         new_answer_list.append(str(id))
         new_answer_list.append(message)
         new_answer_list.append(image)
-        table.append(new_answer_list)
-        data_handler.write_user_story(DATA_FILE_PATH_ANSWER, table)
+        #table.append(new_answer_list)
+        #data_handler.write_user_story(DATA_FILE_PATH_ANSWER, table)
         # answer = data_handler.index_finder(id)
         # return render_template('/questions.html',answer=answer,id=id, question=the_question, message=the_message)
         return redirect(url_for('questions_site', id=id))
@@ -65,17 +64,17 @@ def add_question():
         table = data_handler.get_all_questions()
         vote_number = 0
         view_number = 0
-        submission_time = 0
-        # id = 10
-        # new_quest_list = []
-        # new_quest_list.append(data_handler.id_generator(table))
-        # new_quest_list.append(str(int(time.time())))
-        # new_quest_list.append('0')
-        # new_quest_list.append('0')
-        # new_quest_list.append(title)
-        # new_quest_list.append(message)
-        # new_quest_list.append(image)
-        data_handler.add_sql_question(id=id, title=title, message=message, image=image, submission_time=submission_time, view_number=view_number, vote_number=vote_number))
+        time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        # new_quest_list = ""
+        # new_quest_list.join(data_handler.id_generator(table)+ ';')
+        # new_quest_list.join(time.time() + ";")
+        # new_quest_list.join('0'+ ";")
+        # new_quest_list.join('0' + ";")
+        # new_quest_list.join(title + ";")
+        # new_quest_list.join(message + ";")
+        # new_quest_list.join(image + ";")
+        data_handler.add_SQL_question(view_number, vote_number, title, message, image)
+        # data_handler.add_SQL_question(new_quest_list)
         return redirect(url_for('questions_site', id=table[-1][0]))
     return render_template('add-question.html')
 
