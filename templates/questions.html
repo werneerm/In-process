@@ -9,7 +9,9 @@
 <form>
     <input class = "buttonvote" type="button" onclick="window.location.href = '/list';" value="Back to Main Menu"/>
 </form>
-
+{% for item in question %}
+{{ item.title }} ----- {{ item.message }}
+{% endfor %}
 <table id="table">
     <tr>
         <th> ID </th>
@@ -32,7 +34,7 @@
         <td>
             <a href='/answers/{{line[0]}}/vote_up' class = "buttonvote">upvote <p style="color:	#008000"> &#8613;</p></a>
             <a href='/answers/{{line[0]}}/vote_down' class = "buttonvote" >downvote <p style="color:#8B0000"> &#8615;</p></a>
-            <a href="/questions/{{line[0]}}/delete_answer" class = "buttonvote" >delete answer</a>
+            <a href="/questions/{{line[0]}}/delete_answer" class = "buttonvote" >Delete answer</a>
         </td>
     {% endfor %}
     </tr>
