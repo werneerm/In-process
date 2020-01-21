@@ -32,8 +32,8 @@
         <td><img src ="{{line.image}}"style="width:104px;height:142px;"></td>
 
         <td>
-            <a href='/answers/{{line[0]}}/vote_up' class = "buttonvote">upvote <p style="color:	#008000"> &#8613;</p></a>
-            <a href='/answers/{{line[0]}}/vote_down' class = "buttonvote" >downvote <p style="color:#8B0000"> &#8615;</p></a>
+            <a href='/answers/{{line.id}}/vote_up' class = "buttonvote">upvote <p style="color:	#008000"> &#8613;</p></a>
+            <a href='/answers/{{line.id}}/vote_down' class = "buttonvote" >downvote <p style="color:#8B0000"> &#8615;</p></a>
             <a href="/questions/{{line[0]}}/delete_answer" class = "buttonvote" >Delete answer</a>
         </td>
     {% endfor %}

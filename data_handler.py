@@ -3,7 +3,6 @@ import os
 import connection
 from psycopg2 import sql
 import database_common
-import psycopg2
 
 DATA_FILE_PATH = "./sample_data/question.csv"
 DATA_HEADER = ['id', 'submisson_time', 'view_number', 'vote_number', 'title', 'message', 'image']
@@ -51,11 +50,11 @@ def delete_question(id, table, answers):
             answers_to_delete.append(line)
     for item in answers_to_delete:
         answers.remove(item)
-    write_user_story("./sample_data/question.csv", table)
+    write_user_story("./sample_data/question.csv",table)
     write_user_story("./sample_data/answer.csv", answers)
 
 
-def delete_answer(id, table, ):
+def delete_answer(id, table,):
     question_id = ""
     for line in table:
         if str(line[0]) == str(id):
@@ -66,7 +65,7 @@ def delete_answer(id, table, ):
 
 
 def sorting_things(sorted_item):
-    table = get_all_questions()
+    table =  get_all_questions()
     index = DATA_HEADER.index(sorted_item)
     l = len(table)
     if sorted_item == 'message' or sorted_item == 'title':
@@ -89,6 +88,7 @@ def sorting_things(sorted_item):
 
 @connection.connection_handler
 def add_SQL_question(cursor, time, vote_num, view_num, title, message, image):
+
     cursor.execute("""
             INSERT INTO question (submission_time, view_number, vote_number, title, message, image)
             VALUES (TIMESTAMP %(time)s, %(vote_num)s, %(view_num)s, %(title)s, %(message)s, %(image)s);
@@ -182,8 +182,43 @@ def delete_SQL_question(cursor, ID):
 def delete_SQL_answer(cursor, ID):
     cursor.execute("""
                             DELETE FROM answer 
-                            WHERE  question_id=%(ID)s;
+                            WHERE  ID=%(ID)s;
                            """, {'ID': ID}
+                   )
+
+@connection.connection_handler
+def upvote_questions_SQL(cursor,ID):
+    cursor.execute("""
+                            UPDATE question
+                            SET vote_number = vote_number + 1
+                            WHERE id=%(ID)s;
+                              """, {'ID': ID}
+                   )
+@connection.connection_handler
+def upvote_answers_SQL(cursor,ID):
+    cursor.execute("""
+                            UPDATE answer
+                            SET vote_number = vote_number + 1
+                            WHERE id=%(ID)s;
+                              """, {'ID': ID}
+                   )
+
+@connection.connection_handler
+def downvote_questions_SQL(cursor,ID):
+    cursor.execute("""
+                    UPDATE question
+                    SET vote_number = vote_number - 1
+                    WHERE id=%(ID)s;
+                              """, {'ID': ID}
+                   )
+
+@connection.connection_handler
+def downvote_answers_SQL(cursor,ID):
+    cursor.execute("""
+                            UPDATE answer
+                            SET vote_number = vote_number - 1
+                            WHERE id=%(ID)s;
+                              """, {'ID': ID}
                    )
 
 
