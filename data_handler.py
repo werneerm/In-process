@@ -155,11 +155,44 @@ def delete_SQL_question(cursor,ID):
                    )
 
 
-
 @connection.connection_handler
 def delete_SQL_answer(cursor,ID):
     cursor.execute("""
                             DELETE FROM answer 
-                            WHERE  question_id=%(ID)s;
+                            WHERE  id=%(ID)s;
                            """,{'ID':ID}
+                   )
+@connection.connection_handler
+def upvote_questions_SQL(cursor,ID):
+    cursor.execute("""
+                            UPDATE question 
+                            SET vote_number = vote_number + 1
+                            WHERE id=%(ID)s;
+                              """, {'ID': ID}
+                   )
+@connection.connection_handler
+def upvote_answers_SQL(cursor,ID):
+    cursor.execute("""
+                            UPDATE answer 
+                            SET vote_number = vote_number + 1
+                            WHERE id=%(ID)s;
+                              """, {'ID': ID}
+                   )
+
+@connection.connection_handler
+def downvote_questions_SQL(cursor,ID):
+    cursor.execute("""
+                            UPDATE question 
+                            SET vote_number = vote_number - 1
+                            WHERE id=%(ID)s;
+                              """, {'ID': ID}
+                   )
+
+@connection.connection_handler
+def downvote_answers_SQL(cursor,ID):
+    cursor.execute("""
+                            UPDATE answer 
+                            SET vote_number = vote_number - 1
+                            WHERE id=%(ID)s;
+                              """, {'ID': ID}
                    )
