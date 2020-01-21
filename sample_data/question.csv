@@ -8,4 +8,4 @@
 8;1578586275;0;0;How to expand variables in bash jobs list;;
 9;1578586395;0;0;What is a NullPointerException, and how do I fix it?;What are Null Pointer Exceptions (java.lang.NullPointerException) and what causes them?;
 10;1578586469;0;0;How do I compare strings in Java?;I've been using the == operator in my program to compare all my strings so far. However, I ran into a bug, changed one of them into .equals() instead, and it fixed the bug.;
-11;1578647872;0;0;;;
+11;1578647872;0;1;;;

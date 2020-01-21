@@ -146,3 +146,20 @@ def ID_from_SQL(cursor, title): #szar
     """, {'title': title})
     ID = cursor.fetchone()
     return ID
+@connection.connection_handler
+def delete_SQL_question(cursor,ID):
+    cursor.execute("""
+            DELETE FROM question 
+            WHERE  id=%(ID)s;
+            """,{'ID':ID}
+                   )
+
+
+
+@connection.connection_handler
+def delete_SQL_answer(cursor,ID):
+    cursor.execute("""
+                            DELETE FROM answer 
+                            WHERE  question_id=%(ID)s;
+                           """,{'ID':ID}
+                   )
