@@ -5,6 +5,9 @@
     <title>Edit Comment</title>
 </head>
 <body>
+<div>
+    <img style="display:block; position: relative; margin:auto" src="static/library_logo.png" />
+</div>
 <h1>Edit Comment</h1>
 {% for item in comment %}
 <form action="/comment/{{ item.id }}/edit-comment", method="post">
