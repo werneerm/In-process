@@ -91,55 +91,117 @@ def delete_question(id=None):
 @app.route('/questions/<int:id>/a', methods=['GET', 'POST'])
 @app.route('/questions/<int:id>/delete_answer', methods=['GET', 'POST'])
 def delete_answer(id=None):
-    data_handler.delete_SQL_answer(id)
+    data_handler.delete_SQL_answer(id)  # szarrrrrrrrrrrrrrrrrrrrrr
     return redirect(url_for('questions_site', id=id))
+    # option = request.form['choose']
+    # if option == 'yes':
+    #     data_handler.delete_SQL_answer(id)
+    #     return redirect(url_for('questions_site', id=id))
+    # elif option == 'no':
+    #     question_id = ""
+    #     for line in table:
+    #         if str(line[0]) == str(id):
+    #             question_id = line[3]
+    #     return redirect(url_for('questions_site', id=question_id))
+    # if request.method == 'GET':
+    #     return render_template('delete_answer.html', id=id)
 
-@app.route('/list/ID', methods=['GET'])
-@app.route('/list/SubmissionTime', methods=['GET'])
-@app.route('/list/ViewNumber', methods=['GET'])
-@app.route('/list/VoteNumber', methods=['GET'])
-@app.route('/list/Title', methods=['GET'])
-@app.route('/list/Message', methods=['GET'])
-def sorting():
-    if request.path == '/list/ID':
-        question = data_handler.sorting_things('id')
-        return render_template('list.html', question=question)
-    elif request.path == '/list/SubmissionTime':
-        question = data_handler.sorting_things('submisson_time')
-        return render_template('list.html', question=question)
-    elif request.path == '/list/ViewNumber':
-        question = data_handler.sorting_things('view_number')
-        return render_template('list.html', question=question)
-    elif request.path == '/list/VoteNumber':
-        question = data_handler.sorting_things('vote_number')
-        return render_template('list.html', question=question)
-    elif request.path == '/list/Title':
-        question = data_handler.sorting_things('title')
-        return render_template('list.html', question=question)
-    elif request.path == '/list/Message':
-        question = data_handler.sorting_things('message')
-        return render_template('list.html', question=question)
+
+@app.route('/list/<sort>', methods=['GET'])
+def sorting(sort):
+    request.path == '/list/<sort>'
+    question = data_handler.sorting_sql(sort)
+    return render_template('list.html', question=question)
+
+
+@app.route('/list/<dsort>/desc', methods=['GET', 'POST'])
+def sorting_desc(dsort):
+    request.path == '/list/<sort>/desc'
+    question = data_handler.sorting_sql_desc(dsort)
+    return render_template('list.html', question=question)
+
 
 
 @app.route('/answers/<int:id>/vote_up')
 def ans_upvote(id=None):
     data_handler.upvote_answers_SQL(id)
+    # table = data_handler.get_all_answer()
+    # if id is not None:
+    #     question_id = ""
+    #     vote_num = ""
+    #     line_num = None
+    #     for idx, line in enumerate(table):
+    #         if str(id) == line[0]:
+    #             question_id = line[3]
+    #             vote_num = line[2]
+    #             line_num = idx
+    #
+    #     int_vote_num = int(vote_num)
+    #     int_vote_num += 1
+    #     str_vote_num = str(int_vote_num)
+    #     table[line_num][2] = str_vote_num
+    #     data_handler.write_user_story(DATA_FILE_PATH_ANSWER, table)
     return redirect(url_for('questions_site', id=id))
 
 
 @app.route('/answers/<int:id>/vote_down')
 def ans_downvote(id=None):
     data_handler.downvote_answers_SQL(id)
+    # answers = data_handler.get_all_answer()
+    # if id is not None:
+    #     question_id = ""
+    #     vote_num = ""
+    #     line_num = None
+    #     for idx, line in enumerate(answers):
+    #         if str(id) == line[0]:
+    #             question_id = line[3]
+    #             vote_num = line[2]
+    #             line_num = idx
+    #
+    #     int_vote_num = int(vote_num)
+    #     int_vote_num = int_vote_num - 1
+    #     str_vote_num = str(int_vote_num)
+    #     answers[line_num][2] = str_vote_num
+    #     data_handler.write_user_story(DATA_FILE_PATH_ANSWER, answers)
+    #     return redirect(f'/questions/{question_id}')
     return redirect(url_for('questions_site', id=id))
 
 @app.route('/questions/<int:id>/vote_up')
 def ques_upvote(id=None):
     data_handler.upvote_questions_SQL(id)
+    # table = data_handler.get_all_questions()
+    # if id is not None:
+    #     vote_num = ""
+    #     line_num = None
+    #     for idx, line in enumerate(table):
+    #         if str(id) == line[0]:
+    #             vote_num = line[3]
+    #             line_num = idx
+    #     int_vote_num = int(vote_num)
+    #     int_vote_num += 1
+    #     str_vote_num = str(int_vote_num)
+    #     table[line_num][3] = str_vote_num
+    #     data_handler.write_user_story(DATA_FILE_PATH_QUESTION, table)
+    #     return redirect('/list')
     return redirect(url_for('questions_site', id=id))
+
 
 @app.route('/questions/<int:id>/vote_down')
 def ques_down(id=None):
     data_handler.downvote_questions_SQL(id)
+    # table = data_handler.get_all_questions()
+    # if id is not None:
+    #     vote_num = ""
+    #     line_num = None
+    #     for idx, line in enumerate(table):
+    #         if str(id) == line[0]:
+    #             vote_num = line[3]
+    #             line_num = idx
+    #     int_vote_num = int(vote_num)
+    #     int_vote_num = int_vote_num - 1
+    #     str_vote_num = str(int_vote_num)
+    #     table[line_num][3] = str_vote_num
+    #     data_handler.write_user_story(DATA_FILE_PATH_QUESTION, table)
     return redirect('/list')
 
 @app.route('/search')
