@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Comment</title>
+</head>
+<body>
+<h1>Edit Comment</h1>
+{% for item in comment %}
+<form action="/comment/{{ item.id }}/edit-comment", method="post">
+    <p>Message:</p>
+	<p><textarea name="message" id="message" cols=60 rows=5>{{ item.message }}</textarea></p>
+    <p><input type="submit" value="Edit Comment"></p>
+{% endfor %}
+</form>
+</body>
+</html>
