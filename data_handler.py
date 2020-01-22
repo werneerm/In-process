@@ -16,6 +16,16 @@ def get_all_question_sql(cursor):
     names = cursor.fetchall()
     return names
 
+@connection.connection_handler
+def get_top_question_sql(cursor):
+    cursor.execute("""
+                    SELECT * FROM question LIMIT 3;
+                   """,
+                   )
+    names = cursor.fetchall()
+    return names
+
+
 def index_finder(ID):
     answer = get_all_answer()
     final_answer = []
@@ -59,6 +69,7 @@ def delete_answer(id, table,):
     write_user_story("./sample_data/answer.csv", table)
     return question_id
 
+
 def sorting_things(sorted_item):
     table =  get_all_questions()
     index = DATA_HEADER.index(sorted_item)
@@ -79,13 +90,18 @@ def sorting_things(sorted_item):
                     table[j] = table[j + 1]
                     table[j + 1] = tempo
         return table
+
+
 @connection.connection_handler
 def add_SQL_question(cursor, time, vote_num, view_num, title, message, image):
 
     cursor.execute("""
             INSERT INTO question (submission_time, view_number, vote_number, title, message, image)
             VALUES (TIMESTAMP %(time)s, %(vote_num)s, %(view_num)s, %(title)s, %(message)s, %(image)s);
-            """, {'time': time, 'vote_num': vote_num, 'view_num': view_num, 'title': title, 'message': message, 'image': image})
+            """, {'time': time, 'vote_num': vote_num, 'view_num': view_num, 'title': title, 'message': message,
+                  'image': image})
+
+
 @connection.connection_handler
 def get_question_SQL(cursor, id):
     cursor.execute("""
@@ -94,6 +110,8 @@ def get_question_SQL(cursor, id):
     """, {'id': id})
     question = cursor.fetchall()
     return question
+
+
 @connection.connection_handler
 def get_answer_for_question_SQL(cursor, id):
     cursor.execute("""
@@ -103,6 +121,7 @@ def get_answer_for_question_SQL(cursor, id):
     answer = cursor.fetchall()
     return answer
 
+
 @connection.connection_handler
 def question_update_SQL(cursor, title, message, image, id):
     cursor.execute("""
@@ -110,6 +129,8 @@ def question_update_SQL(cursor, title, message, image, id):
             SET title=%(title)s, message=%(message)s, image=%(image)s
             WHERE id=%(id)s
     """, {'id': id, 'title': title, 'message': message, 'image': image})
+
+
 @connection.connection_handler
 def question_finder_SQL(cursor, id):
     cursor.execute("""
@@ -118,6 +139,8 @@ def question_finder_SQL(cursor, id):
     """, {'id': id})
     row = cursor.fetchall()
     return row
+
+
 @connection.connection_handler
 def add_answer_SQL(cursor, time, vote_num, question_id, message, image):
     cursor.execute("""
@@ -125,30 +148,25 @@ def add_answer_SQL(cursor, time, vote_num, question_id, message, image):
             VALUES (TIMESTAMP %(time)s, %(vote_num)s, %(question_id)s, %(message)s, %(image)s);
             """, {'time': time, 'vote_num': vote_num, 'question_id': question_id, 'message': message, 'image': image})
 
+
 @connection.connection_handler
-def delete_SQL_question(cursor,ID):
+def delete_SQL_question(cursor, ID):
     cursor.execute("""
             DELETE FROM question 
             WHERE  id=%(ID)s;
-            """,{'ID':ID})
+            """, {'ID': ID})
+
 
 @connection.connection_handler
-def delete_SQL_answer(cursor,ID):
+def delete_SQL_answer(cursor, ID):
     cursor.execute("""
                 DELETE FROM answer 
                 WHERE  question_id=%(ID)s;
-                """,{'ID':ID})
-@connection.connection_handler
-def ID_from_answer(cursor, id): #szar
-    cursor.execute("""
-        SELECT question_id FROM answer
-        WHERE id=%(id)s
-    """, {'id': id})
-    ID = cursor.fetchall()
-    return ID
+                """, {'ID': ID})
+
 
 @connection.connection_handler
-def ID_from_question(cursor, title): #szar
+def ID_from_SQL(cursor, title):  # szar
     cursor.execute("""
         SELECT id FROM question
         WHERE title=%(title)s
@@ -156,8 +174,10 @@ def ID_from_question(cursor, title): #szar
     ID = cursor.fetchall()
     return ID
 
+
+
 @connection.connection_handler
-def delete_SQL_question(cursor,ID):
+def delete_SQL_question(cursor, ID):
     cursor.execute("""
             DELETE FROM question 
             WHERE  id=%(ID)s;
@@ -170,10 +190,118 @@ def delete_SQL_question_and_its_answer(cursor,ID):
             WHERE question_id=%(ID)s;
             """,{'ID':ID})
 
+
 @connection.connection_handler
-def delete_SQL_answer(cursor,ID):
+def delete_SQL_answer(cursor, ID):
     cursor.execute("""
                             DELETE FROM answer 
+                            WHERE  ID=%(ID)s;
+                           """, {'ID': ID}
+                   )
+
+@connection.connection_handler
+def upvote_questions_SQL(cursor,ID):
+    cursor.execute("""
+                            UPDATE question
+                            SET vote_number = vote_number + 1
+                            WHERE id=%(ID)s;
+                              """, {'ID': ID}
+                   )
+@connection.connection_handler
+def upvote_answers_SQL(cursor,ID):
+    cursor.execute("""
+                            UPDATE answer
+                            SET vote_number = vote_number + 1
+                            WHERE id=%(ID)s;
+                              """, {'ID': ID}
+                   )
+
+@connection.connection_handler
+def downvote_questions_SQL(cursor,ID):
+    cursor.execute("""
+                    UPDATE question
+                    SET vote_number = vote_number - 1
+                    WHERE id=%(ID)s;
+                              """, {'ID': ID}
+                   )
+
+@connection.connection_handler
+def downvote_answers_SQL(cursor,ID):
+    cursor.execute("""
+                            UPDATE answer
+                            SET vote_number = vote_number - 1
+                            WHERE id=%(ID)s;
+                              """, {'ID': ID}
+                   )
+
+
+@connection.connection_handler
+def sorting_sql(cursor, sort):
+    cursor.execute(
+        sql.SQL("""select * from question ORDER BY {} """)
+            .format(sql.Identifier(sort)),
+        )
+    names = cursor.fetchall()
+    return names
+
+
+@connection.connection_handler
+def sorting_sql_desc(cursor, dsort):
+    cursor.execute(
+        sql.SQL("""select * from question ORDER BY {} DESC""")
+            .format(sql.Identifier(dsort)),
+        )
+    names = cursor.fetchall()
+    return names
+
+
+
+
+@connection.connection_handler
+def search_title(cursor, question):
+    cursor.execute("""
+                            SELECT * from question
+                            WHERE title ILIKE %(searched_word)s;
+                              """,
+                   {'searched_word': ("%" + question + "%")}
+                   )
+    result = cursor.fetchall()
+    return result
+
+
+@connection.connection_handler
+def search_message(cursor, question):
+    cursor.execute("""
+                            SELECT * from question
+                            WHERE message ILIKE %(searched_word)s;
+                              """,
+                   {'searched_word': ("%" + question + "%")}
+                   )
+    result = cursor.fetchall()
+    return result
+
+
+# @connection.connection_handler
+# def answer_search_title(cursor, question):
+#     cursor.execute("""
+#                                 SELECT * from answer
+#                                 WHERE title ILIKE %(searched_word)s;
+#                                   """,
+#                    {'searched_word': ("%" + question + "%")}
+#                    )
+#     result = cursor.fetchall()
+#     return result
+
+@connection.connection_handler
+def answer_search_message(cursor,question):
+    cursor.execute("""
+                                SELECT * from answer
+                                WHERE message ILIKE %(searched_word)s;
+                                  """,
+                   {'searched_word': ("%" + question + "%")}
+                   )
+    result = cursor.fetchall()
+    return result
                             WHERE question_id=%(ID)s;
                            """,{'ID':ID})
 @connection.connection_handler

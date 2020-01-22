@@ -52,11 +52,7 @@ def add_question():
         view_number = 0
         time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         data_handler.add_SQL_question(time, view_number, vote_number, title, message, image)
-        question_id = data_handler.ID_from_question(title)
-        ID_Q = 0
-        for item in question_id:
-            ID_Q = item
-        return redirect(url_for('questions_site', id=ID_Q))
+        return redirect(url_for('route_list'))
     return render_template('add-question.html')
 
 
@@ -95,31 +91,19 @@ def delete_answer(id=None):
     data_handler.delete_SQL_answer(id)
     return redirect(url_for('questions_site', id=id))
 
-@app.route('/list/ID', methods=['GET'])
-@app.route('/list/SubmissionTime', methods=['GET'])
-@app.route('/list/ViewNumber', methods=['GET'])
-@app.route('/list/VoteNumber', methods=['GET'])
-@app.route('/list/Title', methods=['GET'])
-@app.route('/list/Message', methods=['GET'])
-def sorting():
-    if request.path == '/list/ID':
-        question = data_handler.sorting_things('id')
-        return render_template('list.html', question=question)
-    elif request.path == '/list/SubmissionTime':
-        question = data_handler.sorting_things('submisson_time')
-        return render_template('list.html', question=question)
-    elif request.path == '/list/ViewNumber':
-        question = data_handler.sorting_things('view_number')
-        return render_template('list.html', question=question)
-    elif request.path == '/list/VoteNumber':
-        question = data_handler.sorting_things('vote_number')
-        return render_template('list.html', question=question)
-    elif request.path == '/list/Title':
-        question = data_handler.sorting_things('title')
-        return render_template('list.html', question=question)
-    elif request.path == '/list/Message':
-        question = data_handler.sorting_things('message')
-        return render_template('list.html', question=question)
+@app.route('/list/<sort>', methods=['GET'])
+def sorting(sort):
+    request.path == '/list/<sort>'
+    question = data_handler.sorting_sql(sort)
+    return render_template('list.html', question=question)
+
+
+@app.route('/list/<dsort>/desc', methods=['GET', 'POST'])
+def sorting_desc(dsort):
+    request.path == '/list/<sort>/desc'
+    question = data_handler.sorting_sql_desc(dsort)
+    return render_template('list.html', question=question)
+
 
 
 @app.route('/questions/<int:id>/add-comment-to-Q', methods=['GET', 'POST'])
@@ -146,7 +130,14 @@ def add_comment_to_A(id):
             ID_ANS = line
         return redirect(url_for('route_list'))
 
-
+@app.route('/search')
+def search():
+    searched_word = request.args.get('search')
+    q_tilte = data_handler.search_title(searched_word)
+    q_message = data_handler.search_message(searched_word)
+    a_message = data_handler.answer_search_message(searched_word)
+    search1 = q_tilte+q_message+a_message
+    return render_template('search.html', search=search1)
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',
