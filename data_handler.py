@@ -7,11 +7,19 @@ import database_common
 DATA_FILE_PATH = "./sample_data/question.csv"
 DATA_HEADER = ['id', 'submisson_time', 'view_number', 'vote_number', 'title', 'message', 'image']
 
-
 @connection.connection_handler
 def get_all_question_sql(cursor):
     cursor.execute("""
                     SELECT * FROM question;
+                   """,
+                   )
+    names = cursor.fetchall()
+    return names
+
+@connection.connection_handler
+def get_top_question_sql(cursor):
+    cursor.execute("""
+                    SELECT * FROM question LIMIT 3;
                    """,
                    )
     names = cursor.fetchall()
@@ -26,7 +34,6 @@ def index_finder(ID):
             final_answer.append(i)
     return final_answer
 
-
 def question_finder(ID):
     quests = get_all_questions()
     the_question = ""
@@ -38,7 +45,6 @@ def question_finder(ID):
             the_message = i[5]
             # the_image = i[6]
     return the_question, the_message, the_image
-
 
 def delete_question(id, table, answers):
     answers_to_delete = []
@@ -165,8 +171,9 @@ def ID_from_SQL(cursor, title):  # szar
         SELECT id FROM question
         WHERE title=%(title)s
     """, {'title': title})
-    ID = cursor.fetchone()
+    ID = cursor.fetchall()
     return ID
+
 
 
 @connection.connection_handler
@@ -174,8 +181,14 @@ def delete_SQL_question(cursor, ID):
     cursor.execute("""
             DELETE FROM question 
             WHERE  id=%(ID)s;
-            """, {'ID': ID}
-                   )
+            """,{'ID':ID})
+
+@connection.connection_handler
+def delete_SQL_question_and_its_answer(cursor,ID):
+    cursor.execute("""
+            DELETE FROM answer 
+            WHERE question_id=%(ID)s;
+            """,{'ID':ID})
 
 
 @connection.connection_handler
@@ -242,3 +255,83 @@ def sorting_sql_desc(cursor, dsort):
     return names
 
 
+
+
+@connection.connection_handler
+def search_title(cursor, question):
+    cursor.execute("""
+                            SELECT * from question
+                            WHERE title ILIKE %(searched_word)s;
+                              """,
+                   {'searched_word': ("%" + question + "%")}
+                   )
+    result = cursor.fetchall()
+    return result
+
+
+@connection.connection_handler
+def search_message(cursor, question):
+    cursor.execute("""
+                            SELECT * from question
+                            WHERE message ILIKE %(searched_word)s;
+                              """,
+                   {'searched_word': ("%" + question + "%")}
+                   )
+    result = cursor.fetchall()
+    return result
+
+
+# @connection.connection_handler
+# def answer_search_title(cursor, question):
+#     cursor.execute("""
+#                                 SELECT * from answer
+#                                 WHERE title ILIKE %(searched_word)s;
+#                                   """,
+#                    {'searched_word': ("%" + question + "%")}
+#                    )
+#     result = cursor.fetchall()
+#     return result
+
+@connection.connection_handler
+def answer_search_message(cursor,question):
+    cursor.execute("""
+                                SELECT * from answer
+                                WHERE message ILIKE %(searched_word)s;
+                                  """,
+                   {'searched_word': ("%" + question + "%")}
+                   )
+    result = cursor.fetchall()
+    return result
+                            WHERE question_id=%(ID)s;
+                           """,{'ID':ID})
+@connection.connection_handler
+def add_comment_to_Q(cursor, id, comment, time):
+    cursor.execute("""
+        INSERT INTO comment (question_id, answer_id, message, submission_time, edited_count)
+        VALUES (%(id)s, NULL, %(comment)s,TIMESTAMP %(time)s, NULL)
+    """, {'id': id, 'comment': comment, 'time': time})
+
+@connection.connection_handler
+def get_comment_for_Q(cursor, id):
+    cursor.execute("""
+        SELECT message, submission_time FROM comment
+        WHERE question_id=%(id)s;
+    """, {'id': id})
+    comments = cursor.fetchall()
+    return comments
+
+@connection.connection_handler
+def add_comment_to_A(cursor, id, comment, time):
+    cursor.execute("""
+        INSERT INTO comment (question_id, answer_id, message, submission_time, edited_count)
+        VALUES (NULL, %(id)s, %(comment)s,TIMESTAMP %(time)s, NULL)
+    """, {'id': id, 'comment': comment, 'time': time})
+
+@connection.connection_handler
+def get_comment_for_A(cursor, id):
+    cursor.execute("""
+        SELECT message, submission_time FROM comment
+        WHERE answer_id=%(id)s;
+    """, {'id': id})
+    comments = cursor.fetchall()
+    return comments

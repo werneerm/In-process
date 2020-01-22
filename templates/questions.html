@@ -12,6 +12,22 @@
 {% for item in question %}
 {{ item.title }} ----- {{ item.message }}
 {% endfor %}
+<table id="comment-table">
+    <tr>
+        <th>Message</th>
+        <th>Submission_Time</th>
+        <th>Action</th>
+    </tr>
+    {% for item in comment_Q %}
+    <tr>
+        <td>{{ item.message }}</td>
+        <td>{{ item.submission_time }}</td>
+        <td></td>
+    </tr>
+    {% endfor %}
+</table>
+<p><a href="/questions/{{id}}/add-comment-to-Q" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Add Comment</a></p>
+{% for line in answer %}
 <table id="table">
     <tr>
         <th> ID </th>
@@ -22,7 +38,6 @@
         <th> Image </th>
         <th>Vote&Delete</th>
     </tr>
-        {% for line in answer %}
     <tr>
         <td> {{line.id}} </td>
         <td> {{line.submission_time}} </td>
@@ -30,15 +45,27 @@
         <td> {{line.question_id}} </td>
         <td> {{line.message}} </td>
         <td><img src ="{{line.image}}"style="width:104px;height:142px;"></td>
-
         <td>
-            <a href='/answers/{{line.id}}/vote_up' class = "buttonvote">upvote <p style="color:	#008000"> &#8613;</p></a>
-            <a href='/answers/{{line.id}}/vote_down' class = "buttonvote" >downvote <p style="color:#8B0000"> &#8615;</p></a>
-            <a href="/questions/{{line[0]}}/delete_answer" class = "buttonvote" >Delete answer</a>
+            <a href='/answers/{{line[0]}}/vote_up' class = "buttonvote">upvote <p style="color:	#008000"> &#8613;</p></a>
+            <a href='/answers/{{line[0]}}/vote_down' class = "buttonvote" >downvote <p style="color:#8B0000"> &#8615;</p></a>
+            <a href="/questions/{{line.question_id}}/delete_answer" class = "buttonvote" >Delete answer</a>
+            <a href="/answer/{{line.id}}/add-comment-to-A" class = "buttonvote">Add comment</a>
         </td>
-    {% endfor %}
     </tr>
 </table>
+<table id="comments">
+    <tr>
+        <th>Comment</th>
+        <th>Submission_Time</th>
+    </tr>
+    {% for item in comment_A %}
+    <tr>
+        <td>{{ item.message }}</td>
+        <td>{{ item.submission_time }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endfor %}
 <br>
 <div>
 <a href="/questions/{{id}}/answer-question" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Answer this Question</a>

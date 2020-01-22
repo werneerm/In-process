@@ -7,6 +7,10 @@
 </head>
 <body>
 <p id="maintitle">Ask Mate</p>
+<form action="/search" method="get">
+  <input type="text" name="search" id="author" required>
+  <input type="submit" value="Search">
+</form>
 <table>
     <tr>
         <th><a href="/list/id"> ID </a><a href="/list/id/desc"> ^ </a></th>
@@ -17,7 +21,8 @@
         <th><a href="/list/message" >Message</a><a href="/list/message/desc"> ^ </a></th>
         <th><a href="/list/image" >Image</a><a href="/list/image/desc"> ^ </a></th>
         <th>GoToQuestion</th>
-        <th>Vote</th>
+        <th>Vote</th><form action="/search" method="get">
+</form>
     </tr>
 
     {% for line in question %}
@@ -39,5 +44,6 @@
 </table>
 <br>
 <a href="/add-question" class = "buttonanswer bouncy" >Ask a question</a>
+<a href="/list" class = "buttonanswer bouncy" >All questions</a>
 </body>
 </html>

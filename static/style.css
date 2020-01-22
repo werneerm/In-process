@@ -1,5 +1,6 @@
 body {
-  background-color: rgba(193,151,59,0.82);
+  /*background-color: );*/
+  background-image: linear-gradient( khaki, lightgoldenrodyellow );
 }
 table, th, td {
   border: 2px solid black;
