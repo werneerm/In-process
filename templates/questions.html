@@ -6,9 +6,13 @@
     <link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-<form>
-    <input class = "buttonvote" type="button" onclick="window.location.href = '/list';" value="Back to Main Menu"/>
-</form>
+<div>
+    <img style="display:block; position: relative; margin:auto" src= "static/library_logo.png"/>
+</div>
+<!--<form>-->
+<!--&lt;!&ndash;    <input class = "buttonvote" type="button" onclick="window.location.href = '/list';" value="Back to Main Menu"/>&ndash;&gt;-->
+<!--</form>-->
+<p><a href="/list" class="buttonvote" >back to main menu</a></p>
 {% for item in question %}
 {{ item.title }} ----- {{ item.message }}
 {% endfor %}

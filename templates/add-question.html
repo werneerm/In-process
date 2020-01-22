@@ -6,6 +6,9 @@
     <link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+<div>
+    <img style="display:block; position: relative; margin:auto" src="static/library_logo.png" />
+</div>
 <form action="/add-question", method="post">
     <p>Question Title:</p>
 	<p><input type="text" name="title" id="title" size="20"></p>

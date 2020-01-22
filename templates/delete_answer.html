@@ -6,6 +6,9 @@
     <link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+<div>
+    <img style="display:block; position: relative; margin:auto" src="static/library_logo.png" />
+</div>
 <h1>Are u sure?</h1>
  <form action="/questions/{{ id }}/a" method="post">
     <input type="radio" name="choose" id="option1" value="yes" checked> Yes<br>
