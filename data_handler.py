@@ -104,6 +104,13 @@ def delete_SQL_answer(cursor, ID):
                 WHERE  question_id=%(ID)s;
                 """, {'ID': ID})
 
+@connection.connection_handler
+def delete_SQL_comment_with_question(cursor, ID):
+    cursor.execute("""
+                DELETE FROM comment 
+                WHERE  question_id=%(ID)s;
+                """, {'ID': ID})
+
 
 @connection.connection_handler
 def ID_from_SQL(cursor, title):  # szar
@@ -135,7 +142,7 @@ def delete_SQL_question_and_its_answer(cursor,ID):
 def delete_SQL_answer(cursor, ID):
     cursor.execute("""
                             DELETE FROM answer 
-                            WHERE  ID=%(ID)s;
+                            WHERE  question_id=%(ID)s;
                            """, {'ID': ID}
                    )
 

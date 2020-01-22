@@ -74,13 +74,13 @@ def edit_question(id=None):
         return redirect(url_for('questions_site', id=id))
 
 
-@app.route('/questions/<int:id>/d', methods=['GET', 'POST'])
 @app.route('/questions/<int:id>/delete-question', methods=['GET', 'POST'])
 def delete_question(id=None):
     if request.method == 'POST':
         option = request.form['pick']
         if option == 'yes':
             data_handler.delete_SQL_question_and_its_answer(id)
+            data_handler.delete_SQL_comment_with_question(id)
             data_handler.delete_SQL_question(id)
             return redirect(url_for('route_list'))
         elif option == 'no':
@@ -89,7 +89,7 @@ def delete_question(id=None):
         return render_template('question-delete.html', id=id)
 
 
-@app.route('/questions/<int:id>/a', methods=['GET', 'POST'])
+#@app.route('/questions/<int:id>/a', methods=['GET', 'POST'])
 @app.route('/questions/<int:id>/delete_answer', methods=['GET', 'POST'])
 def delete_answer(id=None):
     data_handler.delete_SQL_answer(id)
@@ -152,6 +152,16 @@ def ques_upvote(id=None):
 @app.route('/questions/<int:id>/vote_down')
 def ques_downvote(id=None):
     data_handler.downvote_questions_SQL(id)
+    return redirect(url_for('route_list'))
+
+@app.route('/answers/<int:id>/vote_up')
+def answer_upvote(id=None):
+    data_handler.upvote_answers_SQL(id)
+    return redirect(url_for('route_list'))
+
+@app.route('/answers/<int:id>/vote_down')
+def answer_downvote(id=None):
+    data_handler.downvote_answers_SQL(id)
     return redirect(url_for('route_list'))
 
 @app.route('/answers/<int:id>/edit-answer', methods=['GET', 'POST'])
