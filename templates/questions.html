@@ -17,7 +17,8 @@
     <tr>
         <td>{{ item.message }}</td>
         <td>{{ item.submission_time }}</td>
-        <td></td>
+        <td><a href="/comment/{{ item.id }}/delete-comment" class = "buttonvote">Delete comment</a>
+        <a href="/comment/{{ item.id }}/edit-comment" class = "buttonvote">Edit comment</a></td>
     </tr>
     {% endfor %}
 </table>

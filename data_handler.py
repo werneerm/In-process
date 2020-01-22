@@ -195,8 +195,6 @@ def sorting_sql_desc(cursor, dsort):
     return names
 
 
-
-
 @connection.connection_handler
 def search_title(cursor, question):
     cursor.execute("""
@@ -221,17 +219,6 @@ def search_message(cursor, question):
     return result
 
 
-# @connection.connection_handler
-# def answer_search_title(cursor, question):
-#     cursor.execute("""
-#                                 SELECT * from answer
-#                                 WHERE title ILIKE %(searched_word)s;
-#                                   """,
-#                    {'searched_word': ("%" + question + "%")}
-#                    )
-#     result = cursor.fetchall()
-#     return result
-
 @connection.connection_handler
 def answer_search_message(cursor,question):
     cursor.execute("""
@@ -252,7 +239,7 @@ def add_comment_to_Q(cursor, id, comment, time):
 @connection.connection_handler
 def get_comment_for_Q(cursor, id):
     cursor.execute("""
-        SELECT message, submission_time FROM comment
+        SELECT id, message, submission_time FROM comment
         WHERE question_id=%(id)s;
     """, {'id': id})
     comments = cursor.fetchall()
@@ -282,3 +269,27 @@ def get_answer_for_update(cursor, id):
     """, {'id': id})
     answer = cursor.fetchall()
     return answer
+
+@connection.connection_handler
+def delete_comment(cursor, id):
+    cursor.execute("""
+    DELETE FROM comment
+    WHERE id=%(id)s
+    """, {'id': id})
+
+@connection.connection_handler
+def get_comment_for_edit(cursor, id):
+    cursor.execute("""
+        SELECT id, message FROM comment
+        WHERE id=%(id)s;
+    """, {'id': id})
+    comment = cursor.fetchall()
+    return comment
+
+@connection.connection_handler
+def update_comment(cursor, comment, submission_time, id):
+    cursor.execute("""
+            UPDATE comment
+            SET message=%(comment)s, submission_time=%(submission_time)s, edited_count=edited_count + 1
+            WHERE id=%(id)s
+    """, {'id': id, 'comment': comment, 'submission_time': submission_time})

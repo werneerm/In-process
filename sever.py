@@ -165,6 +165,22 @@ def edit_answer(id=None):
         data_handler.answer_update_SQL(new_message, new_image, id)
         return redirect(url_for('route_list'))
 
+@app.route('/comment/<int:id>/delete-comment', methods=['GET', 'POST'])
+@app.route('/comment/<int:id>/edit-comment', methods=['GET', 'POST'])
+def comment(id=None):
+    if request.path == f'/comment/{id}/delete-comment':
+        data_handler.delete_comment(id)
+        return redirect(url_for('route_list'))
+    if request.path == f'/comment/{id}/edit-comment':
+        if request.method == 'GET':
+            comment = data_handler.get_comment_for_edit(id)
+            return render_template('edit-comment.html',comment=comment)
+        if request.method == 'POST':
+            new_comment = request.form['message']
+            new_sub_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            data_handler.update_comment(new_comment, new_sub_time, id)
+            return redirect(url_for('route_list'))
+
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',
