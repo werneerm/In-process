@@ -139,27 +139,71 @@ def delete_SQL_answer(cursor,ID):
                 WHERE  question_id=%(ID)s;
                 """,{'ID':ID})
 @connection.connection_handler
-def ID_from_SQL(cursor, title): #szar
+def ID_from_answer(cursor, id): #szar
+    cursor.execute("""
+        SELECT question_id FROM answer
+        WHERE id=%(id)s
+    """, {'id': id})
+    ID = cursor.fetchall()
+    return ID
+
+@connection.connection_handler
+def ID_from_question(cursor, title): #szar
     cursor.execute("""
         SELECT id FROM question
         WHERE title=%(title)s
     """, {'title': title})
-    ID = cursor.fetchone()
+    ID = cursor.fetchall()
     return ID
+
 @connection.connection_handler
 def delete_SQL_question(cursor,ID):
     cursor.execute("""
             DELETE FROM question 
             WHERE  id=%(ID)s;
-            """,{'ID':ID}
-                   )
+            """,{'ID':ID})
 
-
+@connection.connection_handler
+def delete_SQL_question_and_its_answer(cursor,ID):
+    cursor.execute("""
+            DELETE FROM answer 
+            WHERE question_id=%(ID)s;
+            """,{'ID':ID})
 
 @connection.connection_handler
 def delete_SQL_answer(cursor,ID):
     cursor.execute("""
                             DELETE FROM answer 
-                            WHERE  question_id=%(ID)s;
-                           """,{'ID':ID}
-                   )
+                            WHERE question_id=%(ID)s;
+                           """,{'ID':ID})
+@connection.connection_handler
+def add_comment_to_Q(cursor, id, comment, time):
+    cursor.execute("""
+        INSERT INTO comment (question_id, answer_id, message, submission_time, edited_count)
+        VALUES (%(id)s, NULL, %(comment)s,TIMESTAMP %(time)s, NULL)
+    """, {'id': id, 'comment': comment, 'time': time})
+
+@connection.connection_handler
+def get_comment_for_Q(cursor, id):
+    cursor.execute("""
+        SELECT message, submission_time FROM comment
+        WHERE question_id=%(id)s;
+    """, {'id': id})
+    comments = cursor.fetchall()
+    return comments
+
+@connection.connection_handler
+def add_comment_to_A(cursor, id, comment, time):
+    cursor.execute("""
+        INSERT INTO comment (question_id, answer_id, message, submission_time, edited_count)
+        VALUES (NULL, %(id)s, %(comment)s,TIMESTAMP %(time)s, NULL)
+    """, {'id': id, 'comment': comment, 'time': time})
+
+@connection.connection_handler
+def get_comment_for_A(cursor, id):
+    cursor.execute("""
+        SELECT message, submission_time FROM comment
+        WHERE answer_id=%(id)s;
+    """, {'id': id})
+    comments = cursor.fetchall()
+    return comments

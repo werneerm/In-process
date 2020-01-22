@@ -3,12 +3,7 @@ import data_handler
 import time
 from datetime import datetime
 
-DATA_HEADER = ['id', 'submisson_time', 'view_number', 'vote_number', 'title', 'message', 'image']
-DATA_FILE_PATH_QUESTION = "./sample_data/question.csv"
-DATA_FILE_PATH_ANSWER = "./sample_data/answer.csv"
-
 app = Flask(__name__)
-
 
 @app.route('/')
 @app.route('/list')
@@ -27,7 +22,9 @@ def questions_site(id=None):
     if id is not None:
         question = data_handler.get_question_SQL(id)
         answer = data_handler.get_answer_for_question_SQL(id)
-        return render_template('/questions.html', question=question, id=id, answer=answer)
+        comment_for_Q = data_handler.get_comment_for_Q(id)
+        comment_for_A = data_handler.get_comment_for_A(id)  #SZAR
+        return render_template('/questions.html', question=question, id=id, answer=answer, comment_Q=comment_for_Q, comment_A=comment_for_A)
 
 
 @app.route('/questions/<int:id>', methods=['GET', 'POST'])
@@ -55,7 +52,11 @@ def add_question():
         view_number = 0
         time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         data_handler.add_SQL_question(time, view_number, vote_number, title, message, image)
-        return redirect(url_for('questions_site', id=None))       #SZARRRRR
+        question_id = data_handler.ID_from_question(title)
+        ID_Q = 0
+        for item in question_id:
+            ID_Q = item
+        return redirect(url_for('questions_site', id=ID_Q))
     return render_template('add-question.html')
 
 
@@ -79,8 +80,8 @@ def delete_question(id=None):
     if request.method == 'POST':
         option = request.form['pick']
         if option == 'yes':
+            data_handler.delete_SQL_question_and_its_answer(id)
             data_handler.delete_SQL_question(id)
-            data_handler.delete_SQL_answer(id)
             return redirect(url_for('route_list'))
         elif option == 'no':
             return redirect(url_for('questions_site', id=id))
@@ -91,21 +92,8 @@ def delete_question(id=None):
 @app.route('/questions/<int:id>/a', methods=['GET', 'POST'])
 @app.route('/questions/<int:id>/delete_answer', methods=['GET', 'POST'])
 def delete_answer(id=None):
-    data_handler.delete_SQL_answer(id)                             #szarrrrrrrrrrrrrrrrrrrrrr
+    data_handler.delete_SQL_answer(id)
     return redirect(url_for('questions_site', id=id))
-        # option = request.form['choose']
-        # if option == 'yes':
-        #     data_handler.delete_SQL_answer(id)
-        #     return redirect(url_for('questions_site', id=id))
-        # elif option == 'no':
-        #     question_id = ""
-        #     for line in table:
-        #         if str(line[0]) == str(id):
-        #             question_id = line[3]
-        #     return redirect(url_for('questions_site', id=question_id))
-    # if request.method == 'GET':
-    #     return render_template('delete_answer.html', id=id)
-
 
 @app.route('/list/ID', methods=['GET'])
 @app.route('/list/SubmissionTime', methods=['GET'])
@@ -134,83 +122,29 @@ def sorting():
         return render_template('list.html', question=question)
 
 
-@app.route('/answers/<int:id>/vote_up')
-def ans_upvote(id=None):
-    table = data_handler.get_all_answer()
-    if id is not None:
-        question_id = ""
-        vote_num = ""
-        line_num = None
-        for idx, line in enumerate(table):
-            if str(id) == line[0]:
-                question_id = line[3]
-                vote_num = line[2]
-                line_num = idx
+@app.route('/questions/<int:id>/add-comment-to-Q', methods=['GET', 'POST'])
+def add_comment_to_Q(id):
+    if request.method == 'GET':
+        return render_template('new-comment.html', id=id)
+    if request.method == 'POST':
+        comment = request.form['message']
+        time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        data_handler.add_comment_to_Q(id, comment, time)
+        return redirect(url_for('questions_site', id=id))
 
-        int_vote_num = int(vote_num)
-        int_vote_num += 1
-        str_vote_num = str(int_vote_num)
-        table[line_num][2] = str_vote_num
-        data_handler.write_user_story(DATA_FILE_PATH_ANSWER, table)
-        return redirect(f'/questions/{question_id}')
-
-
-@app.route('/answers/<int:id>/vote_down')
-def ans_downvote(id=None):
-    answers = data_handler.get_all_answer()
-    if id is not None:
-        question_id = ""
-        vote_num = ""
-        line_num = None
-        for idx, line in enumerate(answers):
-            if str(id) == line[0]:
-                question_id = line[3]
-                vote_num = line[2]
-                line_num = idx
-
-        int_vote_num = int(vote_num)
-        int_vote_num = int_vote_num - 1
-        str_vote_num = str(int_vote_num)
-        answers[line_num][2] = str_vote_num
-        data_handler.write_user_story(DATA_FILE_PATH_ANSWER, answers)
-        return redirect(f'/questions/{question_id}')
-
-
-@app.route('/questions/<int:id>/vote_up')
-def ques_upvote(id=None):
-    table = data_handler.get_all_questions()
-    if id is not None:
-        vote_num = ""
-        line_num = None
-        for idx, line in enumerate(table):
-            if str(id) == line[0]:
-                vote_num = line[3]
-                line_num = idx
-        int_vote_num = int(vote_num)
-        int_vote_num += 1
-        str_vote_num = str(int_vote_num)
-        table[line_num][3] = str_vote_num
-        data_handler.write_user_story(DATA_FILE_PATH_QUESTION, table)
-        return redirect('/list')
-    return redirect(url_for('questions_site', id=id))
-
-
-@app.route('/questions/<int:id>/vote_down')
-def ques_down(id=None):
-    table = data_handler.get_all_questions()
-    if id is not None:
-        vote_num = ""
-        line_num = None
-        for idx, line in enumerate(table):
-            if str(id) == line[0]:
-                vote_num = line[3]
-                line_num = idx
-        int_vote_num = int(vote_num)
-        int_vote_num = int_vote_num - 1
-        str_vote_num = str(int_vote_num)
-        table[line_num][3] = str_vote_num
-        data_handler.write_user_story(DATA_FILE_PATH_QUESTION, table)
-        return redirect('/list')
+@app.route('/answer/<int:id>/add-comment-to-A', methods=['GET', 'POST'])
+def add_comment_to_A(id):
+    if request.method == 'GET':
+        return render_template('new-comment-for-answer.html', id=id)
+    if request.method == 'POST':
+        comment = request.form['message']
+        time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        data_handler.add_comment_to_A(id, comment, time)
+        question_id = data_handler.ID_from_answer(id)
+        ID_ANS = 0
+        for line in question_id:                                #FOSSZARHUGY
+            ID_ANS = line
+        return redirect(url_for('route_list'))
 
 
 if __name__ == '__main__':
