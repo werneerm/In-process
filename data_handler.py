@@ -188,6 +188,7 @@ def downvote_questions_SQL(cursor,ID):
                               """, {'ID': ID}
                    )
 
+
 @connection.connection_handler
 def downvote_answers_SQL(cursor,ID):
     cursor.execute("""
@@ -196,3 +197,49 @@ def downvote_answers_SQL(cursor,ID):
                             WHERE id=%(ID)s;
                               """, {'ID': ID}
                    )
+
+@connection.connection_handler
+def search_title(cursor, question):
+    cursor.execute("""
+                            SELECT * from question
+                            WHERE title ILIKE %(searched_word)s;
+                              """,
+                   {'searched_word': ("%" + question + "%")}
+                   )
+    result = cursor.fetchall()
+    return result
+
+
+@connection.connection_handler
+def search_message(cursor, question):
+    cursor.execute("""
+                            SELECT * from question
+                            WHERE message ILIKE %(searched_word)s;
+                              """,
+                   {'searched_word': ("%" + question + "%")}
+                   )
+    result = cursor.fetchall()
+    return result
+
+
+# @connection.connection_handler
+# def answer_search_title(cursor, question):
+#     cursor.execute("""
+#                                 SELECT * from answer
+#                                 WHERE title ILIKE %(searched_word)s;
+#                                   """,
+#                    {'searched_word': ("%" + question + "%")}
+#                    )
+#     result = cursor.fetchall()
+#     return result
+
+@connection.connection_handler
+def answer_search_message(cursor,question):
+    cursor.execute("""
+                                SELECT * from answer
+                                WHERE message ILIKE %(searched_word)s;
+                                  """,
+                   {'searched_word': ("%" + question + "%")}
+                   )
+    result = cursor.fetchall()
+    return result

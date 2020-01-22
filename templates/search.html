@@ -4,13 +4,9 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='style.css') }}">
+
 </head>
 <body>
-<p id="maintitle">Ask Mate</p>
-<form action="/search" method="get">
-  <input type="text" name="search" id="author" required>
-  <input type="submit" value="Search">
-</form>
 <table>
     <tr>
         <th><a href="/list/ID"> ID </a> </th>
@@ -25,7 +21,7 @@
 </form>
     </tr>
 
-    {% for line in question %}
+    {% for line in search %}
     <tr>
             <td> {{line.id}} </td>
             <td> {{line.submission_time}} </td>
@@ -34,15 +30,8 @@
             <td> {{line.title}} </td>
             <td> {{line.message}} </td>
             <td> {{line.image}} </td>
-        <td><a href='/questions/{{line.id}}'> Answers</a></td>
-        <td>
-            <a href='/questions/{{line[0]}}/vote_up' class = "buttonvote">upvote <p style="color:#008000"> &#8613;</p></a>
-            <a href='/questions/{{line[0]}}/vote_down' class = "buttonvote" >downvote <p style="color:#8B0000"> &#8615;</p></a>
-        </td>
     </tr>
     {% endfor %}
 </table>
-<br>
-<a href="/add-question" class = "buttonanswer bouncy" >Ask a question</a>
 </body>
 </html>
