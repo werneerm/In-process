@@ -6,6 +6,10 @@ from datetime import datetime
 app = Flask(__name__)
 
 @app.route('/')
+def only_5_question():
+    question = data_handler.get_top_question_sql()
+    return render_template('list.html', question=question)
+
 @app.route('/list')
 def route_list():
     question = data_handler.get_all_question_sql()
@@ -138,6 +142,29 @@ def search():
     a_message = data_handler.answer_search_message(searched_word)
     search1 = q_tilte+q_message+a_message
     return render_template('search.html', search=search1)
+
+
+@app.route('/questions/<int:id>/vote_up')
+def ques_upvote(id=None):
+    data_handler.upvote_questions_SQL(id)
+    return redirect(url_for('route_list'))
+
+@app.route('/questions/<int:id>/vote_down')
+def ques_downvote(id=None):
+    data_handler.downvote_questions_SQL(id)
+    return redirect(url_for('route_list'))
+
+@app.route('/answers/<int:id>/edit-answer', methods=['GET', 'POST'])
+def edit_answer(id=None):
+    if request.method == 'GET':
+        answer = data_handler.get_answer_for_update(id)
+        return render_template('edit-answer.html', answer=answer)
+    if request.method == 'POST':
+        new_message = request.form['message']
+        new_image = request.form['image']
+        data_handler.answer_update_SQL(new_message, new_image, id)
+        return redirect(url_for('route_list'))
+
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',

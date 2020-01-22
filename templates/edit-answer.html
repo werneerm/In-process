@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Answer</title>
+</head>
+<body>
+<h1>Edit Answer</h1>
+{% for item in answer %}
+<form action="/answers/{{ item.id }}/edit-answer", method="post">
+    <p>Message:</p>
+	<p><textarea name="message" id="message" cols=60 rows=5>{{ item.message }}</textarea></p>
+    <p>Image URL:</p>
+    <p><input type="text" name="image" id="image" size="20", value="{{ item.image }}"></p>
+    <p><input type="submit" value="Edit answer"></p>
+{% endfor %}
+</form>
+</body>
+</html>
