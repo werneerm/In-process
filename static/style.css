@@ -54,7 +54,7 @@ text-decoration:none;
 font-family:'Roboto',sans-serif;
 font-weight:300;
 color:#000000;
-background-color:#00FF7F;
+background-color: rgba(0, 255, 127, 0);
 text-align:center;
 transition: all 0.2s;
 }
@@ -105,4 +105,12 @@ position:relative;
 48%{top:-0.4em}
 50%{top:0em}
 100%{top:0em;}
+}
+div.sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  /*padding: 5px;*/
+  /*background-color: #cae8ca;*/
+  /*border: 2px solid #4CAF50;*/
 }

@@ -302,8 +302,7 @@ def answer_search_message(cursor,question):
                    )
     result = cursor.fetchall()
     return result
-                            WHERE question_id=%(ID)s;
-                           """,{'ID':ID})
+
 @connection.connection_handler
 def add_comment_to_Q(cursor, id, comment, time):
     cursor.execute("""

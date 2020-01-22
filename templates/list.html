@@ -6,26 +6,33 @@
     <link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-<p id="maintitle">Ask Mate</p>
-<form action="/search" method="get">
-  <input type="text" name="search" id="author" required>
-  <input type="submit" value="Search">
-</form>
+<!--<p id="maintitle">Ask Mate</p>-->
+<div><img style="display:block; position: relative; margin:auto" src="static/library_logo.png" />
+</div>
+<div class = sticky>
+    <form align = "right" action="/search" method="get">
+    <input type="text" name="search" id="author" size = 35 required >
+    <input type="submit" value="Search" size = 35 height = 150px>
+    </form>
+    </div>
 <table>
-    <tr>
-        <th><a href="/list/id"> ID </a><a href="/list/id/desc"> ^ </a></th>
-        <th><a href="/list/submission_time" >Submission Time</a><a href="/list/submission_time/desc"> ^ </a></th>
-        <th><a href="/list/view_number" >View number</a><a href="/list/view_number/desc"> ^ </a></th>
-        <th><a href="/list/vote_number" >Vote number</a><a href="/list/vote_number/desc"> ^ </a></th>
-        <th><a href="/list/title" > Title </a><a href="/list/title/desc"> ^ </a></th>
-        <th><a href="/list/message" >Message</a><a href="/list/message/desc"> ^ </a></th>
-        <th><a href="/list/image" >Image</a><a href="/list/image/desc"> ^ </a></th>
-        <th>GoToQuestion</th>
-        <th>Vote</th><form action="/search" method="get">
-</form>
-    </tr>
+        <thead>
+            <tr>
+                <th><a href="/list/id"> ID </a><a href="/list/id/desc"> ^ </a></th></div>
+                <th><a href="/list/submission_time" >Submission Time</a><a href="/list/submission_time/desc"> ^ </a></th></div>
+                <th><a href="/list/view_number" >View number</a><a href="/list/view_number/desc"> ^ </a></th></div>
+                <th><a href="/list/vote_number" >Vote number</a><a href="/list/vote_number/desc"> ^ </a></th></div>
+                <th><a href="/list/title" > Title </a><a href="/list/title/desc"> ^ </a></th></div>
+                <th><a href="/list/message" >Message</a><a href="/list/message/desc"> ^ </a></th></div>
+                <th><a href="/list/image" >Image</a><a href="/list/image/desc"> ^ </a></th>
+                <th>GoToQuestion</th>
+                <th>Vote</th><form action="/search" method="get">
+                </form>
+            </tr>
+        </thead>
 
     {% for line in question %}
+    <tbody>
     <tr>
             <td> {{line.id}} </td>
             <td> {{line.submission_time}} </td>
@@ -36,10 +43,11 @@
             <td> {{line.image}} </td>
         <td><a href='/questions/{{line.id}}'> Answers</a></td>
         <td>
-            <a href='/questions/{{line[0]}}/vote_up' class = "buttonvote">upvote <p style="color:#008000"> &#8613;</p></a>
-            <a href='/questions/{{line[0]}}/vote_down' class = "buttonvote" >downvote <p style="color:#8B0000"> &#8615;</p></a>
+            <a href='/questions/{{line.id}}/vote_up' class = "buttonvote">upvote <p style="color:#008000"> &#8613;</p></a>
+            <a href='/questions/{{line.id}}/vote_down' class = "buttonvote" >downvote <p style="color:#8B0000"> &#8615;</p></a>
         </td>
     </tr>
+    </tbody>
     {% endfor %}
 </table>
 <br>
