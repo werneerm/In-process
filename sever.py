@@ -11,6 +11,9 @@ app = Flask(__name__)
 
 
 @app.route('/')
+def route_list_top():
+    question = data_handler.get_top_question_sql()
+    return render_template('list.html', question=question)
 @app.route('/list')
 def route_list():
     question = data_handler.get_all_question_sql()

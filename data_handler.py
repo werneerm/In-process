@@ -17,6 +17,15 @@ def get_all_question_sql(cursor):
     names = cursor.fetchall()
     return names
 
+@connection.connection_handler
+def get_top_question_sql(cursor):
+    cursor.execute("""
+                    SELECT * FROM question LIMIT 3;
+                   """,
+                   )
+    names = cursor.fetchall()
+    return names
+
 
 def index_finder(ID):
     answer = get_all_answer()
