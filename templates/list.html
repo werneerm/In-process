@@ -32,12 +32,21 @@
             <td> {{line.view_number}} </td>
             <td> {{line.vote_number}} </td>
             <td> {{line.title}} </td>
-            <td> {{line.message}} </td>
-            <td> {{line.image}} </td>
-        <td><a href='/questions/{{line.id}}'> Answers</a></td>
+            <td> {{line.message}} {% for item in tag %}
+                {% if line.id == item.question_id %}
+                    {% for i in match %}
+                        {% if item.tag_id == i.id %}
+                                {{i.name}}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                {% endfor %}
+            </td>
+            <td> <img src = {{line.image}} style="width:200px;height:200px;"> </td>
+        <td><a href='/questions/{{line.id}}' > Answers</a></td>
         <td>
-            <a href='/questions/{{line[0]}}/vote_up' class = "buttonvote">upvote <p style="color:#008000"> &#8613;</p></a>
-            <a href='/questions/{{line[0]}}/vote_down' class = "buttonvote" >downvote <p style="color:#8B0000"> &#8615;</p></a>
+            <a href='/questions/{{line.id}}/vote_up' class = "buttonvote">upvote <p style="color:#008000"> &#8613;</p></a>
+            <a href='/questions/{{line.id}}/vote_down' class = "buttonvote" >downvote <p style="color:#8B0000"> &#8615;</p></a>
         </td>
     </tr>
     {% endfor %}

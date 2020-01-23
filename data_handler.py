@@ -277,17 +277,6 @@ def search_message(cursor, question):
     return result
 
 
-# @connection.connection_handler
-# def answer_search_title(cursor, question):
-#     cursor.execute("""
-#                                 SELECT * from answer
-#                                 WHERE title ILIKE %(searched_word)s;
-#                                   """,
-#                    {'searched_word': ("%" + question + "%")}
-#                    )
-#     result = cursor.fetchall()
-#     return result
-
 @connection.connection_handler
 def answer_search_message(cursor,question):
     cursor.execute("""
@@ -298,3 +287,29 @@ def answer_search_message(cursor,question):
                    )
     result = cursor.fetchall()
     return result
+
+@connection.connection_handler
+def get_all_tag(cursor):
+    cursor.execute("""
+                       SELECT * FROM tag;
+                      """,
+                   )
+    names = cursor.fetchall()
+    return names
+
+@connection.connection_handler
+def add_existing_tag(cursor,tag,question):
+    cursor.execute("""
+               INSERT INTO question_tag (question_id,tag_id)
+               VALUES (%(question)s,%(tag)s);
+               """,
+                   {'question': question, 'tag': tag})
+
+@connection.connection_handler
+def question_tag(cursor):
+    cursor.execute("""
+                           SELECT * FROM question_tag;
+                          """,
+                   )
+    names = cursor.fetchall()
+    return names

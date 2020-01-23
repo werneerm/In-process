@@ -1,10 +1,12 @@
 body {
   /*background-color: );*/
-  background-image: linear-gradient( khaki, lightgoldenrodyellow );
+  background: rgb(58,58,58)
 }
 table, th, td {
   border: 2px solid black;
   text-align: center;
+  font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+  color: rgb(158,158,158)
 }
 h4 {
   font-size: 32px;
@@ -15,6 +17,8 @@ h4 {
   font-size: 32px;
   text-decoration: underline;
   font-weight: bold;
+  font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+  color: rgb(0,183,255)
 }
 a.buttonadd{
 display:inline-block;
@@ -53,8 +57,8 @@ box-sizing: border-box;
 text-decoration:none;
 font-family:'Roboto',sans-serif;
 font-weight:300;
-color:#000000;
-background-color:#00FF7F;
+color:white;
+background-color:grey;
 text-align:center;
 transition: all 0.2s;
 }
@@ -105,4 +109,8 @@ position:relative;
 48%{top:-0.4em}
 50%{top:0em}
 100%{top:0em;}
+}
+
+a{
+      color:white;
 }
