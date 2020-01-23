@@ -252,7 +252,29 @@ def create_tag(id=None):
         return redirect(url_for('questions_site',id=id))
     return render_template('tag.html',id=id)
 
+@app.route("/question/<int:question_id>/answer/<int:answer_id>",methods=['GET','POST'])
+def show_answer_comments(question_id=None, answer_id=None):
+    question = data_handler.get_question_SQL(question_id)
+    answer = data_handler.get_answer_for_question_SQL_with_ans_id(answer_id)
+    comment = data_handler.get_comment_for_A(answer_id)
+    return render_template('quest_ans_comment.html', question=question, answer=answer, comments=comment)
 
+@app.route("/question/<int:question_id>/answer/<int:answer_id>/comments",methods=['GET','POST'])
+def add_comment_to_answer(question_id=None, answer_id=None):
+    question = data_handler.get_question_SQL(question_id)
+    answer = data_handler.get_answer_for_question_SQL_with_ans_id(answer_id)
+    if request.method == 'POST':
+        comment = request.form['message']
+        time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        data_handler.add_comment_to_A(answer_id, comment, time)
+        return redirect(url_for('questions_site', id=question_id))
+
+    return render_template('new-comment-for-answer.html', quest=question_id, ans_id=answer_id)
+
+@app.route("/question/<int:question_id>/delete_this/<int:comment_id>", methods=['GET', 'POST'])
+@app.route("/question/<int:question_id>/edit_this/<int:comment_id>", methods=['GET', 'POST'])
+def delete_only_comment(question_id, comment_id):
+    pass
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',
