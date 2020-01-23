@@ -16,7 +16,7 @@
 {% for item in question %}
 {{ item.title }} ----- {{ item.message }}
 {% endfor %}
-<table id="comment-table">
+<table id="comment-table" style=display:hide>
     {% for item in comment_Q %}
     <tr>
         <td>{{ item.message }}</td>

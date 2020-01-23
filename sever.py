@@ -98,7 +98,6 @@ def delete_question(id=None):
         return render_template('question-delete.html', id=id)
 
 
-#@app.route('/questions/<int:id>/a', methods=['GET', 'POST'])
 @app.route('/questions/<int:id>/delete_answer', methods=['GET', 'POST'])
 def delete_answer(id=None):
     data_handler.delete_SQL_answer(id)
@@ -132,10 +131,10 @@ def sorting_desc(dsort):
 
 
 
-@app.route('/answers/<int:id>/vote_up')
-def ans_upvote(id=None):
-    data_handler.upvote_answers_SQL(id)
-    return redirect(url_for('route_list'))
+# @app.route('/answers/<int:id>/vote_up')
+# def ans_upvote(id=None):
+#     data_handler.upvote_answers_SQL(id)
+#     return redirect(url_for('route_list'))
 @app.route('/questions/<int:id>/add-comment-to-Q', methods=['GET', 'POST'])
 def add_comment_to_Q(id):
     if request.method == 'GET':
@@ -152,16 +151,16 @@ def ans_downvote(id=None):
     data_handler.downvote_answers_SQL(id)
     return redirect(url_for('route_list'))
 
-@app.route('/questions/<int:id>/vote_up')
-def ques_upvote(id=None):
-    data_handler.upvote_questions_SQL(id)
-    return redirect(url_for('route_list'))
-
-
-@app.route('/questions/<int:id>/vote_down')
-def ques_down(id=None):
-    data_handler.downvote_questions_SQL(id)
-    return redirect('/list')
+# @app.route('/questions/<int:id>/vote_up')
+# def ques_upvote(id=None):
+#     data_handler.upvote_questions_SQL(id)
+#     return redirect(url_for('route_list'))
+#
+#
+# @app.route('/questions/<int:id>/vote_down')
+# def ques_down(id=None):
+#     data_handler.downvote_questions_SQL(id)
+#     return redirect('/list')
 @app.route('/answer/<int:id>/add-comment-to-A', methods=['GET', 'POST'])
 def add_comment_to_A(id):
     if request.method == 'GET':
@@ -201,12 +200,12 @@ def add_pls(id=None,existing_tag=None):
 @app.route('/questions/<int:id>/vote_up')
 def ques_upvote(id=None):
     data_handler.upvote_questions_SQL(id)
-    return redirect(url_for('route_list'))
+    return redirect(url_for('only_5_question'))
 
 @app.route('/questions/<int:id>/vote_down')
 def ques_downvote(id=None):
     data_handler.downvote_questions_SQL(id)
-    return redirect(url_for('route_list'))
+    return redirect(url_for('only_5_question'))
 
 @app.route('/answers/<int:id>/vote_up')
 def answer_upvote(id=None):
