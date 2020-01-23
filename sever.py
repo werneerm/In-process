@@ -177,13 +177,13 @@ def add_pls(id=None, existing_tag=None):
 @app.route('/questions/<int:id>/vote_up')
 def ques_upvote(id=None):
     data_handler.upvote_questions_SQL(id)
-    return redirect(url_for('only_5_question'))
+    return redirect(url_for('route_list'))
 
 
 @app.route('/questions/<int:id>/vote_down')
 def ques_downvote(id=None):
     data_handler.downvote_questions_SQL(id)
-    return redirect(url_for('only_5_question'))
+    return redirect(url_for('route_list'))
 
 
 @app.route('/answers/<int:id>/vote_up')
