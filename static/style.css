@@ -3,11 +3,11 @@ body {
   /*background-image: linear-gradient( khaki, lightgoldenrodyellow );*/
     background-image: url("https://i.pinimg.com/originals/cf/c3/e7/cfc3e7ff0477c6d9ea5240e215c73800.jpg?fbclid=IwAR3VDD0ecnvHkO7HiMseaOEvMiA9nwf9ifSQxwRsjlAaKPljkseFPC5SFHs");
     background-size: cover;
-    padding-left: 200px;
 }
 table, th, td {
-  border: 2px solid black;
+  border: 30px #FFFFFF;
   text-align: center;
+    color: #FFFFFF;
 }
 h4 {
   font-size: 32px;
