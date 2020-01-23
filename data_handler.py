@@ -9,7 +9,8 @@ import psycopg2
 @connection.connection_handler
 def get_all_question_sql(cursor):
     cursor.execute("""
-                    SELECT * FROM question;
+                    SELECT * FROM question
+                    ORDER BY id;
                    """,
                    )
     names = cursor.fetchall()
@@ -18,9 +19,9 @@ def get_all_question_sql(cursor):
 @connection.connection_handler
 def get_top_question_sql(cursor):
     cursor.execute("""
-                    SELECT * FROM question LIMIT 5;
-                   """,
-                   )
+                    SELECT * FROM question
+                     ORDER BY id LIMIT 5;
+                   """,)
     names = cursor.fetchall()
     return names
 
@@ -363,14 +364,6 @@ def get_tag_for_question(cursor,question):
                              """,{'question':question}
                    )
     names = cursor.fetchall()
-    # print(names)
-    # for i in names:
-    #     cursor.execute("""
-    #                                      SELECT name FROM tag
-    #                                      WHERE id = %(i.tag_id)s;
-    #                                     """, {'i.tag_id': i.tag_id}
-    #                        )
-    #     all_tags= cursor.fetchall()
     return names
 
 @connection.connection_handler

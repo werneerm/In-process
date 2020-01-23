@@ -5,6 +5,7 @@ body {
   /*  background-image: url("https://wallpaperaccess.com/full/363411.jpg");*/
     background-size: cover;
     padding-left: 200px;
+    background-color: white;
 }
 
 table{
@@ -40,7 +41,7 @@ th{
 }
 
 #library{
-    /*background-image: url("http://0.0.0.0:8000/");*/
+    background-image: url("http://0.0.0.0:8000/");
     display: inline;
     position: absolute;
     top: 15px;
