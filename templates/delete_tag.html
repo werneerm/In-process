@@ -6,11 +6,13 @@
     <link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-
+<table>
+<tr><th>Which one you want to delete?</th></tr>
         {% for line in tags %}
     <tr>
         <td><a href="/question/{{id}}/delete-tag/{{line.id}}" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000"> {{line.name}}</a> </td>
     {% endfor %}
     </tr>
+</table>
 </body>
 </html>

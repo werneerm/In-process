@@ -19,9 +19,17 @@
 <table>
 <td>
 <p id="question">
-{% for item in question %}
-    <h3>{{ item.title }} <br>
-        {{ item.message }}</h3><div>
+{% for line in question %}
+    <h3>{{ line.title }} <br>
+        {{ line.message }}<br> {% for item in tag %}
+                {% if line.id == item.question_id %}
+                    {% for i in match %}
+                        {% if item.tag_id == i.id %}
+                                #{{i.name}}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                {% endfor %}</h3><div>
 <a href="/questions/{{id}}/answer-question" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Answer this Question</a>
 <a href="/questions/{{id}}/edit-question" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Edit this Question</a>
 <a href="/questions/{{id}}/delete-question" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Delete this Question</a>

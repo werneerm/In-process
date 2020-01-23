@@ -364,14 +364,6 @@ def get_tag_for_question(cursor,question):
                              """,{'question':question}
                    )
     names = cursor.fetchall()
-    # print(names)
-    # for i in names:
-    #     cursor.execute("""
-    #                                      SELECT name FROM tag
-    #                                      WHERE id = %(i.tag_id)s;
-    #                                     """, {'i.tag_id': i.tag_id}
-    #                        )
-    #     all_tags= cursor.fetchall()
     return names
 
 @connection.connection_handler

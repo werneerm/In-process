@@ -12,13 +12,15 @@
 </div>
 <table>
     <tr>
-        <th><a href="/list/ID"> ID </a> </th>
-        <th><a href="/list/SubmissionTime" >Submission Time</a> </th>
-        <th><a href="/list/ViewNumber" >View number</a> </th>
-        <th><a href="/list/VoteNumber" >Vote number</a>  </th>
-        <th><a href="/list/Title" > Title </a></th>
-        <th><a href="/list/Message" >Message</a> </th>
-        <th><a href="/list/Image" >Image</a> </th>
+        <th>ID</th>
+        <th>Submission Time</th>
+        <th>View number</th>
+        <th>Vote number</th>
+        <th>Title</th>
+        <th>Message</th>
+        <th>Image</th>
+        <th>Question's Site</th>
+
         <form action="/search" method="get">
 </form>
     </tr>
@@ -31,8 +33,8 @@
             <td> {{line.vote_number}} </td>
             <td> {{line.title}} </td>
             <td> {{line.message}} </td>
-            <td> {{line.image}} </td>
-        <td><a href="/questions/{{line.id}}" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000"> {{line.name}}</a> <
+            <td> <img src = {{line.image}} style="width:200px;height:200px;"> </td>
+        <td><a href="/questions/{{line.id}}" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000"> Jump to Question</a>
     </tr>
     {% endfor %}
 </table>

@@ -15,10 +15,18 @@
     <img src="/static/library_logo.png" alt="library" id="library"/>
 </div>
 <a/>
-<div id = "search" class = sticky>
+<!--<div class = sticky>-->
+<!--    <form style="padding-left: 1397px" action="/search" method="get">-->
+<!--    <input type="text" name="search" id="author" size = 35 required >-->
+<!--    <input type="submit" value="Search" size = 35>-->
+<!--    </form>-->
+<!--    </div>-->
+<!--<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">-->
+<div class = search>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <form action="/search" method="get">
-      <input type="text" name="search" id="author" required>
-      <i class="fa fa-search"></i>
+        <input class = "search_bar" type="text" name="search" id="author" required>
+          <i class="fa fa-search"></i>
     </form>
 </div>
 <table>
@@ -31,7 +39,7 @@
                 <th><a href="/list/title" >&#8659;</a><a>Title</a><a href="/list/title/desc">&#8657;</a></th>
                 <th><a href="/list/message" >&#8659;</a><a>Message</a><a href="/list/message/desc">&#8657;</a></th>
                 <th>Image</th>
-                <th>GoToQuestion</th>
+                <th>Question's Page</th>
                 <th>Vote</th><form action="/search" method="get">
                 </form>
             </tr>
@@ -45,18 +53,18 @@
             <td> {{line.view_number}} </td>
             <td> {{line.vote_number}} </td>
             <td> {{line.title}} </td>
-            <td> {{line.message}} {% for item in tag %}
+            <td> {{line.message}}<br> {% for item in tag %}
                 {% if line.id == item.question_id %}
                     {% for i in match %}
                         {% if item.tag_id == i.id %}
-                                # {{i.name}}
+                                #{{i.name}}
                         {% endif %}
                     {% endfor %}
                 {% endif %}
                 {% endfor %}
             </td>
             <td> <img src = {{line.image}} style="width:200px;height:200px;"> </td>
-        <td><a href='/questions/{{line.id}}' > Answers</a></td>
+        <td><a href='/questions/{{line.id}}'>Jump to Question</a></td>
         <td>
             <a href='/questions/{{line.id}}/vote_up' class = "buttonvote">upvote <p style="color:#008000"> &#8613;</p></a>
             <a href='/questions/{{line.id}}/vote_down' class = "buttonvote" >downvote <p style="color:#8B0000"> &#8615;</p></a>

@@ -20,12 +20,14 @@ def route_list():
 
 @app.route('/questions/<int:id>', methods=['GET', 'POST'])
 def questions_site(id=None):
-    if id is not None:
-        question = data_handler.get_question_SQL(id)
-        answer = data_handler.get_answer_for_question_SQL(id)
-        comment_for_Q = data_handler.get_comment_for_Q(id)
-        comment_for_A = data_handler.get_comment_for_A(id)  #SZAR
-        return render_template('/questions.html', question=question, id=id, answer=answer, comment_Q=comment_for_Q, comment_A=comment_for_A)
+    #if id is not None:
+    question = data_handler.get_question_SQL(id)
+    answer = data_handler.get_answer_for_question_SQL(id)
+    comment_for_Q = data_handler.get_comment_for_Q(id)
+    tag = data_handler.question_tag()
+    choose_the_one = data_handler.get_all_tag()
+    comment_for_A = data_handler.get_comment_for_A(id)  #SZAR
+    return render_template('/questions.html', question=question, id=id, tag=tag, match=choose_the_one, answer=answer, comment_Q=comment_for_Q, comment_A=comment_for_A)
 
 
 @app.route('/questions/<int:id>', methods=['GET', 'POST'])
@@ -87,11 +89,11 @@ def delete_question(id=None):
         return render_template('question-delete.html', id=id)
 
 
-# @app.route('/questions/<int:id>/delete_answer', methods=['GET', 'POST'])
-# def delete_answer(id=None):
-#     data_handler.delete_SQL_answer(id)
-#     return redirect(url_for('questions_site', id=id))
-#
+@app.route('/questions/<int:id>/delete_answer')
+def delete_answer(id=None):
+    data_handler.delete_SQL_answer(id)
+    return redirect(url_for('questions_site', id=id))
+
 
 @app.route('/list/<sort>', methods=['GET'])
 def sorting(sort):
@@ -233,7 +235,7 @@ def sever_error():
 def show_delete_tag(id=None):
     if id is not None:
         tags = data_handler.get_tag_for_question(id)
-        print(tags)
+        #print(tags)
         return render_template('delete_tag.html',id=id,tags=tags)
 
 
@@ -247,7 +249,7 @@ def create_tag(id=None):
     if request.method == 'POST':
         new_tag=request.form['tag']
         data_handler.create_tag(new_tag)
-        return redirect(url_for('questions',id=id))
+        return redirect(url_for('questions_site',id=id))
     return render_template('tag.html',id=id)
 
 
