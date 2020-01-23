@@ -237,6 +237,32 @@ def answer_search_message(cursor,question):
     return result
 
 @connection.connection_handler
+def get_all_tag(cursor):
+    cursor.execute("""
+                       SELECT * FROM tag;
+                      """,
+                   )
+    names = cursor.fetchall()
+    return names
+
+@connection.connection_handler
+def add_existing_tag(cursor,tag,question):
+    cursor.execute("""
+               INSERT INTO question_tag (question_id,tag_id)
+               VALUES (%(question)s,%(tag)s);
+               """,
+                   {'question': question, 'tag': tag})
+
+@connection.connection_handler
+def question_tag(cursor):
+    cursor.execute("""
+                           SELECT * FROM question_tag;
+                          """,
+                   )
+    names = cursor.fetchall()
+    return names
+
+@connection.connection_handler
 def add_comment_to_Q(cursor, id, comment, time):
     cursor.execute("""
         INSERT INTO comment (question_id, answer_id, message, submission_time, edited_count)
