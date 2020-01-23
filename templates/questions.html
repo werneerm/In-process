@@ -7,16 +7,32 @@
 </head>
 <body>
 <div>
-    <img style="display:block; position: relative; margin:auto" src= "/static/library_logo.png"/>
+    <img src="/static/background-header.jpg" alt="business" id="header"
+</div>
+<div>
+    <img src="/static/library_logo.png" alt="library" id="library"/>
 </div>
 <!--<form>-->
 <!--&lt;!&ndash;    <input class = "buttonvote" type="button" onclick="window.location.href = '/list';" value="Back to Main Menu"/>&ndash;&gt;-->
 <!--</form>-->
-<p><a href="/list" class="buttonvote" >back to main menu</a></p>
+<p><a href="/list" class="buttonadd" >back to main menu</a></p>
+<table>
+<td>
+<p id="question">
 {% for item in question %}
-{{ item.title }} ----- {{ item.message }}
+{#{{ item.title }} ----- {{ item.message }}#}
+    <h3>{{ item.title }} <br>
+        {{ item.message }}</h3><div>
+<a href="/questions/{{id}}/answer-question" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Answer this Question</a>
+<a href="/questions/{{id}}/edit-question" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Edit this Question</a>
+<a href="/questions/{{id}}/delete-question" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Delete this Question</a>
+    <a href="/question/{{id}}/new-tag" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Add Tag</a>
+</div>
 {% endfor %}
-<table id="comment-table" style=display:hide>
+</p>
+</td>
+</table>
+<table id="comment-table">
     {% for item in comment_Q %}
     <tr>
         <td>{{ item.message }}</td>
@@ -53,22 +69,22 @@
             <a href="/answer/{{line.id}}/add-comment-to-A" class = "buttonvote">Add comment</a>
         </td>
     </tr>
-</table>
-<table id="comments">
-    {% for item in comment_A %}
-    <tr>
-        <td>{{ item.message }}</td>
-        <td>{{ item.submission_time }}</td>
-    </tr>
-    {% endfor %}
-</table>
+{#</table>#}
+{#<table id="comments">#}
+{#    {% for item in comment_A %}#}
+{#    <tr>#}
+{#        <td>{{ item.message }}</td>#}
+{#        <td>{{ item.submission_time }}</td>#}
+{#    </tr>#}
+{#    {% endfor %}#}
+{#</table>#}
 {% endfor %}
 <br>
-<div>
-<a href="/questions/{{id}}/answer-question" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Answer this Question</a>
-<a href="/questions/{{id}}/edit-question" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Edit this Question</a>
-<a href="/questions/{{id}}/delete-question" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Delete this Question</a>
-    <a href="/question/{{id}}/new-tag" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Add Tag</a>
-</div>
+{#<div>#}
+{#<a href="/questions/{{id}}/answer-question" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Answer this Question</a>#}
+{#<a href="/questions/{{id}}/edit-question" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Edit this Question</a>#}
+{#<a href="/questions/{{id}}/delete-question" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Delete this Question</a>#}
+{#    <a href="/question/{{id}}/new-tag" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Add Tag</a>#}
+{#</div>#}
 </body>
 </html>
