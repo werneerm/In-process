@@ -4,10 +4,6 @@ import connection
 from psycopg2 import sql
 import database_common
 
-DATA_FILE_PATH = "./sample_data/question.csv"
-DATA_HEADER = ['id', 'submisson_time', 'view_number', 'vote_number', 'title', 'message', 'image']
-
-
 @connection.connection_handler
 def get_all_question_sql(cursor):
     cursor.execute("""
@@ -17,87 +13,20 @@ def get_all_question_sql(cursor):
     names = cursor.fetchall()
     return names
 
-
 @connection.connection_handler
 def get_top_question_sql(cursor):
     cursor.execute("""
-                    SELECT * FROM question LIMIT 3;
+                    SELECT * FROM question LIMIT 5;
                    """,
                    )
     names = cursor.fetchall()
     return names
 
 
-def index_finder(ID):
-    answer = get_all_answer()
-    final_answer = []
-    for i in answer:
-        if i[3] == str(ID):
-            final_answer.append(i)
-    return final_answer
-
-
-def question_finder(ID):
-    quests = get_all_questions()
-    the_question = ""
-    the_message = ""
-    the_image = ""
-    for i in quests:
-        if i[0] == str(ID):
-            the_question = i[4]
-            the_message = i[5]
-            # the_image = i[6]
-    return the_question, the_message, the_image
-
-
-def delete_question(id, table, answers):
-    answers_to_delete = []
-    for line in table:
-        if line[0] == str(id):
-            table.remove(line)
-    for line in answers:
-        if str(id) == line[3]:
-            answers_to_delete.append(line)
-    for item in answers_to_delete:
-        answers.remove(item)
-    write_user_story("./sample_data/question.csv", table)
-    write_user_story("./sample_data/answer.csv", answers)
-
-
-def delete_answer(id, table, ):
-    question_id = ""
-    for line in table:
-        if str(line[0]) == str(id):
-            question_id = line[3]
-            table.remove(line)
-    write_user_story("./sample_data/answer.csv", table)
-    return question_id
-
-
-def sorting_things(sorted_item):
-    table = get_all_questions()
-    index = DATA_HEADER.index(sorted_item)
-    l = len(table)
-    if sorted_item == 'message' or sorted_item == 'title':
-        for i in range(0, l):
-            for j in range(0, l - i - 1):
-                if (table[j][index] > table[j + 1][index]):
-                    tempo = table[j]
-                    table[j] = table[j + 1]
-                    table[j + 1] = tempo
-        return table
-    elif sorted_item == 'id' or 'submisson_time' or 'view_number' or 'vote_number':
-        for i in range(0, l):
-            for j in range(0, l - i - 1):
-                if (int(table[j][index]) > int(table[j + 1][index])):
-                    tempo = table[j]
-                    table[j] = table[j + 1]
-                    table[j + 1] = tempo
-        return table
-
 
 @connection.connection_handler
 def add_SQL_question(cursor, time, vote_num, view_num, title, message, image):
+
     cursor.execute("""
             INSERT INTO question (submission_time, view_number, vote_number, title, message, image)
             VALUES (TIMESTAMP %(time)s, %(vote_num)s, %(view_num)s, %(title)s, %(message)s, %(image)s);
@@ -133,6 +62,14 @@ def question_update_SQL(cursor, title, message, image, id):
             WHERE id=%(id)s
     """, {'id': id, 'title': title, 'message': message, 'image': image})
 
+@connection.connection_handler
+def answer_update_SQL(cursor, message, image, id):
+    cursor.execute("""
+            UPDATE answer
+            SET message=%(message)s, image=%(image)s
+            WHERE id=%(id)s
+            """, {'id': id, 'message': message, 'image': image})
+
 
 @connection.connection_handler
 def question_finder_SQL(cursor, id):
@@ -167,6 +104,13 @@ def delete_SQL_answer(cursor, ID):
                 WHERE  question_id=%(ID)s;
                 """, {'ID': ID})
 
+@connection.connection_handler
+def delete_SQL_comment_with_question(cursor, ID):
+    cursor.execute("""
+                DELETE FROM comment 
+                WHERE  question_id=%(ID)s;
+                """, {'ID': ID})
+
 
 @connection.connection_handler
 def ID_from_SQL(cursor, title):  # szar
@@ -185,7 +129,6 @@ def delete_SQL_question(cursor, ID):
             WHERE  id=%(ID)s;
             """, {'ID': ID})
 
-
 @connection.connection_handler
 def delete_SQL_question_and_its_answer(cursor, ID):
     cursor.execute("""
@@ -198,10 +141,9 @@ def delete_SQL_question_and_its_answer(cursor, ID):
 def delete_SQL_answer(cursor, ID):
     cursor.execute("""
                             DELETE FROM answer 
-                            WHERE  question_id = %(ID)s;
+                            WHERE  question_id=%(ID)s;
                            """, {'ID': ID}
                    )
-
 
 @connection.connection_handler
 def upvote_questions_SQL(cursor, ID):
@@ -287,28 +229,43 @@ def search_message(cursor, question):
     return result
 
 
-# @connection.connection_handler
-# def answer_search_title(cursor, question):
-#     cursor.execute("""
-#                                 SELECT * from answer
-#                                 WHERE title ILIKE %(searched_word)s;
-#                                   """,
-#                    {'searched_word': ("%" + question + "%")}
-#                    )
-#     result = cursor.fetchall()
-#     return result
-
 @connection.connection_handler
 def answer_search_message(cursor, question):
     cursor.execute("""
-                        SELECT * from answer
-                        WHERE message ILIKE %(searched_word)s;
+                                SELECT * from answer
+                                WHERE message ILIKE %(searched_word)s;
                                   """,
-                   {'searched_word': ("%" + question + "%")}
-                   )
+                   {'searched_word': ("%" + question + "%")})
     result = cursor.fetchall()
     return result
 
+
+
+@connection.connection_handler
+def get_all_tag(cursor):
+    cursor.execute("""
+                       SELECT * FROM tag;
+                      """,
+                   )
+    names = cursor.fetchall()
+    return names
+
+@connection.connection_handler
+def add_existing_tag(cursor,tag,question):
+    cursor.execute("""
+               INSERT INTO question_tag (question_id,tag_id)
+               VALUES (%(question)s,%(tag)s);
+               """,
+                   {'question': question, 'tag': tag})
+
+@connection.connection_handler
+def question_tag(cursor):
+    cursor.execute("""
+                           SELECT * FROM question_tag;
+                          """,
+                   )
+    names = cursor.fetchall()
+    return names
 
 @connection.connection_handler
 def add_comment_to_Q(cursor, id, comment, time):
@@ -321,7 +278,7 @@ def add_comment_to_Q(cursor, id, comment, time):
 @connection.connection_handler
 def get_comment_for_Q(cursor, id):
     cursor.execute("""
-        SELECT message, submission_time FROM comment
+        SELECT id, message, submission_time FROM comment
         WHERE question_id=%(id)s;
     """, {'id': id})
     comments = cursor.fetchall()
@@ -344,3 +301,36 @@ def get_comment_for_A(cursor, id):
     """, {'id': id})
     comments = cursor.fetchall()
     return comments
+
+@connection.connection_handler
+def get_answer_for_update(cursor, id):
+    cursor.execute("""
+        SELECT * FROM answer
+        WHERE id=%(id)s;
+    """, {'id': id})
+    answer = cursor.fetchall()
+    return answer
+
+@connection.connection_handler
+def delete_comment(cursor, id):
+    cursor.execute("""
+    DELETE FROM comment
+    WHERE id=%(id)s
+    """, {'id': id})
+
+@connection.connection_handler
+def get_comment_for_edit(cursor, id):
+    cursor.execute("""
+        SELECT id, message FROM comment
+        WHERE id=%(id)s;
+    """, {'id': id})
+    comment = cursor.fetchall()
+    return comment
+
+@connection.connection_handler
+def update_comment(cursor, comment, submission_time, id):
+    cursor.execute("""
+            UPDATE comment
+            SET message=%(comment)s, submission_time=%(submission_time)s, edited_count=edited_count + 1
+            WHERE id=%(id)s
+    """, {'id': id, 'comment': comment, 'submission_time': submission_time})

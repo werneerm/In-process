@@ -6,23 +6,32 @@
     <link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-<form>
-    <input class = "buttonvote" type="button" onclick="window.location.href = '/list';" value="Back to Main Menu"/>
-</form>
+<div>
+    <img src="/static/background-header.jpg" alt="business" id="header"
+</div>
+<div>
+    <img src="/static/library_logo.png" alt="library" id="library"/>
+</div>
+<!--<form>-->
+<!--&lt;!&ndash;    <input class = "buttonvote" type="button" onclick="window.location.href = '/list';" value="Back to Main Menu"/>&ndash;&gt;-->
+<!--</form>-->
+<p><a href="/list" class="buttonadd" >back to main menu</a></p>
+<table>
+<td>
+<p id="question">
 {% for item in question %}
 {{ item.title }} ----- {{ item.message }}
 {% endfor %}
+</p>
+</td>
+</table>
 <table id="comment-table">
-    <tr>
-        <th>Message</th>
-        <th>Submission_Time</th>
-        <th>Action</th>
-    </tr>
     {% for item in comment_Q %}
     <tr>
         <td>{{ item.message }}</td>
         <td>{{ item.submission_time }}</td>
-        <td></td>
+        <td><a href="/comment/{{ item.id }}/delete-comment" class = "buttonvote">Delete comment</a>
+        <a href="/comment/{{ item.id }}/edit-comment" class = "buttonvote">Edit comment</a></td>
     </tr>
     {% endfor %}
 </table>
@@ -46,18 +55,15 @@
         <td> {{line.message}} </td>
         <td><img src ="{{line.image}}"style="width:104px;height:142px;"></td>
         <td>
-            <a href='/answers/{{line[0]}}/vote_up' class = "buttonvote">upvote <p style="color:	#008000"> &#8613;</p></a>
-            <a href='/answers/{{line[0]}}/vote_down' class = "buttonvote" >downvote <p style="color:#8B0000"> &#8615;</p></a>
+            <a href='/answers/{{line.id}}/vote_up' class = "buttonvote">upvote <p style="color:	#008000"> &#8613;</p></a>
+            <a href='/answers/{{line.id}}/vote_down' class = "buttonvote" >downvote <p style="color:#8B0000"> &#8615;</p></a>
             <a href="/questions/{{line.question_id}}/delete_answer" class = "buttonvote" >Delete answer</a>
+            <a href="/answers/{{line.id}}/edit-answer" class = "buttonvote" >Edit answer</a>
             <a href="/answer/{{line.id}}/add-comment-to-A" class = "buttonvote">Add comment</a>
         </td>
     </tr>
 </table>
 <table id="comments">
-    <tr>
-        <th>Comment</th>
-        <th>Submission_Time</th>
-    </tr>
     {% for item in comment_A %}
     <tr>
         <td>{{ item.message }}</td>
@@ -71,6 +77,7 @@
 <a href="/questions/{{id}}/answer-question" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Answer this Question</a>
 <a href="/questions/{{id}}/edit-question" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Edit this Question</a>
 <a href="/questions/{{id}}/delete-question" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Delete this Question</a>
+    <a href="/question/{{id}}/new-tag" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Add Tag</a>
 </div>
 </body>
 </html>
