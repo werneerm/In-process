@@ -96,6 +96,12 @@ def delete_SQL_question(cursor, ID):
             WHERE  id=%(ID)s;
             """, {'ID': ID})
 
+@connection.connection_handler
+def delete_tags_of_question(cursor, ID):
+    cursor.execute("""
+        DELETE FROM question_tag
+        WHERE question_id=%(ID)s;
+    """, {'ID': ID})
 
 @connection.connection_handler
 def delete_SQL_answer(cursor, ID):

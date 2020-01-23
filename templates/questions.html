@@ -6,13 +6,15 @@
     <link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-<div>
-    <img style="display:block; position: relative; margin:auto" src="/static/library_logo.png" />
+<a href="/list" class="buttonvote" >Back to Main Menu</a><div>
+<a href="/questions/{{id}}/answer-question" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Answer this Question</a>
+<a href="/questions/{{id}}/edit-question" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Edit this Question</a>
+<a href="/questions/{{id}}/delete-question" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Delete this Question</a>
+    <a href="/question/{{id}}/new-tag" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Add Tag</a>
 </div>
-<!--<form>-->
-<!--&lt;!&ndash;    <input class = "buttonvote" type="button" onclick="window.location.href = '/list';" value="Back to Main Menu"/>&ndash;&gt;-->
-<!--</form>-->
-<p><a href="/list" class="buttonvote" >back to main menu</a></p>
+<div>
+    <img style="display:block; position: relative; margin:auto; padding-bottom: 25px;" src="/static/library_logo.png" />
+</div>
 {% for item in question %}
 <h3>{{ item.title }} ----- {{ item.message }}</h3><div>
 <a href="/questions/{{id}}/answer-question" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Answer this Question</a>
@@ -68,12 +70,12 @@
 {#    {% endfor %}#}
 {#</table>#}
 {% endfor %}
-<br>
-<div>
-<a href="/questions/{{id}}/answer-question" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Answer this Question</a>
-<a href="/questions/{{id}}/edit-question" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Edit this Question</a>
-<a href="/questions/{{id}}/delete-question" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Delete this Question</a>
-    <a href="/question/{{id}}/new-tag" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Add Tag</a>
-</div>
+{#<br>#}
+{#<div>#}
+{#<a href="/questions/{{id}}/answer-question" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Answer this Question</a>#}
+{#<a href="/questions/{{id}}/edit-question" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Edit this Question</a>#}
+{#<a href="/questions/{{id}}/delete-question" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Delete this Question</a>#}
+{#    <a href="/question/{{id}}/new-tag" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Add Tag</a>#}
+{#</div>#}
 </body>
 </html>

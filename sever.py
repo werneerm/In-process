@@ -3,12 +3,7 @@ import data_handler
 import time
 from datetime import datetime
 
-DATA_HEADER = ['id', 'submisson_time', 'view_number', 'vote_number', 'title', 'message', 'image']
-DATA_FILE_PATH_QUESTION = "./sample_data/question.csv"
-DATA_FILE_PATH_ANSWER = "./sample_data/answer.csv"
-
 app = Flask(__name__)
-
 
 @app.route('/')
 def only_5_question():
@@ -35,7 +30,7 @@ def questions_site(id=None):
     # question = data_handler.get_question_SQL(id)
     # answer = data_handler.get_answer_for_question_SQL(q_id)
     # comment_for_Q = data_handler.get_comment_for_Q(q_id)
-    # comment_for_A = data_handler.get_comment_for_A(a_id)  # SZAR
+    # comment_for_A = data_handler.get_comment_for_A(a_id)
     # return render_template('/questions.html', question=question, id=id, answer=answer, comment_Q=comment_for_Q, comment_A=comment_for_A)
 
 
@@ -90,8 +85,8 @@ def delete_question(id=None):
         if option == 'yes':
             data_handler.delete_SQL_question_and_its_answer(id)
             data_handler.delete_SQL_comment_with_question(id)
+            data_handler.delete_tags_of_question(int(id))
             data_handler.delete_SQL_question(id)
-            data_handler.delete_SQL_answer(id)
             return redirect(url_for('route_list'))
         elif option == 'no':
             return redirect(url_for('questions_site', id=id))
@@ -103,18 +98,6 @@ def delete_question(id=None):
 def delete_answer(id=None):
     data_handler.delete_SQL_answer(id)
     return redirect(url_for('questions_site', id=id))
-    # option = request.form['choose']
-    # if option == 'yes':
-    #     data_handler.delete_SQL_answer(id)
-    #     return redirect(url_for('questions_site', id=id))
-    # elif option == 'no':
-    #     question_id = ""
-    #     for line in table:
-    #         if str(line[0]) == str(id):
-    #             question_id = line[3]
-    #     return redirect(url_for('questions_site', id=question_id))
-    # if request.method == 'GET':
-    #     return render_template('delete_answer.html', id=id)
 
 
 @app.route('/list/<sort>', methods=['GET'])
@@ -137,19 +120,19 @@ def ans_downvote(id=None):
     return redirect(url_for('route_list'))
 
 
-@app.route('/answer/<int:id>/add-comment-to-A', methods=['GET', 'POST'])
-def add_comment_to_A(id):
-    if request.method == 'GET':
-        return render_template('new-comment-for-answer.html', id=id)
-    if request.method == 'POST':
-        comment = request.form['message']
-        time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        data_handler.add_comment_to_A(id, comment, time)
-        question_id = data_handler.ID_from_answer(id)
-        ID_ANS = 0
-        for line in question_id:                                #FOSSZARHUGY
-            ID_ANS = line
-        return redirect(url_for('route_list'))
+# @app.route('/answer/<int:id>/add-comment-to-A', methods=['GET', 'POST'])
+# def add_comment_to_A(id):
+#     if request.method == 'GET':
+#         return render_template('new-comment-for-answer.html', id=id)
+#     if request.method == 'POST':
+#         comment = request.form['message']
+#         time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+#         data_handler.add_comment_to_A(id, comment, time)
+#         question_id = data_handler.ID_from_answer(id)
+#         ID_ANS = 0
+#         for line in question_id:                                #FOSSZARHUGY
+#             ID_ANS = line
+#         return redirect(url_for('route_list'))
 
 @app.route('/search')
 def search():
