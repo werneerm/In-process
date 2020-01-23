@@ -74,18 +74,16 @@
             <a href='/answers/{{line.id}}/vote_down' class = "buttonvote" >downvote <p style="color:#8B0000"> &#8615;</p></a>
             <a href="/questions/{{line.question_id}}/delete_answer" class = "buttonvote" >Delete answer</a>
             <a href="/answers/{{line.id}}/edit-answer" class = "buttonvote" >Edit answer</a>
-            <a href="/answer/{{line.id}}/add-comment-to-A" class = "buttonvote">Add comment</a>
+        {% for quest in question %}
+            {% if quest.id == line.question_id %}
+            <a href="/question/{{quest.id}}/answer/{{ line.id }}/comments" class = "buttonvote">Add comment</a>
+            {% endif %}
+                {% if quest.id == line.question_id %}
+            <a href="/question/{{quest.id}}/answer/{{ line.id }}" class = "buttonvote">Show comment</a>
+            {% endif %}
+                {% endfor %}
         </td>
     </tr>
-{#</table>#}
-{#<table id="comments">#}
-{#    {% for item in comment_A %}#}
-{#    <tr>#}
-{#        <td>{{ item.message }}</td>#}
-{#        <td>{{ item.submission_time }}</td>#}
-{#    </tr>#}
-{#    {% endfor %}#}
-{#</table>#}
 {% endfor %}
 <br>
 <div>

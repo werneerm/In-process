@@ -56,6 +56,15 @@ def get_answer_for_question_SQL(cursor, id):
     answer = cursor.fetchall()
     return answer
 
+@connection.connection_handler
+def get_answer_for_question_SQL_with_ans_id(cursor, id):
+    cursor.execute("""
+        SELECT * FROM answer
+        WHERE id=%(id)s;
+    """, {'id': id})
+    answer = cursor.fetchall()
+    return answer
+
 
 @connection.connection_handler
 def question_update_SQL(cursor, title, message, image, id):
