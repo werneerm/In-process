@@ -34,16 +34,13 @@
 </tr>
 </table>
 
-<table>
-{% for line in comments %}
+{% for anyad in comments %}
 <table>
 <td>ˇComment</td>
 <tr>
 <td>
-    {% for i in question %}
 <p id="question">
-        {{ line.message }}<br><a href="/question/{{ i.id }}/delete_this/{{ line.id }}" class = "buttonvote">Delete comment</a>
-    <a href="/question/{{ i.id }}/edit_this/{{ line.id }}" class = "buttonvote">Edit comment</a>
+        {{ anyad.message }}
 </p>
 </td>
 </tr>
