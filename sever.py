@@ -15,7 +15,6 @@ def only_5_question():
     question = data_handler.get_top_question_sql()
     return render_template('list.html', question=question)
 
-
 @app.route('/list')
 def route_list():
     question = data_handler.get_all_question_sql()
@@ -26,18 +25,18 @@ def route_list():
 
 @app.route('/questions/<int:id>', methods=['GET', 'POST'])
 def questions_site(id=None):
-    if request.method == 'POST':
-        new_question = request.form.to_dict()
-        data_handler.add_question(new_question)
-        return redirect("/")
-
     if id is not None:
         question = data_handler.get_question_SQL(id)
         answer = data_handler.get_answer_for_question_SQL(id)
         comment_for_Q = data_handler.get_comment_for_Q(id)
-        comment_for_A = data_handler.get_comment_for_A(id)  # SZAR
-        return render_template('/questions.html', question=question, id=id, answer=answer, comment_Q=comment_for_Q,
-                               comment_A=comment_for_A)
+        comment_for_A = data_handler.get_comment_for_A(id)  #SZAR
+        return render_template('/questions.html', question=question, id=id, answer=answer, comment_Q=comment_for_Q, comment_A=comment_for_A)
+    # if q_id is not None and a_id is not None:
+    # question = data_handler.get_question_SQL(id)
+    # answer = data_handler.get_answer_for_question_SQL(q_id)
+    # comment_for_Q = data_handler.get_comment_for_Q(q_id)
+    # comment_for_A = data_handler.get_comment_for_A(a_id)  # SZAR
+    # return render_template('/questions.html', question=question, id=id, answer=answer, comment_Q=comment_for_Q, comment_A=comment_for_A)
 
 
 @app.route('/questions/<int:id>', methods=['GET', 'POST'])
@@ -196,6 +195,7 @@ def search():
 def tags(id=None):
     tag = data_handler.get_all_tag()
     return render_template('tag.html', tag=tag, id=id)
+
 
 
 @app.route('/question/<int:id>/new-tag/<existing_tag>')

@@ -64,6 +64,11 @@ table, th, td {
   text-align: center;
     color: black
 }
+
+h3 {
+    color: black;
+}
+
 h4 {
   font-size: 32px;
   text-align: center;
