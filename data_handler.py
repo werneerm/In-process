@@ -7,6 +7,7 @@ import database_common
 DATA_FILE_PATH = "./sample_data/question.csv"
 DATA_HEADER = ['id', 'submisson_time', 'view_number', 'vote_number', 'title', 'message', 'image']
 
+
 @connection.connection_handler
 def get_all_question_sql(cursor):
     cursor.execute("""
@@ -15,6 +16,7 @@ def get_all_question_sql(cursor):
                    )
     names = cursor.fetchall()
     return names
+
 
 @connection.connection_handler
 def get_top_question_sql(cursor):
@@ -34,6 +36,7 @@ def index_finder(ID):
             final_answer.append(i)
     return final_answer
 
+
 def question_finder(ID):
     quests = get_all_questions()
     the_question = ""
@@ -46,6 +49,7 @@ def question_finder(ID):
             # the_image = i[6]
     return the_question, the_message, the_image
 
+
 def delete_question(id, table, answers):
     answers_to_delete = []
     for line in table:
@@ -56,11 +60,11 @@ def delete_question(id, table, answers):
             answers_to_delete.append(line)
     for item in answers_to_delete:
         answers.remove(item)
-    write_user_story("./sample_data/question.csv",table)
+    write_user_story("./sample_data/question.csv", table)
     write_user_story("./sample_data/answer.csv", answers)
 
 
-def delete_answer(id, table,):
+def delete_answer(id, table, ):
     question_id = ""
     for line in table:
         if str(line[0]) == str(id):
@@ -71,7 +75,7 @@ def delete_answer(id, table,):
 
 
 def sorting_things(sorted_item):
-    table =  get_all_questions()
+    table = get_all_questions()
     index = DATA_HEADER.index(sorted_item)
     l = len(table)
     if sorted_item == 'message' or sorted_item == 'title':
@@ -94,7 +98,6 @@ def sorting_things(sorted_item):
 
 @connection.connection_handler
 def add_SQL_question(cursor, time, vote_num, view_num, title, message, image):
-
     cursor.execute("""
             INSERT INTO question (submission_time, view_number, vote_number, title, message, image)
             VALUES (TIMESTAMP %(time)s, %(vote_num)s, %(view_num)s, %(title)s, %(message)s, %(image)s);
@@ -175,40 +178,43 @@ def ID_from_SQL(cursor, title):  # szar
     return ID
 
 
-
 @connection.connection_handler
 def delete_SQL_question(cursor, ID):
     cursor.execute("""
             DELETE FROM question 
             WHERE  id=%(ID)s;
-            """,{'ID':ID})
+            """, {'ID': ID})
+
 
 @connection.connection_handler
-def delete_SQL_question_and_its_answer(cursor,ID):
+def delete_SQL_question_and_its_answer(cursor, ID):
     cursor.execute("""
             DELETE FROM answer 
             WHERE question_id=%(ID)s;
-            """,{'ID':ID})
+            """, {'ID': ID})
 
 
 @connection.connection_handler
 def delete_SQL_answer(cursor, ID):
     cursor.execute("""
                             DELETE FROM answer 
-                            WHERE  ID=%(ID)s;
+                            WHERE  question_id = %(ID)s;
                            """, {'ID': ID}
                    )
 
+
 @connection.connection_handler
-def upvote_questions_SQL(cursor,ID):
+def upvote_questions_SQL(cursor, ID):
     cursor.execute("""
                             UPDATE question
                             SET vote_number = vote_number + 1
                             WHERE id=%(ID)s;
                               """, {'ID': ID}
                    )
+
+
 @connection.connection_handler
-def upvote_answers_SQL(cursor,ID):
+def upvote_answers_SQL(cursor, ID):
     cursor.execute("""
                             UPDATE answer
                             SET vote_number = vote_number + 1
@@ -216,8 +222,9 @@ def upvote_answers_SQL(cursor,ID):
                               """, {'ID': ID}
                    )
 
+
 @connection.connection_handler
-def downvote_questions_SQL(cursor,ID):
+def downvote_questions_SQL(cursor, ID):
     cursor.execute("""
                     UPDATE question
                     SET vote_number = vote_number - 1
@@ -225,8 +232,9 @@ def downvote_questions_SQL(cursor,ID):
                               """, {'ID': ID}
                    )
 
+
 @connection.connection_handler
-def downvote_answers_SQL(cursor,ID):
+def downvote_answers_SQL(cursor, ID):
     cursor.execute("""
                             UPDATE answer
                             SET vote_number = vote_number - 1
@@ -240,7 +248,7 @@ def sorting_sql(cursor, sort):
     cursor.execute(
         sql.SQL("""select * from question ORDER BY {} """)
             .format(sql.Identifier(sort)),
-        )
+    )
     names = cursor.fetchall()
     return names
 
@@ -250,11 +258,9 @@ def sorting_sql_desc(cursor, dsort):
     cursor.execute(
         sql.SQL("""select * from question ORDER BY {} DESC""")
             .format(sql.Identifier(dsort)),
-        )
+    )
     names = cursor.fetchall()
     return names
-
-
 
 
 @connection.connection_handler
@@ -293,23 +299,24 @@ def search_message(cursor, question):
 #     return result
 
 @connection.connection_handler
-def answer_search_message(cursor,question):
+def answer_search_message(cursor, question):
     cursor.execute("""
-                                SELECT * from answer
-                                WHERE message ILIKE %(searched_word)s;
+                        SELECT * from answer
+                        WHERE message ILIKE %(searched_word)s;
                                   """,
                    {'searched_word': ("%" + question + "%")}
                    )
     result = cursor.fetchall()
     return result
-                            WHERE question_id=%(ID)s;
-                           """,{'ID':ID})
+
+
 @connection.connection_handler
 def add_comment_to_Q(cursor, id, comment, time):
     cursor.execute("""
         INSERT INTO comment (question_id, answer_id, message, submission_time, edited_count)
         VALUES (%(id)s, NULL, %(comment)s,TIMESTAMP %(time)s, NULL)
     """, {'id': id, 'comment': comment, 'time': time})
+
 
 @connection.connection_handler
 def get_comment_for_Q(cursor, id):
@@ -320,12 +327,14 @@ def get_comment_for_Q(cursor, id):
     comments = cursor.fetchall()
     return comments
 
+
 @connection.connection_handler
 def add_comment_to_A(cursor, id, comment, time):
     cursor.execute("""
         INSERT INTO comment (question_id, answer_id, message, submission_time, edited_count)
         VALUES (NULL, %(id)s, %(comment)s,TIMESTAMP %(time)s, NULL)
     """, {'id': id, 'comment': comment, 'time': time})
+
 
 @connection.connection_handler
 def get_comment_for_A(cursor, id):

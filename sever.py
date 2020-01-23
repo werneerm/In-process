@@ -5,7 +5,11 @@ from datetime import datetime
 
 app = Flask(__name__)
 
+
 @app.route('/')
+def route_list_top():
+    question = data_handler.get_top_question_sql()
+    return render_template('list.html', question=question)
 @app.route('/list')
 def route_list():
     question = data_handler.get_all_question_sql()
@@ -23,8 +27,9 @@ def questions_site(id=None):
         question = data_handler.get_question_SQL(id)
         answer = data_handler.get_answer_for_question_SQL(id)
         comment_for_Q = data_handler.get_comment_for_Q(id)
-        comment_for_A = data_handler.get_comment_for_A(id)  #SZAR
-        return render_template('/questions.html', question=question, id=id, answer=answer, comment_Q=comment_for_Q, comment_A=comment_for_A)
+        comment_for_A = data_handler.get_comment_for_A(id)  # SZAR
+        return render_template('/questions.html', question=question, id=id, answer=answer, comment_Q=comment_for_Q,
+                               comment_A=comment_for_A)
 
 
 @app.route('/questions/<int:id>', methods=['GET', 'POST'])
@@ -91,6 +96,7 @@ def delete_answer(id=None):
     data_handler.delete_SQL_answer(id)
     return redirect(url_for('questions_site', id=id))
 
+
 @app.route('/list/<sort>', methods=['GET'])
 def sorting(sort):
     request.path == '/list/<sort>'
@@ -105,7 +111,6 @@ def sorting_desc(dsort):
     return render_template('list.html', question=question)
 
 
-
 @app.route('/questions/<int:id>/add-comment-to-Q', methods=['GET', 'POST'])
 def add_comment_to_Q(id):
     if request.method == 'GET':
@@ -115,6 +120,7 @@ def add_comment_to_Q(id):
         time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         data_handler.add_comment_to_Q(id, comment, time)
         return redirect(url_for('questions_site', id=id))
+
 
 @app.route('/answer/<int:id>/add-comment-to-A', methods=['GET', 'POST'])
 def add_comment_to_A(id):
@@ -126,9 +132,10 @@ def add_comment_to_A(id):
         data_handler.add_comment_to_A(id, comment, time)
         question_id = data_handler.ID_from_answer(id)
         ID_ANS = 0
-        for line in question_id:                                #FOSSZARHUGY
+        for line in question_id:  # FOSSZARHUGY
             ID_ANS = line
         return redirect(url_for('route_list'))
+
 
 @app.route('/search')
 def search():
@@ -136,8 +143,10 @@ def search():
     q_tilte = data_handler.search_title(searched_word)
     q_message = data_handler.search_message(searched_word)
     a_message = data_handler.answer_search_message(searched_word)
-    search1 = q_tilte+q_message+a_message
+    search1 = q_tilte + q_message + a_message
     return render_template('search.html', search=search1)
+
+
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',
