@@ -15,10 +15,18 @@
     <img src="/static/library_logo.png" alt="library" id="library"/>
 </div>
 <a/>
-<div id = "search" class = sticky>
+<!--<div class = sticky>-->
+<!--    <form style="padding-left: 1397px" action="/search" method="get">-->
+<!--    <input type="text" name="search" id="author" size = 35 required >-->
+<!--    <input type="submit" value="Search" size = 35>-->
+<!--    </form>-->
+<!--    </div>-->
+<!--<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">-->
+<div class = search>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <form action="/search" method="get">
-      <input type="text" name="search" id="author" required>
-      <i class="fa fa-search"></i>
+        <input class = "search_bar" type="text" name="search" id="author" required>
+          <i class="fa fa-search"></i>
     </form>
 </div>
 <table>
