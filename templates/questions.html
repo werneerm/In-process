@@ -14,15 +14,12 @@
    <img src="/static/library_logo.png" alt="library" id="library"/>
 </div>
 <a/>
-<!--<form>-->
-<!--&lt;!&ndash;    <input class = "buttonvote" type="button" onclick="window.location.href = '/list';" value="Back to Main Menu"/>&ndash;&gt;-->
-<!--</form>-->
-<p><a href="/list" class="buttonadd" >Back to main menu</a></p>
+<p><a href="/list" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Back to main menu</a>
+<a href="/questions/{{id}}/add-comment-to-Q" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Add Comment To Question</a></p>
 <table>
 <td>
 <p id="question">
 {% for item in question %}
-{#{{ item.title }} ----- {{ item.message }}#}
     <h3>{{ item.title }} <br>
         {{ item.message }}</h3><div>
 <a href="/questions/{{id}}/answer-question" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Answer this Question</a>
@@ -44,7 +41,7 @@
     </tr>
     {% endfor %}
 </table>
-<p><a href="/questions/{{id}}/add-comment-to-Q" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Add Comment</a></p>
+{#<p><a href="/questions/{{id}}/add-comment-to-Q" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Add Comment To Question</a></p>#}
 {% for line in answer %}
 <table id="table">
     <tr>
