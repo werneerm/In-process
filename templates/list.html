@@ -10,9 +10,11 @@
 <div>
     <img src="/static/background-header.jpg" alt="business" id="header"
 </div>
+<a href="/">
 <div>
     <img src="/static/library_logo.png" alt="library" id="library"/>
 </div>
+<a/>
 <!--<div class = sticky>-->
 <!--    <form style="padding-left: 1397px" action="/search" method="get">-->
 <!--    <input type="text" name="search" id="author" size = 35 required >-->
@@ -35,7 +37,7 @@
                 <th><a href="/list/view_number" >&#8659;</a><a>View number</a><a href="/list/view_number/desc">&#8657;</a></th>
                 <th><a href="/list/vote_number" >&#8659;</a><a>Vote number</a><a href="/list/vote_number/desc">&#8657;</a></th>
                 <th><a href="/list/title" >&#8659;</a><a>Title</a><a href="/list/title/desc">&#8657;</a></th>
-                <th><a href="/list/message" >&#8659;</a><a>Messeage</a><a href="/list/message/desc">&#8657;</a></th>
+                <th><a href="/list/message" >&#8659;</a><a>Message</a><a href="/list/message/desc">&#8657;</a></th>
                 <th>Image</th>
                 <th>GoToQuestion</th>
                 <th>Vote</th><form action="/search" method="get">
@@ -55,7 +57,7 @@
                 {% if line.id == item.question_id %}
                     {% for i in match %}
                         {% if item.tag_id == i.id %}
-                                {{i.name}}
+                                # {{i.name}}
                         {% endif %}
                     {% endfor %}
                 {% endif %}

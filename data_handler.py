@@ -3,6 +3,8 @@ import os
 import connection
 from psycopg2 import sql
 import database_common
+import sever
+import psycopg2
 
 @connection.connection_handler
 def get_all_question_sql(cursor):
@@ -96,6 +98,12 @@ def delete_SQL_question(cursor, ID):
             WHERE  id=%(ID)s;
             """, {'ID': ID})
 
+@connection.connection_handler
+def delete_tags_of_question(cursor, ID):
+    cursor.execute("""
+        DELETE FROM question_tag
+        WHERE question_id=%(ID)s;
+    """, {'ID': ID})
 
 @connection.connection_handler
 def delete_SQL_answer(cursor, ID):
@@ -252,11 +260,16 @@ def get_all_tag(cursor):
 
 @connection.connection_handler
 def add_existing_tag(cursor,tag,question):
-    cursor.execute("""
-               INSERT INTO question_tag (question_id,tag_id)
-               VALUES (%(question)s,%(tag)s);
-               """,
-                   {'question': question, 'tag': tag})
+   try:
+           cursor.execute("""
+                   INSERT INTO question_tag (question_id,tag_id)
+                   VALUES (%(question)s,%(tag)s);
+                   """,
+                       {'question': question, 'tag': tag})
+
+   except psycopg2.errors.lookup("23505"):
+       return sever.sever_error()
+
 
 @connection.connection_handler
 def question_tag(cursor):
@@ -334,3 +347,36 @@ def update_comment(cursor, comment, submission_time, id):
             SET message=%(comment)s, submission_time=%(submission_time)s, edited_count=edited_count + 1
             WHERE id=%(id)s
     """, {'id': id, 'comment': comment, 'submission_time': submission_time})
+
+@connection.connection_handler
+def delete_existing_tag(cursor,question,tag):
+    cursor.execute("""
+                    DELETE FROM question_tag
+                    WHERE question_id = %(question)s and tag_id = %(tag)s 
+    """, {'question':question, 'tag':tag})
+
+@connection.connection_handler
+def get_tag_for_question(cursor,question):
+    cursor.execute("""
+                              SELECT name,id FROM question_tag,tag
+                              WHERE question_id = %(question)s  and id = tag_id;
+                             """,{'question':question}
+                   )
+    names = cursor.fetchall()
+    # print(names)
+    # for i in names:
+    #     cursor.execute("""
+    #                                      SELECT name FROM tag
+    #                                      WHERE id = %(i.tag_id)s;
+    #                                     """, {'i.tag_id': i.tag_id}
+    #                        )
+    #     all_tags= cursor.fetchall()
+    return names
+
+@connection.connection_handler
+def create_tag(cursor,new_tags):
+    cursor.execute("""
+                   INSERT INTO tag (name)
+                   VALUES (%(new_tags)s);
+                   """,
+                       {'new_tags':new_tags})

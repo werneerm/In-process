@@ -9,13 +9,15 @@
 <div>
     <img src="/static/background-header.jpg" alt="business" id="header"
 </div>
+<a href="/">
 <div>
-    <img src="/static/library_logo.png" alt="library" id="library"/>
+   <img src="/static/library_logo.png" alt="library" id="library"/>
 </div>
+<a/>
 <!--<form>-->
 <!--&lt;!&ndash;    <input class = "buttonvote" type="button" onclick="window.location.href = '/list';" value="Back to Main Menu"/>&ndash;&gt;-->
 <!--</form>-->
-<p><a href="/list" class="buttonadd" >back to main menu</a></p>
+<p><a href="/list" class="buttonadd" >Back to main menu</a></p>
 <table>
 <td>
 <p id="question">
@@ -27,6 +29,7 @@
 <a href="/questions/{{id}}/edit-question" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Edit this Question</a>
 <a href="/questions/{{id}}/delete-question" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Delete this Question</a>
     <a href="/question/{{id}}/new-tag" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Add Tag</a>
+    <a href="/question/{{id}}/delete-tag" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Delete Tag</a>
 </div>
 {% endfor %}
 </p>
@@ -80,11 +83,18 @@
 {#</table>#}
 {% endfor %}
 <br>
-{#<div>#}
-{#<a href="/questions/{{id}}/answer-question" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Answer this Question</a>#}
-{#<a href="/questions/{{id}}/edit-question" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Edit this Question</a>#}
-{#<a href="/questions/{{id}}/delete-question" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Delete this Question</a>#}
-{#    <a href="/question/{{id}}/new-tag" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Add Tag</a>#}
-{#</div>#}
+<div>
+<!--<a href="/questions/{{id}}/answer-question" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Answer this Question</a>-->
+<!--<a href="/questions/{{id}}/edit-question" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Edit this Question</a>-->
+<!--<a href="/questions/{{id}}/delete-question" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Delete this Question</a>-->
+<!--    <a href="/question/{{id}}/new-tag" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Add Tag</a>-->
+<!--     <a href="/question/{{id}}/delete-tag" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Delete Tag</a>-->
+</div>
+<!--{#<div>#}-->
+<!--{#<a href="/questions/{{id}}/answer-question" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Answer this Question</a>#}-->
+<!--{#<a href="/questions/{{id}}/edit-question" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Edit this Question</a>#}-->
+<!--{#<a href="/questions/{{id}}/delete-question" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Delete this Question</a>#}-->
+<!--{#    <a href="/question/{{id}}/new-tag" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Add Tag</a>#}-->
+<!--{#</div>#}-->
 </body>
 </html>
