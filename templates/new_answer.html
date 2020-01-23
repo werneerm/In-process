@@ -7,18 +7,34 @@
 </head>
 <body>
 <div>
-    <img style="display:block; position: relative; margin:auto" src="static/library_logo.png" />
+    <img src="/static/background-header.jpg" alt="business" id="header"
 </div>
+<a href="/">
+<div>
+    <img src="/static/library_logo.png" alt="library" id="library"/>
+</div>
+<a/>
  <div class="col pat-1"></div>
 <div class="col pat-2"></div>
-<form action="/questions/{{id}}/answer-question", method="post">
-    <label>Message</label><br>
-        <p><textarea name="message" id="message" cols=40 rows=3></textarea></p>
-    <p>Image:</p>
-    <input type='text' name="image" onchange="readURL(this);" />
-    <p><input type="submit" value="Save"></p>
-    <br><br>
-</form>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+<div class="form__group">
+    <form action="/questions/{{id}}/answer-question", method="post">
+  <input type="text" class="form__input" name="message" id="message" placeholder="Message" required="" />
+  <label for="message" class="form__label">Message</label>
+        <input type="text" class="form__input" name="image"; placeholder="Image"  />
+    <label for="message" class="form__label">Image</label>
+    <p><button type="submit" class = submit >save</p>-->
+    </form>
+</div>
+
+<!--<form action="/questions/{{id}}/answer-question", method="post">-->
+<!--    <label>Message</label><br>-->
+<!--        <p><textarea name="message" id="message" cols=40 rows=3></textarea></p>-->
+<!--    <p>Image:</p>-->
+<!--    <input type='text' name="image" onchange="readURL(this);" />-->
+<!--    <p><input type="submit" value="Save"></p>-->
+<!--    <br><br>-->
+<!--</form>-->
 <form>
     <input type="button" onclick="window.location.href = '/questions/{{id}}';" value="Return"/>
 </form>
