@@ -6,15 +6,21 @@
     <link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+<!--<p id="maintitle">Ask Mate</p>-->
 <div>
-    <img style="display:block; margin: auto; position: center" src="static/library_logo.png" id="library" />
+    <img src="/static/background-header.jpg" alt="business" id="header"
 </div>
-<div class = sticky>
-    <form align = "right" action="/search" method="get">
-    <input type="text" name="search" id="author" size = 35 required >
-    <input type="submit" value="Search" size = 35>
+<a href="/">
+<div>
+    <img src="/static/library_logo.png" alt="library" id="library"/>
+</div>
+<a/>
+<div id = "search" class = sticky>
+    <form action="/search" method="get">
+      <input type="text" name="search" id="author" required>
+      <i class="fa fa-search"></i>
     </form>
-    </div>
+</div>
 <table>
         <thead>
             <tr>

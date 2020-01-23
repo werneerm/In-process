@@ -1,15 +1,69 @@
 body {
-    background: url('https://wallpaperaccess.com/full/363411.jpg');
-    /*background-image: linear-gradient( khaki, lightgoldenrodyellow );*/
-    background-repeat: no-repeat;
+  /*background-color: );*/
+  /*background-image: linear-gradient( khaki, lightgoldenrodyellow );*/
+  /*  background-image: url("https://i.pinimg.com/originals/cf/c3/e7/cfc3e7ff0477c6d9ea5240e215c73800.jpg?fbclid=IwAR3VDD0ecnvHkO7HiMseaOEvMiA9nwf9ifSQxwRsjlAaKPljkseFPC5SFHs");*/
+  /*  background-image: url("https://wallpaperaccess.com/full/363411.jpg");*/
     background-size: cover;
-    background-position: center;
+    padding-left: 200px;
 }
+
+table{
+        width:80%;
+    margin-left:5%;
+    margin-right:10%;
+        border-left: solid;
+    border-right: solid;
+        border-collapse:collapse;
+    background-image: linear-gradient( rgba(212,232,255,0.91), rgba(212,232,255,0) );
+}
+
+#question{
+
+    font-size: large;
+
+}
+
+
+th{
+    text-transform: uppercase;
+    border: groove
+}
+
+#header{
+    display: inline;
+    position: relative;
+    margin-left: -15%;
+    width: 115%;
+    top: 0px;
+    /*z-index: 10;*/
+
+}
+
+#library{
+    background-image: url("http://0.0.0.0:8000/");
+    display: inline;
+    position: absolute;
+    top: 15px;
+    margin-left: 55%;
+    margin-right: 15%;
+    width: 30%;
+    /*z-index:10*/
+}
+
+td{
+        border-top: groove;
+}
+
+
+th, td{
+      border-bottom: groove;
+}
+
 table, th, td {
-  border: 2px solid white;
+  /*border: 2px  black;*/
+  /*border-bottom: groove;*/
   text-align: center;
-    color: black;
-    font-weight: bold;
+    color: black
 }
 
 h3 {
@@ -25,28 +79,27 @@ h4 {
   font-size: 32px;
   text-decoration: underline;
   font-weight: bold;
-    color: white;
 }
 a.buttonadd{
 display:inline-block;
 padding:0.46em 1.6em;
-border:0.1em solid white;
+border:0.1em solid #000000;
 margin:0 0.2em 0.2em 0;
 border-radius:0.12em;
 box-sizing: border-box;
 text-decoration:none;
 font-family:'Roboto',sans-serif;
 font-weight:300;
-color: grey;
+color:#000000;
 text-shadow: 0 0.04em 0.04em rgba(0,0,0,0.35);
-background-color:grey;
+background-color:#FFFFFF;
 text-align:center;
 transition: all 0.15s;
 }
 a.buttonadd:hover{
 text-shadow: 0 0 2em rgba(255,255,255,1);
-color:white;
-border-color:white;
+color:#FFFFFF;
+border-color:#FFFFFF;
 }
 @media all and (max-width:30em){
 a.buttonadd{
@@ -64,7 +117,7 @@ box-sizing: border-box;
 text-decoration:none;
 font-family:'Roboto',sans-serif;
 font-weight:300;
-color: black;
+color:#000000;
 background-color: rgba(0, 255, 127, 0);
 text-align:center;
 transition: all 0.2s;
@@ -76,7 +129,7 @@ background-color:#4095c6;
  a.buttonvote{
 display:block;
 margin:0.2em auto;
- }
+}
 }
 
 a.buttonanswer{
@@ -89,7 +142,7 @@ box-sizing: border-box;
 text-decoration:none;
 font-family:'Roboto',sans-serif;
 font-weight:300;
-color: aliceblue;
+color:#000000;
 text-align:center;
 transition: all 0.2s;
 }
@@ -101,7 +154,7 @@ background-color:#FFFFFF;
  a.button1{
 display:block;
 margin:0.4em auto;
- }
+}
 }
 
 .bouncy{
@@ -117,11 +170,73 @@ position:relative;
 50%{top:0em}
 100%{top:0em;}
 }
-div.sticky {
-  position: -webkit-sticky;
-  position: sticky;
-  top: 0;
+
+/*div.sticky {*/
+/*  position: -webkit-sticky;*/
+/*  position: sticky;*/
+/*  top: 0;*/
+
+
   /*padding: 5px;*/
   /*background-color: #cae8ca;*/
   /*border: 2px solid #4CAF50;*/
 }
+
+/*#search{*/
+/*    position: relative;*/
+/*    top: 50%;*/
+/*    left: 90%;*/
+/*    transform: translate(-50%,-50%);*/
+/*    transition: all 1s;*/
+/*    width: 50px;*/
+/*    height: 50px;*/
+/*    background: white;*/
+/*    box-sizing: border-box;*/
+/*    border-radius: 25px;*/
+/*    border: 4px solid white;*/
+/*    padding: 5px;*/
+/*}*/
+
+/*input{*/
+/*    position: absolute;*/
+/*    top: 0;*/
+/*    left: 0;*/
+/*    width: 100%;;*/
+/*    height: 42.5px;*/
+/*    line-height: 30px;*/
+/*    outline: 0;*/
+/*    border: 0;*/
+/*    display: none;*/
+/*    font-size: 1em;*/
+/*    border-radius: 20px;*/
+/*    padding: 0 20px;*/
+/*}*/
+
+/*.fa{*/
+/*    box-sizing: border-box;*/
+/*    padding: 10px;*/
+/*    width: 42.5px;*/
+/*    height: 42.5px;*/
+/*    position: absolute;*/
+/*    top: 0;*/
+/*    right: 0;*/
+/*    border-radius: 50%;*/
+/*    color: #07051a;*/
+/*    text-align: center;*/
+/*    font-size: 1.2em;*/
+/*    transition: all 1s;*/
+/*}*/
+
+/*form:hover{*/
+/*    width: 200px;*/
+/*    cursor: pointer;*/
+/*}*/
+
+/*form:hover input{*/
+/*    display: block;*/
+/*}*/
+
+/*form:hover .fa{*/
+/*    background: #07051a;*/
+/*    color: white;*/
+/*}*/

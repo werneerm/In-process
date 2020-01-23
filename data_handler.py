@@ -16,7 +16,7 @@ def get_all_question_sql(cursor):
 @connection.connection_handler
 def get_top_question_sql(cursor):
     cursor.execute("""
-                    SELECT * FROM question LIMIT 3;
+                    SELECT * FROM question LIMIT 5;
                    """,
                    )
     names = cursor.fetchall()
@@ -128,20 +128,19 @@ def ID_from_SQL(cursor, title):  # szar
     return ID
 
 
-
 @connection.connection_handler
 def delete_SQL_question(cursor, ID):
     cursor.execute("""
             DELETE FROM question 
             WHERE  id=%(ID)s;
-            """,{'ID':ID})
+            """, {'ID': ID})
 
 @connection.connection_handler
-def delete_SQL_question_and_its_answer(cursor,ID):
+def delete_SQL_question_and_its_answer(cursor, ID):
     cursor.execute("""
             DELETE FROM answer 
             WHERE question_id=%(ID)s;
-            """,{'ID':ID})
+            """, {'ID': ID})
 
 
 @connection.connection_handler
@@ -153,15 +152,17 @@ def delete_SQL_answer(cursor, ID):
                    )
 
 @connection.connection_handler
-def upvote_questions_SQL(cursor,ID):
+def upvote_questions_SQL(cursor, ID):
     cursor.execute("""
                             UPDATE question
                             SET vote_number = vote_number + 1
                             WHERE id=%(ID)s;
                               """, {'ID': ID}
                    )
+
+
 @connection.connection_handler
-def upvote_answers_SQL(cursor,ID):
+def upvote_answers_SQL(cursor, ID):
     cursor.execute("""
                             UPDATE answer
                             SET vote_number = vote_number + 1
@@ -169,8 +170,9 @@ def upvote_answers_SQL(cursor,ID):
                               """, {'ID': ID}
                    )
 
+
 @connection.connection_handler
-def downvote_questions_SQL(cursor,ID):
+def downvote_questions_SQL(cursor, ID):
     cursor.execute("""
                     UPDATE question
                     SET vote_number = vote_number - 1
@@ -178,8 +180,9 @@ def downvote_questions_SQL(cursor,ID):
                               """, {'ID': ID}
                    )
 
+
 @connection.connection_handler
-def downvote_answers_SQL(cursor,ID):
+def downvote_answers_SQL(cursor, ID):
     cursor.execute("""
                             UPDATE answer
                             SET vote_number = vote_number - 1
@@ -193,7 +196,7 @@ def sorting_sql(cursor, sort):
     cursor.execute(
         sql.SQL("""select * from question ORDER BY {} """)
             .format(sql.Identifier(sort)),
-        )
+    )
     names = cursor.fetchall()
     return names
 
@@ -203,7 +206,7 @@ def sorting_sql_desc(cursor, dsort):
     cursor.execute(
         sql.SQL("""select * from question ORDER BY {} DESC""")
             .format(sql.Identifier(dsort)),
-        )
+    )
     names = cursor.fetchall()
     return names
 
@@ -233,7 +236,7 @@ def search_message(cursor, question):
 
 
 @connection.connection_handler
-def answer_search_message(cursor,question):
+def answer_search_message(cursor, question):
     cursor.execute("""
                                 SELECT * from answer
                                 WHERE message ILIKE %(searched_word)s;
@@ -241,6 +244,8 @@ def answer_search_message(cursor,question):
                    {'searched_word': ("%" + question + "%")})
     result = cursor.fetchall()
     return result
+
+
 
 @connection.connection_handler
 def get_all_tag(cursor):
@@ -275,6 +280,7 @@ def add_comment_to_Q(cursor, id, comment, time):
         VALUES (%(id)s, NULL, %(comment)s,TIMESTAMP %(time)s, NULL)
     """, {'id': id, 'comment': comment, 'time': time})
 
+
 @connection.connection_handler
 def get_comment_for_Q(cursor, id):
     cursor.execute("""
@@ -284,12 +290,14 @@ def get_comment_for_Q(cursor, id):
     comments = cursor.fetchall()
     return comments
 
+
 @connection.connection_handler
 def add_comment_to_A(cursor, id, comment, time):
     cursor.execute("""
         INSERT INTO comment (question_id, answer_id, message, submission_time, edited_count)
         VALUES (NULL, %(id)s, %(comment)s,TIMESTAMP %(time)s, NULL)
     """, {'id': id, 'comment': comment, 'time': time})
+
 
 @connection.connection_handler
 def get_comment_for_A(cursor, id):
