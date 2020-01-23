@@ -13,17 +13,22 @@
 <div>
     <img src="/static/library_logo.png" alt="library" id="library"/>
 </div>
+<!--<form>-->
+<!--    <input type="button" onclick="window.location.href = '/questions/{{id}}';" value="Return"/>-->
+<!--</form>-->
+    <p><a href="/questions/{{id}}" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Back to main menu</a></p>
 <a/>
- <div class="col pat-1"></div>
-<div class="col pat-2"></div>
+<!-- <div class="col pat-1"></div>-->
+<!--<div class="col pat-2"></div>-->
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 <div class="form__group">
     <form action="/questions/{{id}}/answer-question", method="post">
-  <input type="text" class="form__input" name="message" id="message" placeholder="Message" required="" />
-  <label for="message" class="form__label">Message</label>
+  <input type="text" class="form__input" name="message" id="message" placeholder="Answer" required="" />
+  <label for="message" class="form__label">Answer</label>
         <input type="text" class="form__input" name="image"; placeholder="Image"  />
     <label for="message" class="form__label">Image</label>
-    <p><button type="submit" class = submit >save</p>-->
+<!--   <p><button type="submit" class = submit >save</p> -->
+    <p><button type="submit" class="example_e" >Save</p>
     </form>
 </div>
 
@@ -35,8 +40,6 @@
 <!--    <p><input type="submit" value="Save"></p>-->
 <!--    <br><br>-->
 <!--</form>-->
-<form>
-    <input type="button" onclick="window.location.href = '/questions/{{id}}';" value="Return"/>
-</form>
+
 </body>
 </html>
