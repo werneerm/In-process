@@ -25,17 +25,18 @@ def route_list():
 
 @app.route('/questions/<int:id>', methods=['GET', 'POST'])
 def questions_site(id=None):
-    if request.method == 'POST':
-        new_question = request.form.to_dict()
-        data_handler.add_question(new_question)
-        return redirect("/")
-
     if id is not None:
         question = data_handler.get_question_SQL(id)
         answer = data_handler.get_answer_for_question_SQL(id)
         comment_for_Q = data_handler.get_comment_for_Q(id)
         comment_for_A = data_handler.get_comment_for_A(id)  #SZAR
         return render_template('/questions.html', question=question, id=id, answer=answer, comment_Q=comment_for_Q, comment_A=comment_for_A)
+    # if q_id is not None and a_id is not None:
+    # question = data_handler.get_question_SQL(id)
+    # answer = data_handler.get_answer_for_question_SQL(q_id)
+    # comment_for_Q = data_handler.get_comment_for_Q(q_id)
+    # comment_for_A = data_handler.get_comment_for_A(a_id)  # SZAR
+    # return render_template('/questions.html', question=question, id=id, answer=answer, comment_Q=comment_for_Q, comment_A=comment_for_A)
 
 
 @app.route('/questions/<int:id>', methods=['GET', 'POST'])
@@ -130,37 +131,12 @@ def sorting_desc(dsort):
     return render_template('list.html', question=question)
 
 
-
-@app.route('/answers/<int:id>/vote_up')
-def ans_upvote(id=None):
-    data_handler.upvote_answers_SQL(id)
-    return redirect(url_for('route_list'))
-@app.route('/questions/<int:id>/add-comment-to-Q', methods=['GET', 'POST'])
-def add_comment_to_Q(id):
-    if request.method == 'GET':
-        return render_template('new-comment.html', id=id)
-    if request.method == 'POST':
-        comment = request.form['message']
-        time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        data_handler.add_comment_to_Q(id, comment, time)
-        return redirect(url_for('questions_site', id=id))
-
-
 @app.route('/answers/<int:id>/vote_down')
 def ans_downvote(id=None):
     data_handler.downvote_answers_SQL(id)
     return redirect(url_for('route_list'))
 
-@app.route('/questions/<int:id>/vote_up')
-def ques_upvote(id=None):
-    data_handler.upvote_questions_SQL(id)
-    return redirect(url_for('route_list'))
 
-
-@app.route('/questions/<int:id>/vote_down')
-def ques_down(id=None):
-    data_handler.downvote_questions_SQL(id)
-    return redirect('/list')
 @app.route('/answer/<int:id>/add-comment-to-A', methods=['GET', 'POST'])
 def add_comment_to_A(id):
     if request.method == 'GET':
