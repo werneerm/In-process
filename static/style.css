@@ -6,7 +6,7 @@ body {
     padding-left: 200px;
 }
 table, th, td {
-  border: 2px solid black;
+  border: 2px solid white;
   text-align: center;
 }
 h4 {

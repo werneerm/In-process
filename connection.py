@@ -5,10 +5,10 @@ import psycopg2.extras
 def get_connection_string():
     # setup connection string
     # to do this, please define these environment variables first
-    user_name = os.environ['USER_NAME']
-    password = os.environ['PASSWORD']
-    host = os.environ['HOST']
-    database_name =(os.environ['DB_NAME'])
+    user_name = 'mark'
+    password = 'filekezgya25'
+    host ='localhost'
+    database_name ='mark'
 
     env_variables_defined = user_name and password and host and database_name
 
