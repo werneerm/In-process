@@ -26,12 +26,6 @@ def questions_site(id=None):
         comment_for_Q = data_handler.get_comment_for_Q(id)
         comment_for_A = data_handler.get_comment_for_A(id)  #SZAR
         return render_template('/questions.html', question=question, id=id, answer=answer, comment_Q=comment_for_Q, comment_A=comment_for_A)
-    # if q_id is not None and a_id is not None:
-    # question = data_handler.get_question_SQL(id)
-    # answer = data_handler.get_answer_for_question_SQL(q_id)
-    # comment_for_Q = data_handler.get_comment_for_Q(q_id)
-    # comment_for_A = data_handler.get_comment_for_A(a_id)  # SZAR
-    # return render_template('/questions.html', question=question, id=id, answer=answer, comment_Q=comment_for_Q, comment_A=comment_for_A)
 
 
 @app.route('/questions/<int:id>', methods=['GET', 'POST'])
@@ -93,11 +87,11 @@ def delete_question(id=None):
         return render_template('question-delete.html', id=id)
 
 
-@app.route('/questions/<int:id>/delete_answer', methods=['GET', 'POST'])
-def delete_answer(id=None):
-    data_handler.delete_SQL_answer(id)
-    return redirect(url_for('questions_site', id=id))
-
+# @app.route('/questions/<int:id>/delete_answer', methods=['GET', 'POST'])
+# def delete_answer(id=None):
+#     data_handler.delete_SQL_answer(id)
+#     return redirect(url_for('questions_site', id=id))
+#
 
 @app.route('/list/<sort>', methods=['GET'])
 def sorting(sort):
@@ -126,11 +120,11 @@ def add_comment_to_Q(id):
         return redirect(url_for('questions_site', id=id))
 
 
-@app.route('/answers/<int:id>/vote_down')
-def ans_downvote(id=None):
-    data_handler.downvote_answers_SQL(id)
-    return redirect(url_for('route_list'))
-
+# @app.route('/answers/<int:id>/vote_down')
+# def ans_downvote(id=None):
+#     data_handler.downvote_answers_SQL(id)
+#     return redirect(url_for('route_list'))
+#
 # @app.route('/questions/<int:id>/vote_up')
 # def ques_upvote(id=None):
 #     data_handler.upvote_questions_SQL(id)
@@ -151,7 +145,7 @@ def add_comment_to_A(id):
         data_handler.add_comment_to_A(id, comment, time)
         question_id = data_handler.ID_from_answer(id)
         ID_ANS = 0
-        for line in question_id:  # FOSSZARHUGY
+        for line in question_id:                                #FOSSZARHUGY
             ID_ANS = line
         return redirect(url_for('route_list'))
 
@@ -175,7 +169,7 @@ def tags(id=None):
 @app.route('/question/<int:id>/new-tag/<existing_tag>')
 def add_pls(id=None, existing_tag=None):
     data_handler.add_existing_tag(existing_tag, id)
-    return render_template('questions.html', id=id)
+    return redirect(url_for('questions_site', id=id))
 
 
 @app.route('/questions/<int:id>/vote_up')
@@ -229,6 +223,32 @@ def comment(id=None):
             new_sub_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             data_handler.update_comment(new_comment, new_sub_time, id)
             return redirect(url_for('route_list'))
+
+@app.route('/error')
+def sever_error():
+    return render_template('error.html')
+
+
+@app.route("/question/<int:id>/delete-tag")
+def show_delete_tag(id=None):
+    if id is not None:
+        tags = data_handler.get_tag_for_question(id)
+        print(tags)
+        return render_template('delete_tag.html',id=id,tags=tags)
+
+
+@app.route('/question/<int:id>/delete-tag/<delete_tag>')
+def delete_tag(id=None,delete_tag=None):
+    data_handler.delete_existing_tag(id,delete_tag)
+    return redirect(url_for('questions_site',id=id))
+
+@app.route("/question/<int:id>/create-tag",methods=['GET','POST'])
+def create_tag(id=None):
+    if request.method == 'POST':
+        new_tag=request.form['tag']
+        data_handler.create_tag(new_tag)
+        return redirect(url_for('questions',id=id))
+    return render_template('tag.html',id=id)
 
 
 if __name__ == '__main__':
