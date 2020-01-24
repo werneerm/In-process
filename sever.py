@@ -271,21 +271,22 @@ def add_comment_to_answer(question_id=None, answer_id=None):
 
     return render_template('new-comment-for-answer.html', quest=question_id, ans_id=answer_id)
 
-# @app.route("/question/<int:question_id>/delete_this/<int:comment_id>/<int:answer_id>", methods=['GET', 'POST'])
-# @app.route("/question/<int:question_id>/edit_this/<int:comment_id>/<int:answer_id>", methods=['GET', 'POST'])
-# def delete_only_comment(question_id, comment_id, answer_id):
-#     if request.path == f'/question/{question_id}/delete_this/{comment_id}/{answer_id}':
-#         data_handler.delete_comment(comment_id)
-#         return redirect(url_for('show_answer_comment', question_id=question_id, answer_id=answer_id))
-#     if request.path == f'/question/{question_id}/edit_this/{comment_id}/{answer_id}':
-#         if request.method == 'GET':
-#             comment = data_handler.get_comment_for_edit(comment_id)
-#             return render_template('edit-comment.html', comment=comment)
-#         if request.method == 'POST':
-#             new_comment = request.form['message']
-#             new_sub_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-#             data_handler.update_comment(new_comment, new_sub_time, comment_id)
-#             return redirect(url_for('show_answer_comment', question_id=question_id, answer_id=answer_id))
+@app.route("/question/<int:question_id>/delete_this/<int:comment_id>/<int:answer_id>", methods=['GET', 'POST'])
+@app.route("/question/<int:question_id>/edit_this/<int:comment_id>/<int:answer_id>", methods=['GET', 'POST'])
+def delete_only_comment(question_id, comment_id, answer_id):
+    if request.path == f'/question/{question_id}/delete_this/{comment_id}/{answer_id}':
+        data_handler.delete_comment(comment_id)
+        return redirect(url_for('show_answer_comments', question_id=question_id, answer_id=answer_id))
+    if request.path == f'/question/{question_id}/edit_this/{comment_id}/{answer_id}':
+        if request.method == 'POST':
+            new_comment = request.form['message']
+            new_sub_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            data_handler.update_comment(new_comment, new_sub_time, comment_id)
+            return redirect(url_for('show_answer_comments', question_id=question_id, answer_id=answer_id))
+    question = data_handler.get_question_SQL(question_id)
+    answer = data_handler.get_answer_for_question_SQL_with_ans_id(answer_id)
+    comment = data_handler.get_comment_for_edit(comment_id)
+    return render_template('edit-comment.html', comment=comment, question=question, answer=answer)
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',

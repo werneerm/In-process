@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Edit Comment</title>
-    <link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='style.css') }}">
+    <title>Edit Answer's Comment</title>
 </head>
 <body>
 <div>
@@ -11,13 +10,9 @@
 </div>
 <h1>Edit Comment</h1>
 {% for item in comment %}
-    {% for line in question %}
-        {% for i in answer %}
-<form action="/question/{{ line.id }}/edit_this/{{ item.id }}/{{ i.id }}", method="post">
+<form action="/question/{{ item.id }}/edit_this/", method="post">
     <p>Message:</p>
 	<p><textarea name="message" id="message" cols=60 rows=5>{{ item.message }}</textarea></p>
-            {% endfor %}
-        {% endfor %}
     <p><input type="submit" value="Edit Comment"></p>
 {% endfor %}
 </form>

@@ -319,7 +319,7 @@ def add_comment_to_A(cursor, id, comment, time):
 @connection.connection_handler
 def get_comment_for_A(cursor, id):
     cursor.execute("""
-        SELECT message, submission_time FROM comment
+        SELECT id, message, submission_time FROM comment
         WHERE answer_id=%(id)s;
     """, {'id': id})
     comments = cursor.fetchall()
