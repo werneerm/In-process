@@ -7,7 +7,7 @@ import database_common
 @connection.connection_handler
 def get_all_question_sql(cursor):
     cursor.execute("""
-                    SELECT * FROM question;
+                    SELECT * FROM question ORDER BY id;
                    """,
                    )
     names = cursor.fetchall()
@@ -16,7 +16,7 @@ def get_all_question_sql(cursor):
 @connection.connection_handler
 def get_top_question_sql(cursor):
     cursor.execute("""
-                    SELECT * FROM question LIMIT 5;
+                    SELECT * FROM question ORDER BY id LIMIT 5;
                    """,
                    )
     names = cursor.fetchall()
