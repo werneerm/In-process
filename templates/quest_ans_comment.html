@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<table>
+<tr>
+<td>Question:<br>Message:</td>
+<td>
+<p id="question">
+{% for line in question %}
+    <h3>{{ line.title }} <br>
+        {{ line.message }}<br>
+{% endfor %}
+</p>
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td>The Answer:</td>
+<td>
+<p id="question">
+{% for line in answer%}
+    <h3>{{ line.title }} <br>
+        {{ line.message }}<br>
+{% endfor %}
+</p>
+</td>
+</tr>
+</table>
+
+{% for anyad in comments %}
+<table>
+<td>ˇComment</td>
+<tr>
+<td>
+<p id="question">
+    {% for line in question %}
+{% for kvaanyad in answer %}
+
+        {{ anyad.message }} <a href="/question/{{line.id}}/delete_this/{{ anyad.id }}/{{ kvaanyad.id }}" class = "buttonvote" >Delete Comment</a>
+    <a href="/question/{{line.id}}/edit_this/{{ anyad.id }}/{{ kvaanyad.id }}" class = "buttonvote" >Edit Comment</a>
+    {% endfor %}
+        {% endfor %}
+</p>
+</td>
+</tr>
+</table>
+{% endfor %}
+<p><a href="/list" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Back to main menu</a>
+{% for line in question %}
+<p><a href="/questions/{{ line.id }}" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Back to Question's Site</a>
+{% endfor %}
+
+</body>
+</html>
