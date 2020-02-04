@@ -300,9 +300,13 @@ def regist():
         current_time= datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         username = request.form['username']
         password = request.form['psw']
+        password2 = request.form['psw-repeat']
         hashed_psw = data_handler.hash_password(password)
-        data_handler.SQL_password_username(hashed_psw,username,current_time)
-        return render_template('list.html')
+        if password == password2:
+            data_handler.SQL_password_username(hashed_psw,username,current_time)
+            return redirect(url_for('route_list'))
+        else:
+            return render_template('registration.html')
 
     return render_template('registration.html')
 
