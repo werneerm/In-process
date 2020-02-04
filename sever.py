@@ -311,6 +311,7 @@ def delete_only_comment(question_id, comment_id, answer_id):
     return render_template('edit-comment.html', comment=comment, question=question, answer=answer)
 
 @app.route('/registration',methods=['GET','POST'])
+@app.route('/registration-error',methods=['GET','POST'])
 def regist():
     if request.method == 'POST':
         current_time= datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -322,7 +323,7 @@ def regist():
             data_handler.SQL_password_username(hashed_psw,username,current_time)
             return redirect(url_for('route_list'))
         else:
-            return render_template('registration.html')
+            return render_template('registration-error.html')
 
     return render_template('registration.html')
 
