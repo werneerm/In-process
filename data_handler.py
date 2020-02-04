@@ -41,7 +41,8 @@ def add_SQL_question(cursor, time, vote_num, view_num, title, message, image):
 def get_question_SQL(cursor, id):
     cursor.execute("""
     SELECT * FROM question
-    WHERE id=%(id)s;
+    WHERE id=%(id)s
+    ORDER BY id;
     """, {'id': id})
     question = cursor.fetchall()
     return question
@@ -51,7 +52,8 @@ def get_question_SQL(cursor, id):
 def get_answer_for_question_SQL(cursor, id):
     cursor.execute("""
         SELECT * FROM answer
-        WHERE question_id=%(id)s;
+        WHERE question_id=%(id)s
+        ORDER BY id;
     """, {'id': id})
     answer = cursor.fetchall()
     return answer
@@ -60,7 +62,8 @@ def get_answer_for_question_SQL(cursor, id):
 def get_answer_for_question_SQL_with_ans_id(cursor, id):
     cursor.execute("""
         SELECT * FROM answer
-        WHERE id=%(id)s;
+        WHERE id=%(id)s
+        ORDER BY id;
     """, {'id': id})
     answer = cursor.fetchall()
     return answer
@@ -130,14 +133,14 @@ def delete_SQL_comment_with_question(cursor, ID):
                 """, {'ID': ID})
 
 
-@connection.connection_handler
-def ID_from_SQL(cursor, title):  # szar
-    cursor.execute("""
-        SELECT id FROM question
-        WHERE title=%(title)s
-    """, {'title': title})
-    ID = cursor.fetchall()
-    return ID
+# @connection.connection_handler
+# def ID_from_SQL(cursor, title):  # szar
+#     cursor.execute("""
+#         SELECT id FROM question
+#         WHERE title=%(title)s
+#     """, {'title': title})
+#     ID = cursor.fetchall()
+#     return ID
 
 
 @connection.connection_handler
@@ -382,3 +385,12 @@ def create_tag(cursor,new_tags):
                    VALUES (%(new_tags)s);
                    """,
                        {'new_tags':new_tags})
+
+@connection.connection_handler
+def get_question_id_by_answer_id(cursor, id):
+    cursor.execute("""
+    SELECT * FROM answer
+    WHERE id=%(id)s;
+    """, {'id': id})
+    q_id = cursor.fetchall()
+    return q_id
