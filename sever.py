@@ -314,6 +314,10 @@ def regist():
 def see_all_user():
     users = data_handler.get_all_users()
     return render_template('all_user.html', users=users)
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    return render_template('login.html')
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',
