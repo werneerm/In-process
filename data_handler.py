@@ -408,3 +408,7 @@ def SQL_password_username(cursor,psw,user,time):
                     VALUES (%(user)s,%(psw)s,%(time)s);
     """, {'user':user, 'psw':psw, 'time':time})
 
+
+def verify_password(text, hashed_password):
+    hashed_bytes_password = hashed_password.encode('utf-8')
+    return bcrypt.checkpw(text.encode('utf-8'), hashed_bytes_password)
