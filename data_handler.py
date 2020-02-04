@@ -134,16 +134,6 @@ def delete_SQL_comment_with_question(cursor, ID):
                 """, {'ID': ID})
 
 
-# @connection.connection_handler
-# def ID_from_SQL(cursor, title):  # szar
-#     cursor.execute("""
-#         SELECT id FROM question
-#         WHERE title=%(title)s
-#     """, {'title': title})
-#     ID = cursor.fetchall()
-#     return ID
-
-
 @connection.connection_handler
 def delete_SQL_question(cursor, ID):
     cursor.execute("""
@@ -166,6 +156,18 @@ def delete_SQL_answer(cursor, ID):
                             WHERE  question_id=%(ID)s;
                            """, {'ID': ID}
                    )
+@connection.connection_handler
+def delete_question_tag(cursor, id):
+    cursor.execute("""
+        DELETE FROM question_tag
+        WHERE question_id=%(id)s;
+    """, {'id': id})
+@connection.connection_handler
+def delete_answer_comment(cursor, id):
+    cursor. execute("""
+    DELETE FROM comment
+    WHERE answer_id = %(id)s
+    """, {'answer_id': id})
 
 @connection.connection_handler
 def upvote_questions_SQL(cursor, ID):
@@ -408,3 +410,19 @@ def SQL_password_username(cursor,psw,user,time):
                     VALUES (%(user)s,%(psw)s,%(time)s);
     """, {'user':user, 'psw':psw, 'time':time})
 
+@connection.connection_handler
+def get_answer_id_by_question_id(cursor, ID):     #SZAR
+    cursor.execute("""
+    SELECT * FROM answer
+    WHERE question_id=%(ID)s;
+    """, {'id': ID})
+    row = cursor.fetchall()
+    return row
+
+@connection.connection_handler
+def get_all_users(cursor):
+    cursor.execute("""
+    SELECT * from users;
+    """)
+    users = cursor.fetchall()
+    return users

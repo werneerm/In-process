@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for,session
 import data_handler
 import time
 from datetime import datetime
+import bcrypt
 
 app = Flask(__name__)
 app.secret_key = '6w:`tFm%mBLY}ty*QcRRpD+,Jga@Fy\XFxjhga'
@@ -81,8 +82,16 @@ def delete_question(id=None):
     if request.method == 'POST':
         option = request.form['pick']
         if option == 'yes':
+            print(id)
+            answer_row = data_handler.get_answer_id_by_question_id(id)
+            list_to_append = []
+            for i in answer_row:
+                list_to_append.append(i)
+            answer_id = list_to_append[0]['id']
+            data_handler.delete_answer_comment(answer_id)
             data_handler.delete_SQL_question_and_its_answer(id)
             data_handler.delete_SQL_comment_with_question(id)
+            data_handler.delete_question_tag(id)
             data_handler.delete_SQL_question(id)
             return redirect(url_for('route_list'))
         elif option == 'no':
@@ -123,22 +132,6 @@ def add_comment_to_Q(id):
         data_handler.add_comment_to_Q(id, comment, time)
         return redirect(url_for('questions_site', id=id))
 
-
-# @app.route('/answers/<int:id>/vote_down')
-# def ans_downvote(id=None):
-#     data_handler.downvote_answers_SQL(id)
-#     return redirect(url_for('route_list'))
-#
-# @app.route('/questions/<int:id>/vote_up')
-# def ques_upvote(id=None):
-#     data_handler.upvote_questions_SQL(id)
-#     return redirect(url_for('route_list'))
-#
-#
-# @app.route('/questions/<int:id>/vote_down')
-# def ques_down(id=None):
-#     data_handler.downvote_questions_SQL(id)
-#     return redirect('/list')
 @app.route('/answer/<int:id>/add-comment-to-A', methods=['GET', 'POST'])
 def add_comment_to_A(id):
     if request.method == 'GET':
@@ -317,6 +310,10 @@ def regist():
 
     return render_template('registration.html')
 
+@app.route('/all-user')
+def see_all_user():
+    users = data_handler.get_all_users()
+    return render_template('all_user.html', users=users)
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',
