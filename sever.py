@@ -59,7 +59,7 @@ def add_question():
     return render_template('add-question.html')
 
 
-@app.route('/questions/<int:id>', methods=['GET', 'POST'])
+#@app.route('/questions/<int:id>', methods=['GET', 'POST'])
 @app.route('/questions/<int:id>/edit-question', methods=['GET', 'POST'])
 def edit_question(id=None):
     if request.method == 'GET':
@@ -122,7 +122,21 @@ def add_comment_to_Q(id):
         return redirect(url_for('questions_site', id=id))
 
 
-
+# @app.route('/answers/<int:id>/vote_down')
+# def ans_downvote(id=None):
+#     data_handler.downvote_answers_SQL(id)
+#     return redirect(url_for('route_list'))
+#
+# @app.route('/questions/<int:id>/vote_up')
+# def ques_upvote(id=None):
+#     data_handler.upvote_questions_SQL(id)
+#     return redirect(url_for('route_list'))
+#
+#
+# @app.route('/questions/<int:id>/vote_down')
+# def ques_down(id=None):
+#     data_handler.downvote_questions_SQL(id)
+#     return redirect('/list')
 @app.route('/answer/<int:id>/add-comment-to-A', methods=['GET', 'POST'])
 def add_comment_to_A(id):
     if request.method == 'GET':
@@ -175,13 +189,24 @@ def ques_downvote(id=None):
 @app.route('/answers/<int:id>/vote_up')
 def answer_upvote(id=None):
     data_handler.upvote_answers_SQL(id)
-    return redirect(url_for('route_list'))
+    realdictrow = data_handler.get_question_id_by_answer_id(id)
+    list_for_realdictrow = []
+    for i in realdictrow:
+        list_for_realdictrow.append(i)
+    print(list_for_realdictrow)
+    question_id = list_for_realdictrow[0]['question_id']
+    return redirect(url_for('questions_site', id=question_id))
 
 
 @app.route('/answers/<int:id>/vote_down')
 def answer_downvote(id=None):
     data_handler.downvote_answers_SQL(id)
-    return redirect(url_for('route_list'))
+    realdictrow = data_handler.get_question_id_by_answer_id(id)
+    list_for_realdictrow = []
+    for i in realdictrow:
+        list_for_realdictrow.append(i)
+    question_id = list_for_realdictrow[0]['question_id']
+    return redirect(url_for('questions_site', id=question_id))
 
 
 @app.route('/answers/<int:id>/edit-answer', methods=['GET', 'POST'])
@@ -273,9 +298,13 @@ def delete_only_comment(question_id, comment_id, answer_id):
     answer = data_handler.get_answer_for_question_SQL_with_ans_id(answer_id)
     comment = data_handler.get_comment_for_edit(comment_id)
     return render_template('edit-comment.html', comment=comment, question=question, answer=answer)
+
+@app.route('/registration')
+def regist():
+    return render_template('registration.html')
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',
-        port=7000,
+        port=8000,
         debug=True,
     )
