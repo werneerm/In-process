@@ -287,6 +287,10 @@ def delete_only_comment(question_id, comment_id, answer_id):
     answer = data_handler.get_answer_for_question_SQL_with_ans_id(answer_id)
     comment = data_handler.get_comment_for_edit(comment_id)
     return render_template('edit-comment.html', comment=comment, question=question, answer=answer)
+
+@app.route('/registration')
+def regist():
+    return render_template('registration.html')
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',
