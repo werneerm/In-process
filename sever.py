@@ -1,10 +1,12 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for,session
 import data_handler
 import time
 from datetime import datetime
 import bcrypt
 
 app = Flask(__name__)
+app.secret_key = '6w:`tFm%mBLY}ty*QcRRpD+,Jga@Fy\XFxjhga'
+
 
 @app.route('/')
 def only_5_question():
@@ -129,7 +131,6 @@ def add_comment_to_Q(id):
         time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         data_handler.add_comment_to_Q(id, comment, time)
         return redirect(url_for('questions_site', id=id))
-
 
 @app.route('/answer/<int:id>/add-comment-to-A', methods=['GET', 'POST'])
 def add_comment_to_A(id):
@@ -293,9 +294,22 @@ def delete_only_comment(question_id, comment_id, answer_id):
     comment = data_handler.get_comment_for_edit(comment_id)
     return render_template('edit-comment.html', comment=comment, question=question, answer=answer)
 
-@app.route('/registration')
+@app.route('/registration',methods=['GET','POST'])
 def regist():
+    if request.method == 'POST':
+        current_time= datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        username = request.form['username']
+        password = request.form['psw']
+        hashed_psw = data_handler.hash_password(password)
+        data_handler.SQL_password_username(hashed_psw,username,current_time)
+        return render_template('list.html')
+
     return render_template('registration.html')
+
+@app.route('/all-user')
+def see_all_user():
+    users = data_handler.get_all_users()
+    return render_template('all_user.html', users=users)
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',

@@ -5,6 +5,7 @@ from psycopg2 import sql
 import database_common
 import sever
 import psycopg2
+import bcrypt
 
 @connection.connection_handler
 def get_all_question_sql(cursor):
@@ -397,6 +398,18 @@ def get_question_id_by_answer_id(cursor, id):
     q_id = cursor.fetchall()
     return q_id
 
+def hash_password(text):
+    # By using bcrypt, the salt is saved into the hash itself
+    hashed_bytes = bcrypt.hashpw(text.encode('utf-8'), bcrypt.gensalt())
+    return hashed_bytes.decode('utf-8')
+
+@connection.connection_handler
+def SQL_password_username(cursor,psw,user,time):
+    cursor.execute("""
+                    INSERT INTO users (username, password, creation_date)
+                    VALUES (%(user)s,%(psw)s,%(time)s);
+    """, {'user':user, 'psw':psw, 'time':time})
+
 @connection.connection_handler
 def get_answer_id_by_question_id(cursor, ID):     #SZAR
     cursor.execute("""
@@ -405,3 +418,11 @@ def get_answer_id_by_question_id(cursor, ID):     #SZAR
     """, {'id': ID})
     row = cursor.fetchall()
     return row
+
+@connection.connection_handler
+def get_all_users(cursor):
+    cursor.execute("""
+    SELECT * from users;
+    """)
+    users = cursor.fetchall()
+    return users

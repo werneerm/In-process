@@ -56,14 +56,14 @@ td{
 }
 
 
-th, td{
-      border-bottom: groove;
+th, td {
+    border-bottom: groove;
 }
 
 table, th, td {
-  /*border: 2px  black;*/
-  /*border-bottom: groove;*/
-  text-align: center;
+    /*border: 2px  black;*/
+    /*border-bottom: groove;*/
+    text-align: center;
     color: black
 }
 
@@ -75,6 +75,7 @@ h4 {
   font-size: 32px;
   text-align: center;
 }
+
 #maintitle {
   text-align: center;
   font-size: 32px;
@@ -162,6 +163,7 @@ margin:0.4em auto;
 animation:bouncy 5s infinite linear;
 position:relative;
 }
+
 @keyframes bouncy {
 0%{top:0em}
 40%{top:0em}
@@ -293,7 +295,7 @@ background-color:#FFFFFF;
 button.submit{
 display:block;
 margin:0.4em auto;
- }
+}
 }
 
 .example_e {
