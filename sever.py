@@ -316,6 +316,7 @@ def regist():
             return render_template('registration.html')
 
     return render_template('registration.html')
+
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',
