@@ -339,31 +339,31 @@ def cookie_insertion():
     response.set_cookie('username', username='values')
     return response
 
-@app.before_request
-def require_login():
-    if 'username' not in session:
-        return redirect('/login')
-
-
-@app.route("/login", methods=["GET", "POST"])
-def login():
-    if request.method == "POST":
-        # You should really validate that these fields
-        # are provided, rather than displaying an ugly
-        # error message, but for the sake of a simple
-        # example we'll just assume they are provided
-
-        user_name = request.form["name"]
-        password = request.form["password"]
-        user = data_handler #itt kéne megtalálni hogy létezik e a user
-        if not user:
-            # Again, throwing an error is not a user-friendly
-            # way of handling this, but this is just an example
-            raise ValueError("Invalid username or password supplied")
-
-        # Note we don't *return* the response immediately
-        session['username'] =user_name
-        return redirect('/')
+# @app.before_request
+# def require_login():
+#     if 'username' not in session:
+#         return redirect('/login')
+#
+#
+# @app.route("/login", methods=["GET", "POST"])
+# def login():
+#     if request.method == "POST":
+#         # You should really validate that these fields
+#         # are provided, rather than displaying an ugly
+#         # error message, but for the sake of a simple
+#         # example we'll just assume they are provided
+#
+#         user_name = request.form["name"]
+#         password = request.form["password"]
+#         user = data_handler #itt kéne megtalálni hogy létezik e a user
+#         if not user:
+#             # Again, throwing an error is not a user-friendly
+#             # way of handling this, but this is just an example
+#             raise ValueError("Invalid username or password supplied")
+#
+#         # Note we don't *return* the response immediately
+#         session['username'] =user_name
+#         return redirect('/')
 
 if __name__ == '__main__':
     app.run(
