@@ -132,22 +132,6 @@ def add_comment_to_Q(id):
         data_handler.add_comment_to_Q(id, comment, time)
         return redirect(url_for('questions_site', id=id))
 
-
-# @app.route('/answers/<int:id>/vote_down')
-# def ans_downvote(id=None):
-#     data_handler.downvote_answers_SQL(id)
-#     return redirect(url_for('route_list'))
-#
-# @app.route('/questions/<int:id>/vote_up')
-# def ques_upvote(id=None):
-#     data_handler.upvote_questions_SQL(id)
-#     return redirect(url_for('route_list'))
-#
-#
-# @app.route('/questions/<int:id>/vote_down')
-# def ques_down(id=None):
-#     data_handler.downvote_questions_SQL(id)
-#     return redirect('/list')
 @app.route('/answer/<int:id>/add-comment-to-A', methods=['GET', 'POST'])
 def add_comment_to_A(id):
     if request.method == 'GET':
@@ -339,31 +323,33 @@ def cookie_insertion():
     response.set_cookie('username', username='values')
     return response
 
-# @app.before_request
-# def require_login():
-#     if 'username' not in session:
-#         return redirect('/login')
-#
-#
-# @app.route("/login", methods=["GET", "POST"])
-# def login():
-#     if request.method == "POST":
-#         # You should really validate that these fields
-#         # are provided, rather than displaying an ugly
-#         # error message, but for the sake of a simple
-#         # example we'll just assume they are provided
-#
-#         user_name = request.form["name"]
-#         password = request.form["password"]
-#         user = data_handler #itt kéne megtalálni hogy létezik e a user
-#         if not user:
-#             # Again, throwing an error is not a user-friendly
-#             # way of handling this, but this is just an example
-#             raise ValueError("Invalid username or password supplied")
-#
-#         # Note we don't *return* the response immediately
-#         session['username'] =user_name
-#         return redirect('/')
+@app.before_request
+def require_login():
+    if 'username' not in session:
+        return redirect('/login')
+
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == 'GET'.
+        return render_template('login.html')
+    if request.method == "POST":
+        # You should really validate that these fields
+        # are provided, rather than displaying an ugly
+        # error message, but for the sake of a simple
+        # example we'll just assume they are provided
+
+        user_name = request.form["name"]
+        password = request.form["password"]
+        user_row = data_handler.get_one_user(user_name) #itt kéne megtalálni hogy létezik e a user
+        if not user:
+            # Again, throwing an error is not a user-friendly
+            # way of handling this, but this is just an example
+            raise ValueError("Invalid username or password supplied")
+
+        # Note we don't *return* the response immediately
+        session['username'] =user_name
+        return redirect('/')
 
 if __name__ == '__main__':
     app.run(
