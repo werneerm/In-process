@@ -316,12 +316,44 @@ def see_all_user():
     users = data_handler.get_all_users()
     return render_template('all_user.html', users=users)
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/set-cookie')
+def cookie_insertion():
+    redirect_to_index = redirect('/')
+    response = make_response(redirect_to_index)
+    response.set_cookie('username', username='values')
+    return response
+
+@app.before_request
+def require_login():
+    if 'username' not in session:
+        return redirect('/login')
+
+
+@app.route("/login", methods=["GET", "POST"])
 def login():
-    return render_template('login.html')
+    if request.method == 'GET'.
+        return render_template('login.html')
+    if request.method == "POST":
+        # You should really validate that these fields
+        # are provided, rather than displaying an ugly
+        # error message, but for the sake of a simple
+        # example we'll just assume they are provided
+
+        user_name = request.form["name"]
+        password = request.form["password"]
+        user_row = data_handler.get_one_user(user_name) #itt kéne megtalálni hogy létezik e a user
+        if not user:
+            # Again, throwing an error is not a user-friendly
+            # way of handling this, but this is just an example
+            raise ValueError("Invalid username or password supplied")
+
+        # Note we don't *return* the response immediately
+        session['username'] =user_name
+        return redirect('/')
+
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',
-        port=7000,
+        port=8000,
         debug=True,
     )

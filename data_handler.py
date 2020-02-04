@@ -134,6 +134,16 @@ def delete_SQL_comment_with_question(cursor, ID):
                 """, {'ID': ID})
 
 
+# @connection.connection_handler
+# def ID_from_SQL(cursor, title):  # szar
+#     cursor.execute("""
+#         SELECT id FROM question
+#         WHERE title=%(title)s
+#     """, {'title': title})
+#     ID = cursor.fetchall()
+#     return ID
+
+
 @connection.connection_handler
 def delete_SQL_question(cursor, ID):
     cursor.execute("""
@@ -430,3 +440,16 @@ def get_all_users(cursor):
     """)
     users = cursor.fetchall()
     return users
+
+@connection.connection_handler
+def get_one_user(cursor,username):
+    cursor.execute("""
+    SELECT * from users
+    WHERE username=%(username)s;
+    """, {'username': username})
+    user_row = cursor.fetchall()
+    return user_row
+
+def verify_password(text, hashed_password):
+    hashed_bytes_password = hashed_password.encode('utf-8')
+    return bcrypt.checkpw(text.encode('utf-8'), hashed_bytes_password)
