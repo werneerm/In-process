@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<table>
+    <tr>
+        <th>ID</th>
+                <th>UserName</th>
+        <th>Creation Date</th>
+    </tr>
+{% for row in users %}
+    <tr>
+        <td>
+            {{ row.id }}
+        </td>
+        <td>
+            {{ row.username }}
+        </td>
+        <td>
+            {{ row.creation_date }}
+        </td>
+    </tr>
+    {% endfor %}
+    </table>
+<p><a href="/list" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Back to main menu</a>
+</body>
+</html>

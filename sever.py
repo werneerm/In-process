@@ -1,7 +1,8 @@
-from flask import Flask, render_template, request, redirect, url_for,session,make_response
+from flask import Flask, render_template, request, redirect, url_for,session
 import data_handler
 import time
 from datetime import datetime
+import bcrypt
 
 app = Flask(__name__)
 app.secret_key = '6w:`tFm%mBLY}ty*QcRRpD+,Jga@Fy\XFxjhga'
@@ -81,8 +82,16 @@ def delete_question(id=None):
     if request.method == 'POST':
         option = request.form['pick']
         if option == 'yes':
+            print(id)
+            answer_row = data_handler.get_answer_id_by_question_id(id)
+            list_to_append = []
+            for i in answer_row:
+                list_to_append.append(i)
+            answer_id = list_to_append[0]['id']
+            data_handler.delete_answer_comment(answer_id)
             data_handler.delete_SQL_question_and_its_answer(id)
             data_handler.delete_SQL_comment_with_question(id)
+            data_handler.delete_question_tag(id)
             data_handler.delete_SQL_question(id)
             return redirect(url_for('route_list'))
         elif option == 'no':
@@ -307,11 +316,20 @@ def regist():
         current_time= datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         username = request.form['username']
         password = request.form['psw']
+        password2 = request.form['psw-repeat']
         hashed_psw = data_handler.hash_password(password)
-        data_handler.SQL_password_username(hashed_psw,username,current_time)
-        return render_template('list.html')
+        if password == password2:
+            data_handler.SQL_password_username(hashed_psw,username,current_time)
+            return redirect(url_for('route_list'))
+        else:
+            return render_template('registration.html')
 
     return render_template('registration.html')
+
+@app.route('/all-user')
+def see_all_user():
+    users = data_handler.get_all_users()
+    return render_template('all_user.html', users=users)
 
 @app.route('/set-cookie')
 def cookie_insertion():
@@ -349,6 +367,6 @@ def login():
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',
-        port=8000,
+        port=7000,
         debug=True,
     )

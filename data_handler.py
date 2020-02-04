@@ -166,6 +166,18 @@ def delete_SQL_answer(cursor, ID):
                             WHERE  question_id=%(ID)s;
                            """, {'ID': ID}
                    )
+@connection.connection_handler
+def delete_question_tag(cursor, id):
+    cursor.execute("""
+        DELETE FROM question_tag
+        WHERE question_id=%(id)s;
+    """, {'id': id})
+@connection.connection_handler
+def delete_answer_comment(cursor, id):
+    cursor. execute("""
+    DELETE FROM comment
+    WHERE answer_id = %(id)s
+    """, {'answer_id': id})
 
 @connection.connection_handler
 def upvote_questions_SQL(cursor, ID):
@@ -408,7 +420,22 @@ def SQL_password_username(cursor,psw,user,time):
                     VALUES (%(user)s,%(psw)s,%(time)s);
     """, {'user':user, 'psw':psw, 'time':time})
 
+@connection.connection_handler
+def get_answer_id_by_question_id(cursor, ID):     #SZAR
+    cursor.execute("""
+    SELECT * FROM answer
+    WHERE question_id=%(ID)s;
+    """, {'id': ID})
+    row = cursor.fetchall()
+    return row
 
+@connection.connection_handler
+def get_all_users(cursor):
+    cursor.execute("""
+    SELECT * from users;
+    """)
+    users = cursor.fetchall()
+    return users
 def verify_password(text, hashed_password):
     hashed_bytes_password = hashed_password.encode('utf-8')
     return bcrypt.checkpw(text.encode('utf-8'), hashed_bytes_password)
