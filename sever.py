@@ -1,9 +1,11 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for,session
 import data_handler
 import time
 from datetime import datetime
 
 app = Flask(__name__)
+app.secret_key = '6w:`tFm%mBLY}ty*QcRRpD+,Jga@Fy\XFxjhga'
+
 
 @app.route('/')
 def only_5_question():
@@ -284,8 +286,16 @@ def delete_only_comment(question_id, comment_id, answer_id):
     comment = data_handler.get_comment_for_edit(comment_id)
     return render_template('edit-comment.html', comment=comment, question=question, answer=answer)
 
-@app.route('/registration')
+@app.route('/registration',methods=['GET','POST'])
 def regist():
+    if request.method == 'POST':
+        current_time= datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        username = request.form['username']
+        password = request.form['psw']
+        hashed_psw = data_handler.hash_password(password)
+        data_handler.SQL_password_username(hashed_psw,username,current_time)
+        return render_template('list.html')
+
     return render_template('registration.html')
 if __name__ == '__main__':
     app.run(
