@@ -59,7 +59,7 @@ def add_question():
     return render_template('add-question.html')
 
 
-@app.route('/questions/<int:id>', methods=['GET', 'POST'])
+#@app.route('/questions/<int:id>', methods=['GET', 'POST'])
 @app.route('/questions/<int:id>/edit-question', methods=['GET', 'POST'])
 def edit_question(id=None):
     if request.method == 'GET':
@@ -122,21 +122,6 @@ def add_comment_to_Q(id):
         return redirect(url_for('questions_site', id=id))
 
 
-# @app.route('/answers/<int:id>/vote_down')
-# def ans_downvote(id=None):
-#     data_handler.downvote_answers_SQL(id)
-#     return redirect(url_for('route_list'))
-#
-# @app.route('/questions/<int:id>/vote_up')
-# def ques_upvote(id=None):
-#     data_handler.upvote_questions_SQL(id)
-#     return redirect(url_for('route_list'))
-#
-#
-# @app.route('/questions/<int:id>/vote_down')
-# def ques_down(id=None):
-#     data_handler.downvote_questions_SQL(id)
-#     return redirect('/list')
 @app.route('/answer/<int:id>/add-comment-to-A', methods=['GET', 'POST'])
 def add_comment_to_A(id):
     if request.method == 'GET':
@@ -189,13 +174,24 @@ def ques_downvote(id=None):
 @app.route('/answers/<int:id>/vote_up')
 def answer_upvote(id=None):
     data_handler.upvote_answers_SQL(id)
-    return redirect(url_for('route_list'))
+    realdictrow = data_handler.get_question_id_by_answer_id(id)
+    list_for_realdictrow = []
+    for i in realdictrow:
+        list_for_realdictrow.append(i)
+    print(list_for_realdictrow)
+    question_id = list_for_realdictrow[0]['question_id']
+    return redirect(url_for('questions_site', id=question_id))
 
 
 @app.route('/answers/<int:id>/vote_down')
 def answer_downvote(id=None):
     data_handler.downvote_answers_SQL(id)
-    return redirect(url_for('route_list'))
+    realdictrow = data_handler.get_question_id_by_answer_id(id)
+    list_for_realdictrow = []
+    for i in realdictrow:
+        list_for_realdictrow.append(i)
+    question_id = list_for_realdictrow[0]['question_id']
+    return redirect(url_for('questions_site', id=question_id))
 
 
 @app.route('/answers/<int:id>/edit-answer', methods=['GET', 'POST'])
