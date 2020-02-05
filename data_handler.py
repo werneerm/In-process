@@ -524,3 +524,12 @@ def get_comment_owner(cursor,id):
 
     names = cursor.fetchall()
     return names
+
+@connection.connection_handler
+def get_user_info(cursor, username):
+    cursor.execute("""
+    SELECT * FROM users
+    WHERE username=%(username)s;
+    """, {'username': username})
+    row = cursor.fetchall()
+    return row

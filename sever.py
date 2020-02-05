@@ -398,11 +398,12 @@ def login():
 @app.route('/user/<int:id>', methods=['GET', 'POST'])
 def user_site(id):
     actual_username = session['username']
+    user_info = data_handler.get_user_info(actual_username)
     user_questions = data_handler.get_user_question(actual_username)
     user_answer = data_handler.get_user_answer(actual_username)
     user_comment = data_handler.get_user_answer(actual_username)
 
-    return render_template('user_site.html', user_question=user_questions, user_answer=user_answer, user_comment=user_comment)
+    return render_template('user_site.html', user_question=user_questions, user_answer=user_answer, user_comment=user_comment, user_info=user_info)
 
 if __name__ == '__main__':
     app.run(
