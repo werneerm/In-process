@@ -189,12 +189,24 @@ def add_pls(id=None, existing_tag=None):
 @app.route('/questions/<int:id>/vote_up')
 def ques_upvote(id=None):
     data_handler.upvote_questions_SQL(id)
+    question_row = data_handler.get_question_SQL(id)
+    data = []
+    for i in question_row:
+        data.append(i)
+    username = data[0]['owner']
+    data_handler.question_upvote_reputation(username)
     return redirect(url_for('route_list'))
 
 
 @app.route('/questions/<int:id>/vote_down')
 def ques_downvote(id=None):
     data_handler.downvote_questions_SQL(id)
+    question_row = data_handler.get_question_SQL(id)
+    data = []
+    for i in question_row:
+        data.append(i)
+    username = data[0]['owner']
+    data_handler.question_downvote_reputation(username)
     return redirect(url_for('route_list'))
 
 
@@ -205,8 +217,9 @@ def answer_upvote(id=None):
     list_for_realdictrow = []
     for i in realdictrow:
         list_for_realdictrow.append(i)
-    print(list_for_realdictrow)
     question_id = list_for_realdictrow[0]['question_id']
+    username = list_for_realdictrow[0]['owner']
+    data_handler.answer_upvote_reputation(username)
     return redirect(url_for('questions_site', id=question_id))
 
 
@@ -218,6 +231,8 @@ def answer_downvote(id=None):
     for i in realdictrow:
         list_for_realdictrow.append(i)
     question_id = list_for_realdictrow[0]['question_id']
+    username = list_for_realdictrow[0]['owner']
+    data_handler.answer_downvote_reputation(username)
     return redirect(url_for('questions_site', id=question_id))
 
 

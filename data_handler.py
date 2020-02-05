@@ -533,3 +533,36 @@ def get_user_info(cursor, username):
     """, {'username': username})
     row = cursor.fetchall()
     return row
+
+@connection.connection_handler
+def question_upvote_reputation(cursor, username):
+    cursor.execute("""
+    UPDATE users
+    SET reputation = reputation + 5
+    WHERE username=%(username)s;
+    """, {'username': username})
+
+@connection.connection_handler
+def question_downvote_reputation(cursor, username):
+    cursor.execute("""
+    UPDATE users
+    SET reputation = reputation - 2
+    WHERE username=%(username)s;
+    """, {'username': username})
+
+@connection.connection_handler
+def answer_upvote_reputation(cursor, username):
+    cursor.execute("""
+    UPDATE users
+    SET reputation = reputation + 10
+    WHERE username=%(username)s;
+    """, {'username': username})
+
+@connection.connection_handler
+def answer_downvote_reputation(cursor, username):
+    cursor.execute("""
+    UPDATE users
+    SET reputation = reputation - 2
+    WHERE username=%(username)s;
+    """, {'username': username})
+
