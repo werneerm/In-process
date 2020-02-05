@@ -19,9 +19,7 @@ def route_list():
     question = data_handler.get_all_question_sql()
     tag = data_handler.question_tag()
     choose_the_one = data_handler.get_all_tag()
-    print(session['username'])
     user = data_handler.get_one_user(session['username'])
-    print(user)
     return render_template('list.html', question=question, tag=tag, match=choose_the_one, user=user)
     # question = data_handler.get_all_question_sql()
     # tag = data_handler.question_tag()
@@ -395,16 +393,20 @@ def login():
             user_infos.append(i)
         try:
             user_name_if_exist = user_infos[0]['username']
+            user_pw_if_exist = user_infos[0]['password']
             if user_name == user_name_if_exist:
-                session['username'] = user_name
-                data_handler.write_cookie_value_to_user(user_name, session['username'])
-                return redirect('/')
+                if data_handler.verify_password(password, user_pw_if_exist) is True:
+                    session['username'] = user_name
+                    data_handler.write_cookie_value_to_user(user_name, session['username'])
+                    return redirect('/')
+                else:
+                    raise ValueError("Invalid username or password")
         except IndexError:
             raise ValueError("Invalid username or password")
-        if not user:
-            # Again, throwing an error is not a user-friendly
-            # way of handling this, but this is just an example
-            raise ValueError("Invalid username or password supplied")
+        # if not user:
+        #     # Again, throwing an error is not a user-friendly
+        #     # way of handling this, but this is just an example
+        #     raise ValueError("Invalid username or password supplied")
 
         # Note we don't *return* the response immediately
         # session['username'] =user_name
