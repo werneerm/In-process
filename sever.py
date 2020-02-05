@@ -79,40 +79,45 @@ def edit_question(id=None):
         row = data_handler.question_finder_SQL(id)
         return render_template('edit-question.html', id=id, row=row)
     elif request.method == 'POST':
-        changed_title = request.form['title']
-        changed_message = request.form['message']
-        changed_image = request.form['image']
-        data_handler.question_update_SQL(changed_title, changed_message, changed_image, id)
-        return redirect(url_for('questions_site', id=id))
-
+        row = data_handler.question_finder_SQL(id)
+        user = session['username']
+        user_row = data_handler.get_owner_by_id(id)
+        user_infos = []
+        for i in user_row:
+            user_infos.append(i)
+        if user_infos[0]['owner'] == user:
+            changed_title = request.form['title']
+            changed_message = request.form['message']
+            changed_image = request.form['image']
+            data_handler.question_update_SQL(changed_title, changed_message, changed_image, id,user)
+            return redirect(url_for('questions_site', id=id))
+    return render_template('edit-question.html', id=id, row=row)
 
 @app.route('/questions/<int:id>/d', methods=['GET', 'POST'])
 @app.route('/questions/<int:id>/delete-question', methods=['GET', 'POST'])
 def delete_question(id=None):
     if request.method == 'POST':
-        option = request.form['pick']
-        if option == 'yes':
-            print(id)
-            answer_row = data_handler.get_answer_id_by_question_id(id)
-            list_to_append = []
-            for i in answer_row:
-                list_to_append.append(i)
-            answer_id = list_to_append[0]['id']
-            data_handler.delete_answer_comment(answer_id)
-            data_handler.delete_SQL_question_and_its_answer(id)
-            data_handler.delete_SQL_comment_with_question(id)
-            data_handler.delete_question_tag(id)
-            data_handler.delete_SQL_question(id)
-            return redirect(url_for('route_list'))
-        elif option == 'no':
-            return redirect(url_for('questions_site', id=id))
+        user = session['username']
+        user_row = data_handler.get_owner_by_id(id)
+        user_infos = []
+        for i in user_row:
+            user_infos.append(i)
+        if user_infos[0]['owner'] == user:
+            option = request.form['pick']
+            if option == 'yes':
+                data_handler.delete_SQL_question(id,user)
+                return redirect(url_for('route_list'))
+            elif option == 'no':
+                return redirect(url_for('questions_site', id=id))
     if request.method == 'GET':
         return render_template('question-delete.html', id=id)
 
 
 @app.route('/questions/<int:id>/delete_answer')
 def delete_answer(id=None):
-    data_handler.delete_SQL_answer(id)
+    user = session['username']
+    print(user)
+    data_handler.delete_SQL_answer(id,user)
     return redirect(url_for('questions_site', id=id))
 
 
@@ -137,9 +142,10 @@ def add_comment_to_Q(id):
     if request.method == 'GET':
         return render_template('new-comment.html', id=id)
     if request.method == 'POST':
+        user = session['username']
         comment = request.form['message']
         time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        data_handler.add_comment_to_Q(id, comment, time)
+        data_handler.add_comment_to_Q(id, comment, time,user)
         return redirect(url_for('questions_site', id=id))
 
 @app.route('/answer/<int:id>/add-comment-to-A', methods=['GET', 'POST'])
@@ -147,9 +153,10 @@ def add_comment_to_A(id):
     if request.method == 'GET':
         return render_template('new-comment-for-answer.html', id=id)
     if request.method == 'POST':
+        user= session['username']
         comment = request.form['message']
         time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        data_handler.add_comment_to_A(id, comment, time)
+        data_handler.add_comment_to_A(id, comment, time,user)
         question_id = data_handler.ID_from_answer(id)
         ID_ANS = 0
         for line in question_id:                                #FOSSZARHUGY
@@ -220,28 +227,41 @@ def edit_answer(id=None):
         answer = data_handler.get_answer_for_update(id)
         return render_template('edit-answer.html', answer=answer)
     if request.method == 'POST':
-        new_message = request.form['message']
-        new_image = request.form['image']
-        data_handler.answer_update_SQL(new_message, new_image, id)
-        return redirect(url_for('route_list'))
-
+        user = session['username']
+        user_row = data_handler.get_owner_answer(id)
+        user_infos = []
+        for i in user_row:
+            user_infos.append(i)
+        if user_infos[0]['owner'] == user:
+            new_message = request.form['message']
+            new_image = request.form['image']
+            data_handler.answer_update_SQL(new_message, new_image, id,user)
+            return redirect(url_for('route_list'))
+    return render_template('edit-answer.html', answer=answer)
 
 @app.route('/comment/<int:id>/delete-comment', methods=['GET', 'POST'])
 @app.route('/comment/<int:id>/edit-comment', methods=['GET', 'POST'])
 def comment(id=None):
     if request.path == f'/comment/{id}/delete-comment':
-        data_handler.delete_comment(id)
+        user = session['username']
+        data_handler.delete_comment(id,user)
         return redirect(url_for('route_list'))
     if request.path == f'/comment/{id}/edit-comment':
         if request.method == 'GET':
             comment = data_handler.get_comment_for_edit(id)
             return render_template('edit-comment.html', comment=comment)
         if request.method == 'POST':
-            new_comment = request.form['message']
-            new_sub_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            data_handler.update_comment(new_comment, new_sub_time, id)
-            return redirect(url_for('route_list'))
-
+            user = session['username']
+            user_row = data_handler.get_owner_by_id(id)
+            user_infos = []
+            for i in user_row:
+                user_infos.append(i)
+            if user_infos[0]['owner'] == user:
+                new_comment = request.form['message']
+                new_sub_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                data_handler.update_comment(new_comment, new_sub_time, id,user)
+                return redirect(url_for('route_list'))
+        return render_template('edit-comment.html', comment=comment)
 @app.route('/error')
 def sever_error():
     return render_template('error.html')
@@ -280,9 +300,10 @@ def add_comment_to_answer(question_id=None, answer_id=None):
     question = data_handler.get_question_SQL(question_id)
     answer = data_handler.get_answer_for_question_SQL_with_ans_id(answer_id)
     if request.method == 'POST':
+        user= session['username']
         comment = request.form['message']
         time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        data_handler.add_comment_to_A(answer_id, comment, time)
+        data_handler.add_comment_to_A(answer_id, comment, time,user)
         return redirect(url_for('questions_site', id=question_id))
 
     return render_template('new-comment-for-answer.html', quest=question_id, ans_id=answer_id)
@@ -291,13 +312,15 @@ def add_comment_to_answer(question_id=None, answer_id=None):
 @app.route("/question/<int:question_id>/edit_this/<int:comment_id>/<int:answer_id>", methods=['GET', 'POST'])
 def delete_only_comment(question_id, comment_id, answer_id):
     if request.path == f'/question/{question_id}/delete_this/{comment_id}/{answer_id}':
-        data_handler.delete_comment(comment_id)
+        user=session['username']
+        data_handler.delete_comment(comment_id,user)
         return redirect(url_for('show_answer_comments', question_id=question_id, answer_id=answer_id))
     if request.path == f'/question/{question_id}/edit_this/{comment_id}/{answer_id}':
         if request.method == 'POST':
+            user = session['username']
             new_comment = request.form['message']
             new_sub_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            data_handler.update_comment(new_comment, new_sub_time, comment_id)
+            data_handler.update_comment(new_comment, new_sub_time, comment_id,user)
             return redirect(url_for('show_answer_comments', question_id=question_id, answer_id=answer_id))
     question = data_handler.get_question_SQL(question_id)
     answer = data_handler.get_answer_for_question_SQL_with_ans_id(answer_id)
