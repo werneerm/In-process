@@ -458,6 +458,34 @@ def write_cookie_value_to_user(cursor, username, cookie_value):
     WHERE username=%(username)s
     """, {'username': username, 'cookie_value': cookie_value})
 
+@connection.connection_handler
+def get_user_question(cursor, username):
+    cursor.execute("""
+    SELECT * FROM question
+    WHERE owner=%(username)s
+    """, {'username': username})
+    rows = cursor.fetchall()
+    return rows
+
+@connection.connection_handler
+def get_user_answer(cursor, username):
+    cursor.execute("""
+    SELECT * FROM answer
+    WHERE owner=%(username)s
+    """, {'username': username})
+    rows = cursor.fetchall()
+    return rows
+
+@connection.connection_handler
+def get_user_comment(cursor, username):
+    cursor.execute("""
+    SELECT * FROM comment
+    WHERE owner=%(username)s
+    """, {'username': username})
+    rows = cursor.fetchall()
+    return rows
+
 def verify_password(text, hashed_password):
     hashed_bytes_password = hashed_password.encode('utf-8')
     return bcrypt.checkpw(text.encode('utf-8'), hashed_bytes_password)
+

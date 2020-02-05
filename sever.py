@@ -8,11 +8,11 @@ app = Flask(__name__)
 app.secret_key = '6w:`tFm%mBLY}ty*QcRRpD+,Jga@Fy\XFxjhga'
 
 
+# @app.route('/')
+# def only_5_question():
+#     question = data_handler.get_top_question_sql()
+#     return render_template('list.html', question=question)
 @app.route('/')
-def only_5_question():
-    question = data_handler.get_top_question_sql()
-    return render_template('list.html', question=question)
-
 @app.route('/list')
 def route_list():
     # if session['username'] is not None:
@@ -374,7 +374,12 @@ def login():
 
 @app.route('/user/<int:id>', methods=['GET', 'POST'])
 def user_site(id):
-    return render_template(f'/user/{id}')
+    actual_username = session['username']
+    user_questions = data_handler.get_user_question(actual_username)
+    user_answer = data_handler.get_user_answer(actual_username)
+    user_comment = data_handler.get_user_answer(actual_username)
+
+    return render_template('user_site.html', user_question=user_questions, user_answer=user_answer, user_comment=user_comment)
 
 if __name__ == '__main__':
     app.run(
