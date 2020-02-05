@@ -29,13 +29,13 @@ def get_top_question_sql(cursor):
 
 
 @connection.connection_handler
-def add_SQL_question(cursor, time, vote_num, view_num, title, message, image):
+def add_SQL_question(cursor, time, vote_num, view_num, title, message, image, owner):
 
     cursor.execute("""
-            INSERT INTO question (submission_time, view_number, vote_number, title, message, image)
-            VALUES (TIMESTAMP %(time)s, %(vote_num)s, %(view_num)s, %(title)s, %(message)s, %(image)s);
+            INSERT INTO question (submission_time, view_number, vote_number, title, message, image, owner)
+            VALUES (TIMESTAMP %(time)s, %(view_num)s, %(vote_num)s, %(title)s, %(message)s, %(image)s, %(owner)s);
             """, {'time': time, 'vote_num': vote_num, 'view_num': view_num, 'title': title, 'message': message,
-                  'image': image})
+                  'image': image, 'owner': owner})
 
 
 @connection.connection_handler
@@ -98,11 +98,11 @@ def question_finder_SQL(cursor, id):
 
 
 @connection.connection_handler
-def add_answer_SQL(cursor, time, vote_num, question_id, message, image):
+def add_answer_SQL(cursor, time, vote_num, question_id, message, image, owner):
     cursor.execute("""
-            INSERT INTO answer (submission_time, vote_number, question_id, message, image)
-            VALUES (TIMESTAMP %(time)s, %(vote_num)s, %(question_id)s, %(message)s, %(image)s);
-            """, {'time': time, 'vote_num': vote_num, 'question_id': question_id, 'message': message, 'image': image})
+            INSERT INTO answer (submission_time, vote_number, question_id, message, image, owner)
+            VALUES (TIMESTAMP %(time)s, %(vote_num)s, %(question_id)s, %(message)s, %(image)s, %(owner)s);
+            """, {'time': time, 'vote_num': vote_num, 'question_id': question_id, 'message': message, 'image': image, 'owner': owner})
 
 
 @connection.connection_handler
@@ -449,6 +449,14 @@ def get_one_user(cursor,username):
     """, {'username': username})
     user_row = cursor.fetchall()
     return user_row
+
+@connection.connection_handler
+def write_cookie_value_to_user(cursor, username, cookie_value):
+    cursor.execute("""
+    UPDATE users
+    SET cookie_value=%(cookie_value)s
+    WHERE username=%(username)s
+    """, {'username': username, 'cookie_value': cookie_value})
 
 def verify_password(text, hashed_password):
     hashed_bytes_password = hashed_password.encode('utf-8')

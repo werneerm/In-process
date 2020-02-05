@@ -15,10 +15,18 @@ def only_5_question():
 
 @app.route('/list')
 def route_list():
+    # if session['username'] is not None:
     question = data_handler.get_all_question_sql()
     tag = data_handler.question_tag()
     choose_the_one = data_handler.get_all_tag()
-    return render_template('list.html', question=question, tag=tag, match=choose_the_one)
+    print(session['username'])
+    user = data_handler.get_one_user(session['username'])
+    print(user)
+    return render_template('list.html', question=question, tag=tag, match=choose_the_one, user=user)
+    # question = data_handler.get_all_question_sql()
+    # tag = data_handler.question_tag()
+    # choose_the_one = data_handler.get_all_tag()
+    # return render_template('list.html', question=question, tag=tag, match=choose_the_one)
 
 
 @app.route('/questions/<int:id>', methods=['GET', 'POST'])
@@ -44,7 +52,8 @@ def add_answer(id=None):
         time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         vote_num = 0
         question_id = id
-        data_handler.add_answer_SQL(time, vote_num, question_id, message, image)
+        owner = session['username']
+        data_handler.add_answer_SQL(time, vote_num, question_id, message, image, owner)
         return redirect(url_for('questions_site', id=id))
 
 
@@ -57,7 +66,8 @@ def add_question():
         vote_number = 0
         view_number = 0
         time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        data_handler.add_SQL_question(time, view_number, vote_number, title, message, image)
+        owner = session['username']
+        data_handler.add_SQL_question(time, view_number, vote_number, title, message, image, owner)
         return redirect(url_for('route_list'))
     return render_template('add-question.html')
 
@@ -325,13 +335,13 @@ def cookie_insertion():
 
 @app.before_request
 def require_login():
-    if 'username' not in session:
-        return redirect('/login')
+    if 'username' not in session and request.endpoint != 'login':
+        return redirect("/login")
 
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    if request.method == 'GET'.
+    if request.method == 'GET':
         return render_template('login.html')
     if request.method == "POST":
         # You should really validate that these fields
@@ -339,21 +349,36 @@ def login():
         # error message, but for the sake of a simple
         # example we'll just assume they are provided
 
-        user_name = request.form["name"]
-        password = request.form["password"]
-        user_row = data_handler.get_one_user(user_name) #itt kéne megtalálni hogy létezik e a user
+        user_name = request.form["username"]
+        password = request.form["psw"]
+        user_row = data_handler.get_one_user(user_name)  #itt kéne megtalálni hogy létezik e a user
+        user_infos = []
+        for i in user_row:
+            user_infos.append(i)
+        try:
+            user_name_if_exist = user_infos[0]['username']
+            if user_name == user_name_if_exist:
+                session['username'] = user_name
+                data_handler.write_cookie_value_to_user(user_name, session['username'])
+                return redirect('/')
+        except IndexError:
+            raise ValueError("Invalid username or password")
         if not user:
             # Again, throwing an error is not a user-friendly
             # way of handling this, but this is just an example
             raise ValueError("Invalid username or password supplied")
 
         # Note we don't *return* the response immediately
-        session['username'] =user_name
-        return redirect('/')
+        # session['username'] =user_name
+        # return redirect('/')
+
+@app.route('/user/<int:id>', methods=['GET', 'POST'])
+def user_site(id):
+    return render_template(f'/user/{id}')
 
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',
-        port=8000,
+        port=7000,
         debug=True,
     )
