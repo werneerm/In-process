@@ -15,12 +15,14 @@ def route_list():
         tag = data_handler.question_tag()
         choose_the_one = data_handler.get_all_tag()
         user = data_handler.get_one_user(session['username'])
-        return render_template('list.html', question=question, tag=tag, match=choose_the_one, user=user)
+        username = 'on'
+        return render_template('list.html', question=question, tag=tag, match=choose_the_one, user=user, username=username)
     else:
         question = data_handler.get_all_question_sql()
         tag = data_handler.question_tag()
         choose_the_one = data_handler.get_all_tag()
-        return render_template('list.html', question=question, tag=tag, match=choose_the_one,)
+        username = 'off'
+        return render_template('list.html', question=question, tag=tag, match=choose_the_one, username=username)
     # question = data_handler.get_all_question_sql()
     # tag = data_handler.question_tag()
     # choose_the_one = data_handler.get_all_tag()

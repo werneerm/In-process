@@ -46,8 +46,12 @@
 <a href="/user/{{ item.id }}" class="buttonanswer bouncy">{{ item.username }}</a>
 {% endfor %}
 <a href="/registration" class = "buttonanswer bouncy" >Registration</a>
+{% if username == 'off' %}
 <a href="/login" class = "buttonanswer bouncy" >Log me In</a>
+{%  endif %}
+{%  if username == 'on' %}
     <a href="/logout" class = "buttonanswer bouncy" >Log Out</a>
+{% endif %}
 
 
 <table>
