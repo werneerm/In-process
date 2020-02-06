@@ -15,12 +15,17 @@ app.secret_key = '6w:`tFm%mBLY}ty*QcRRpD+,Jga@Fy\XFxjhga'
 @app.route('/')
 @app.route('/list')
 def route_list():
-    # if session['username'] is not None:
-    question = data_handler.get_all_question_sql()
-    tag = data_handler.question_tag()
-    choose_the_one = data_handler.get_all_tag()
-    user = data_handler.get_one_user(session['username'])
-    return render_template('list.html', question=question, tag=tag, match=choose_the_one, user=user)
+    if session.get('username') == True:
+        question = data_handler.get_all_question_sql()
+        tag = data_handler.question_tag()
+        choose_the_one = data_handler.get_all_tag()
+        user = data_handler.get_one_user(session['username'])
+        return render_template('list.html', question=question, tag=tag, match=choose_the_one, user=user)
+    else:
+        question = data_handler.get_all_question_sql()
+        tag = data_handler.question_tag()
+        choose_the_one = data_handler.get_all_tag()
+        return render_template('list.html', question=question, tag=tag, match=choose_the_one)
     # question = data_handler.get_all_question_sql()
     # tag = data_handler.question_tag()
     # choose_the_one = data_handler.get_all_tag()
@@ -369,10 +374,10 @@ def cookie_insertion():
     response.set_cookie('username', username='values')
     return response
 
-@app.before_request
-def require_login():
-    if 'username' not in session and request.endpoint != 'login':
-        return redirect("/login")
+# @app.before_request
+# def require_login():
+#     if 'username' not in session and request.endpoint != 'login':
+#         return redirect("/login")
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -423,8 +428,17 @@ def user_site(id):
     return render_template('user_site.html', user_question=user_questions, user_answer=user_answer, user_comment=user_comment, user_info=user_info)
 
 
-# @app.route('/tag')
-# def tag_site():
+@app.route('/tag')
+def tag_site():
+    all_tags = data_handler.all_tags_used()
+    return render_template('alltags.html',all_tags=all_tags)
+
+@app.route('/logout')
+def logout():
+    if request.method == 'GET':
+        session.clear()
+        return redirect('/')
+    return redirect('/')
 
 
 if __name__ == '__main__':
