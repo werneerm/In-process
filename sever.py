@@ -7,11 +7,6 @@ import bcrypt
 app = Flask(__name__)
 app.secret_key = '6w:`tFm%mBLY}ty*QcRRpD+,Jga@Fy\XFxjhga'
 
-
-# @app.route('/')
-# def only_5_question():
-#     question = data_handler.get_top_question_sql()
-#     return render_template('list.html', question=question)
 @app.route('/')
 @app.route('/list')
 def route_list():
@@ -20,13 +15,14 @@ def route_list():
         tag = data_handler.question_tag()
         choose_the_one = data_handler.get_all_tag()
         user = data_handler.get_one_user(session['username'])
-        print(user)
-        return render_template('list.html', question=question, tag=tag, match=choose_the_one, user=user)
+        username = 'on'
+        return render_template('list.html', question=question, tag=tag, match=choose_the_one, user=user, username=username)
     else:
         question = data_handler.get_all_question_sql()
         tag = data_handler.question_tag()
         choose_the_one = data_handler.get_all_tag()
-        return render_template('list.html', question=question, tag=tag, match=choose_the_one,)
+        username = 'off'
+        return render_template('list.html', question=question, tag=tag, match=choose_the_one, username=username)
     # question = data_handler.get_all_question_sql()
     # tag = data_handler.question_tag()
     # choose_the_one = data_handler.get_all_tag()
@@ -73,7 +69,17 @@ def add_question():
         owner = session['username']
         data_handler.add_SQL_question(time, view_number, vote_number, title, message, image, owner)
         return redirect(url_for('route_list'))
-    return render_template('add-question.html')
+    else:
+        if session.get('username'):
+            return render_template('add-question.html')
+        else:
+            question = data_handler.get_all_question_sql()
+            tag = data_handler.question_tag()
+            choose_the_one = data_handler.get_all_tag()
+            notin = "notin"
+            return render_template('list.html', question=question, tag=tag, match=choose_the_one,
+                                   notin=notin)
+
 
 
 #@app.route('/questions/<int:id>', methods=['GET', 'POST'])
@@ -100,28 +106,32 @@ def edit_question(id=None):
 @app.route('/questions/<int:id>/d', methods=['GET', 'POST'])
 @app.route('/questions/<int:id>/delete-question', methods=['GET', 'POST'])
 def delete_question(id=None):
-    try:
-        if request.method == 'POST':
-            user = session['username']
-            user_row = data_handler.get_owner_by_id(id)
-            user_infos = []
-            for i in user_row:
-                user_infos.append(i)
-            if user_infos[0]['owner'] == user:
-                option = request.form['pick']
-                if option == 'yes':
-                    data_handler.delete_SQL_question(id,user)
-                    return redirect(url_for('route_list'))
-                elif option == 'no':
-                    return redirect(url_for('questions_site', id=id))
-            else:
+    if request.method == 'POST':
+        user = session['username']
+        user_row = data_handler.get_owner_by_id(id)
+        user_infos = []
+        for i in user_row:
+            user_infos.append(i)
+        if user_infos[0]['owner'] == user:
+            option = request.form['pick']
+            if option == 'yes':
+                data_handler.delete_SQL_question(id,user)
+                return redirect(url_for('route_list'))
+            elif option == 'no':
+                return redirect(url_for('questions_site', id=id))
+        else:
+            if session.get('username'):
+                question = data_handler.get_all_question_sql()
+                tag = data_handler.question_tag()
+                choose_the_one = data_handler.get_all_tag()
+                user = data_handler.get_one_user(session['username'])
                 fail = "failed"
-                return redirect(url_for('questions_site', id=id, fail=fail))
-    except TypeError:
-        fail = "failed"
-        return redirect(url_for('questions_site', id=id,fail=fail))
+                return render_template('list.html', question=question, tag=tag, match=choose_the_one, user=user, id=id, fail=fail)
+
+            return render_template('list.html', id=id, fail=fail)
     if request.method == 'GET':
         return render_template('question-delete.html', id=id)
+
 
 
 @app.route('/questions/<int:id>/delete_answer')
@@ -382,11 +392,6 @@ def cookie_insertion():
     response.set_cookie('username', username='values')
     return response
 
-# @app.before_request
-# def require_login():
-#     if 'username' not in session and request.endpoint != 'login':
-#         return redirect("/login")
-
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -411,9 +416,6 @@ def login():
                 else:
                     fail = "failed"
                     return render_template('login.html', fail=fail)
-            # else:
-            #     fail = "failed"
-            #     return render_tempalte('login.html', fail=fail)
         except IndexError:
             fail = "failed"
             return render_template('login.html', fail=fail)

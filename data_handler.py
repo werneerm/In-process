@@ -147,9 +147,8 @@ def delete_SQL_comment_with_question(cursor, ID,owner):
 @connection.connection_handler
 def delete_SQL_question(cursor, ID,user):
     cursor.execute("""
-                DELETE FROM comment
-                USING answer
-                WHERE answer.id = comment.answer_id;
+                DELETE FROM comment USING answer
+                WHERE answer.id=comment.answer_id;
                 DELETE FROM answer
                 WHERE question_id=%(ID)s ;
                 DELETE FROM comment
@@ -445,7 +444,8 @@ def get_answer_id_by_question_id(cursor, id):     #SZAR
 @connection.connection_handler
 def get_all_users(cursor):
     cursor.execute("""
-    SELECT * from users;
+    SELECT * from users
+    ORDER BY id;
     """)
     users = cursor.fetchall()
     return users

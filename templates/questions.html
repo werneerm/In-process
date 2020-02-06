@@ -26,8 +26,8 @@
 <td>
 <p id="question">
 {% for line in question %}
-    <h3>{{ line.title }} <br>
-        {{ line.message }}<br> {% for item in tag %}
+    <h3><a>Title: </a>{{ line.title }} <br>
+        <a>Message: </a>{{ line.message }}<br> {% for item in tag %}
                 {% if line.id == item.question_id %}
                     {% for i in match %}
                         {% if item.tag_id == i.id %}
