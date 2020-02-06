@@ -112,8 +112,19 @@ def delete_question(id=None):
                 return redirect(url_for('route_list'))
             elif option == 'no':
                 return redirect(url_for('questions_site', id=id))
+        else:
+            if session.get('username'):
+                question = data_handler.get_all_question_sql()
+                tag = data_handler.question_tag()
+                choose_the_one = data_handler.get_all_tag()
+                user = data_handler.get_one_user(session['username'])
+                fail = "failed"
+                return render_template('list.html', question=question, tag=tag, match=choose_the_one, user=user, id=id, fail=fail)
+
+            return render_template('list.html', id=id, fail=fail)
     if request.method == 'GET':
         return render_template('question-delete.html', id=id)
+
 
 
 @app.route('/questions/<int:id>/delete_answer')
