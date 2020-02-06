@@ -325,13 +325,14 @@ def cookie_insertion():
 
 @app.before_request
 def require_login():
-    if 'username' not in session:
+    if 'username' not in session and request.endpoint != 'login':
         return redirect('/login')
+        # return redirect(url_for('route_list'))
 
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    if request.method == 'GET'.
+    if request.method == 'GET':
         return render_template('login.html')
     if request.method == "POST":
         # You should really validate that these fields
@@ -339,10 +340,10 @@ def login():
         # error message, but for the sake of a simple
         # example we'll just assume they are provided
 
-        user_name = request.form["name"]
-        password = request.form["password"]
+        user_name = request.form["username"]
+        password = request.form["psw"]
         user_row = data_handler.get_one_user(user_name) #itt kéne megtalálni hogy létezik e a user
-        if not user:
+        if not username:
             # Again, throwing an error is not a user-friendly
             # way of handling this, but this is just an example
             raise ValueError("Invalid username or password supplied")
