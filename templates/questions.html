@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='style.css') }}">
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script>
+        let fails = '{{ fail }}' ;
+        if (fails === "failed"){
+            alert("You don't have permission to delete this question")
+        }
+    </script>
 </head>
 <body>
 <div>
@@ -13,21 +20,14 @@
 <div>
    <img src="/static/library_logo.png" alt="library" id="library"/>
 </div>
-<script>console.log("here i come")</script>
-    <script>
-            let fail = '{{ fail }}';
-            if (fail === "failed") {
-                alert("You do not have permission to do that!");
-            }
-</script>
 <a/>
 <p><a href="/list" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Back to main menu</a>
 <table>
 <td>
 <p id="question">
 {% for line in question %}
-    <h3>{{ line.title }} <br>
-        {{ line.message }}<br> {% for item in tag %}
+    <h3><a>Title: </a>{{ line.title }} <br>
+        <a>Message: </a>{{ line.message }}<br> {% for item in tag %}
                 {% if line.id == item.question_id %}
                     {% for i in match %}
                         {% if item.tag_id == i.id %}
@@ -42,6 +42,7 @@
     <a href="/question/{{id}}/new-tag" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Add Tag</a>
     <a href="/question/{{id}}/delete-tag" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Delete Tag</a>
 <a href="/questions/{{id}}/add-comment-to-Q" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Add Comment To Question</a></p>
+
 
 </div>
     {{ line.owner if line.owner }}
@@ -69,6 +70,7 @@
         <th> Question ID </th>
         <th> Message </th>
         <th> Image </th>
+        <th>Accepted</th>
         <th>Actions</th>
     <th>Owner</th>
     </tr>
@@ -79,11 +81,17 @@
         <td> {{line.question_id}} </td>
         <td> {{line.message}} </td>
         <td><img src ="{{line.image}}"style="width:104px;height:142px;"></td>
+        {% if line.accepted == 1 %}
+            <td><i class="glyphicon glyphicon-thumbs-up"></td>
+        {% else %}
+            <td></td>
+        {% endif %}
         <td>
             <a href='/answers/{{line.id}}/vote_up' class = "buttonvote">upvote <p style="color:	#008000"> &#8613;</p></a>
             <a href='/answers/{{line.id}}/vote_down' class = "buttonvote" >downvote <p style="color:#8B0000"> &#8615;</p></a>
             <a href="/questions/{{line.question_id}}/delete_answer" class = "buttonvote" >Delete answer</a>
             <a href="/answers/{{line.id}}/edit-answer" class = "buttonvote" >Edit answer</a>
+            <a href="/answers/{{line.id}}/accepted-answer" class = "buttonvote" >Accept answer</a>
         {% for quest in question %}
             {% if quest.id == line.question_id %}
             <a href="/question/{{quest.id}}/answer/{{ line.id }}/comments" class = "buttonvote">Add comment</a>
@@ -97,18 +105,5 @@
     </tr>
 {% endfor %}
 <br>
-<div>
-<!--<a href="/questions/{{id}}/answer-question" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Answer this Question</a>-->
-<!--<a href="/questions/{{id}}/edit-question" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Edit this Question</a>-->
-<!--<a href="/questions/{{id}}/delete-question" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Delete this Question</a>-->
-<!--    <a href="/question/{{id}}/new-tag" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Add Tag</a>-->
-<!--     <a href="/question/{{id}}/delete-tag" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Delete Tag</a>-->
-</div>
-<!--{#<div>#}-->
-<!--{#<a href="/questions/{{id}}/answer-question" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Answer this Question</a>#}-->
-<!--{#<a href="/questions/{{id}}/edit-question" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Edit this Question</a>#}-->
-<!--{#<a href="/questions/{{id}}/delete-question" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Delete this Question</a>#}-->
-<!--{#    <a href="/question/{{id}}/new-tag" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Add Tag</a>#}-->
-<!--{#</div>#}-->
 </body>
 </html>

@@ -15,11 +15,19 @@ def route_list():
         tag = data_handler.question_tag()
         choose_the_one = data_handler.get_all_tag()
         user = data_handler.get_one_user(session['username'])
-        return render_template('list.html', question=question, tag=tag, match=choose_the_one, user=user)
+        username = 'on'
+        return render_template('list.html', question=question, tag=tag, match=choose_the_one, user=user, username=username)
     else:
         question = data_handler.get_all_question_sql()
         tag = data_handler.question_tag()
         choose_the_one = data_handler.get_all_tag()
+        username = 'off'
+        return render_template('list.html', question=question, tag=tag, match=choose_the_one, username=username)
+    # question = data_handler.get_all_question_sql()
+    # tag = data_handler.question_tag()
+    # choose_the_one = data_handler.get_all_tag()
+    # return render_template('list.html', question=question, tag=tag, match=choose_the_one)
+
         return render_template('list.html', question=question, tag=tag, match=choose_the_one,)
 
 @app.route('/questions/<int:id>', methods=['GET', 'POST'])
@@ -61,7 +69,17 @@ def add_question():
         owner = session['username']
         data_handler.add_SQL_question(time, view_number, vote_number, title, message, image, owner)
         return redirect(url_for('route_list'))
-    return render_template('add-question.html')
+    else:
+        if session.get('username'):
+            return render_template('add-question.html')
+        else:
+            question = data_handler.get_all_question_sql()
+            tag = data_handler.question_tag()
+            choose_the_one = data_handler.get_all_tag()
+            notin = "notin"
+            return render_template('list.html', question=question, tag=tag, match=choose_the_one,
+                                   notin=notin)
+
 
 
 @app.route('/questions/<int:id>/edit-question', methods=['GET', 'POST'])
@@ -424,7 +442,36 @@ def logout():
         return redirect('/')
     return redirect('/')
 
-
+@app.route('/answers/<int:id>/accepted-answer')
+def accept_answer(id=None):
+    user = session['username']
+    question = data_handler.get_question_by_answer_mark_edition(id)
+    owner=[]
+    user_infos = []
+    for i in question:
+        user_infos.append(i)
+    the_whole_question = data_handler.get_question_SQL(user_infos[0]['question_id'])
+    for i in the_whole_question:
+        owner.append(i)
+    if user == owner[0]['owner']:
+        question_id = int(user_infos[0]['question_id'])
+        answer_row = data_handler.get_answer_by_answer_id(id)
+        print(answer_row)
+        row = []
+        for i in answer_row:
+            row.append(i)
+        answer_owner = row[0]['owner']
+        data_handler.answer_accept_reputation(answer_owner)
+        data_handler.accepted_answer(id,question_id)
+        question = data_handler.get_question_SQL(question_id)
+        answer = data_handler.get_answer_for_question_SQL(question_id)
+        comment_for_Q = data_handler.get_comment_for_Q(question_id)
+        tag = data_handler.question_tag()
+        choose_the_one = data_handler.get_all_tag()
+        comment_for_A = data_handler.get_comment_for_A(question_id)
+        return render_template('/questions.html', question=question, id=question_id, tag=tag, match=choose_the_one, answer=answer,
+                               comment_Q=comment_for_Q, comment_A=comment_for_A)
+    return redirect('/')
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',
