@@ -7,11 +7,6 @@ import bcrypt
 app = Flask(__name__)
 app.secret_key = '6w:`tFm%mBLY}ty*QcRRpD+,Jga@Fy\XFxjhga'
 
-
-# @app.route('/')
-# def only_5_question():
-#     question = data_handler.get_top_question_sql()
-#     return render_template('list.html', question=question)
 @app.route('/')
 @app.route('/list')
 def route_list():
@@ -374,11 +369,6 @@ def cookie_insertion():
     response.set_cookie('username', username='values')
     return response
 
-# @app.before_request
-# def require_login():
-#     if 'username' not in session and request.endpoint != 'login':
-#         return redirect("/login")
-
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -403,9 +393,6 @@ def login():
                 else:
                     fail = "failed"
                     return render_template('login.html', fail=fail)
-            # else:
-            #     fail = "failed"
-            #     return render_tempalte('login.html', fail=fail)
         except IndexError:
             fail = "failed"
             return render_template('login.html', fail=fail)
