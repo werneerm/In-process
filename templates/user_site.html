@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+{% for user in user_info %}
+<table>
+    <tr>
+        <th>ID</th>
+        <th>UserName</th>
+        <th>Creation Date</th>
+        <th>Reputation</th>
+    </tr>
+    <tr>
+        <td>{{ user.id }}</td>
+        <td>{{ user.username }}</td>
+        <td>{{ user.creation_date }}</td>
+        <td>{{ user.reputation }}</td>
+    </tr>
+</table>
+{% endfor %}
+
+{% for question in user_question %}
+<table>
+<tr>
+    <th>ID</th>
+    <th>Submission Time</th>
+    <th>View Number</th>
+    <th>Vote Number</th>
+    <th>Question Title</th>
+    <th>Question Message</th>
+    <th>Image</th>
+</tr>
+    <tr>
+        <td>{{ question.id }}</td>
+        <td>{{ question.submission_time }}</td>
+        <td>{{ question.view_number }}</td>
+        <td>{{ question.vote_number }}</td>
+        <td><a href="{{ url_for('questions_site', id=question.id) }}">{{ question.title }}</a></td>
+        <td>{{ question.message }}</td>
+        <td>{{ question.image }}</td>
+    </tr>
+</table>
+{% endfor %}
+
+{% for answer in user_answer %}
+<table>
+<tr>
+    <th>Answer ID</th>
+        <th>Submission Time</th>
+    <th>Vote Number</th>
+        <th>Message</th>
+        <th>To Question's Site</th>
+
+</tr>
+    <tr>
+        <td>{{ answer.id }}</td>
+        <td>{{ answer.submission_time }}</td>
+        <td>{{ answer.vote_number }}</td>
+        <td>{{ answer.message }}</td>
+        <td><a href="{{ url_for('questions_site', id=answer.question_id) }}">{{ answer.question_id }}</a></td>
+    </tr>
+</table>
+{% endfor %}
+
+{% for comment in user_comment %}
+<table>
+<tr>
+    <th>Comment ID</th>
+    <th>Submission Time</th>
+    <th>Message</th>
+    <th>Edited Count</th>
+    <th>Answer ID if Exist</th>
+    <th>Question ID if Exist</th>
+</tr>
+    <tr>
+        <td>{{ comment.id }}</td>
+        <td>{{ comment.submission_time }}</td>
+        <td>{{ comment.message }}</td>
+        <td>{{ comment.edited_count }}</td>
+        <td>{{ comment.answer_id if comment.answer_id }}</td>
+        <td><a href="{{ url_for('questions_site', id=comment.question_id) }}">{{ comment.question_id if comment.question_id }}</a></td>
+    </tr>
+</table>
+{% endfor %}
+<a href="/list" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Back to main menu</a>
+</body>
+</html>

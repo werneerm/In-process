@@ -29,13 +29,13 @@ def get_top_question_sql(cursor):
 
 
 @connection.connection_handler
-def add_SQL_question(cursor, time, vote_num, view_num, title, message, image):
+def add_SQL_question(cursor, time, vote_num, view_num, title, message, image, owner):
 
     cursor.execute("""
-            INSERT INTO question (submission_time, view_number, vote_number, title, message, image)
-            VALUES (TIMESTAMP %(time)s, %(vote_num)s, %(view_num)s, %(title)s, %(message)s, %(image)s);
+            INSERT INTO question (submission_time, view_number, vote_number, title, message, image, owner)
+            VALUES (TIMESTAMP %(time)s, %(view_num)s, %(vote_num)s, %(title)s, %(message)s, %(image)s, %(owner)s);
             """, {'time': time, 'vote_num': vote_num, 'view_num': view_num, 'title': title, 'message': message,
-                  'image': image})
+                  'image': image, 'owner': owner})
 
 
 @connection.connection_handler
@@ -71,20 +71,20 @@ def get_answer_for_question_SQL_with_ans_id(cursor, id):
 
 
 @connection.connection_handler
-def question_update_SQL(cursor, title, message, image, id):
+def question_update_SQL(cursor, title, message, image, id,owner):
     cursor.execute("""
             UPDATE question
-            SET title=%(title)s, message=%(message)s, image=%(image)s
+            SET title=%(title)s, message=%(message)s, image=%(image)s,owner=%(owner)s
             WHERE id=%(id)s
-    """, {'id': id, 'title': title, 'message': message, 'image': image})
+    """, {'id': id, 'title': title, 'message': message, 'image': image,'owner':owner})
 
 @connection.connection_handler
-def answer_update_SQL(cursor, message, image, id):
+def answer_update_SQL(cursor, message, image, id,owner):
     cursor.execute("""
             UPDATE answer
-            SET message=%(message)s, image=%(image)s
+            SET message=%(message)s, image=%(image)s,owner=%(owner)s
             WHERE id=%(id)s
-            """, {'id': id, 'message': message, 'image': image})
+            """, {'id': id, 'message': message, 'image': image,'owner':owner})
 
 
 @connection.connection_handler
@@ -98,40 +98,40 @@ def question_finder_SQL(cursor, id):
 
 
 @connection.connection_handler
-def add_answer_SQL(cursor, time, vote_num, question_id, message, image):
+def add_answer_SQL(cursor, time, vote_num, question_id, message, image, owner):
     cursor.execute("""
-            INSERT INTO answer (submission_time, vote_number, question_id, message, image)
-            VALUES (TIMESTAMP %(time)s, %(vote_num)s, %(question_id)s, %(message)s, %(image)s);
-            """, {'time': time, 'vote_num': vote_num, 'question_id': question_id, 'message': message, 'image': image})
+            INSERT INTO answer (submission_time, vote_number, question_id, message, image, owner)
+            VALUES (TIMESTAMP %(time)s, %(vote_num)s, %(question_id)s, %(message)s, %(image)s, %(owner)s);
+            """, {'time': time, 'vote_num': vote_num, 'question_id': question_id, 'message': message, 'image': image, 'owner': owner})
 
 
 @connection.connection_handler
-def delete_SQL_question(cursor, ID):
+def delete_SQL_question(cursor, ID,owner):
     cursor.execute("""
             DELETE FROM question 
-            WHERE  id=%(ID)s;
-            """, {'ID': ID})
+            WHERE  id=%(ID)s and owner = %(owner)s;
+            """, {'ID': ID , 'owner':owner})
 
 @connection.connection_handler
-def delete_tags_of_question(cursor, ID):
+def delete_tags_of_question(cursor, ID,owner):
     cursor.execute("""
         DELETE FROM question_tag
-        WHERE question_id=%(ID)s;
+        WHERE question_id=%(ID)s ;
     """, {'ID': ID})
 
 @connection.connection_handler
-def delete_SQL_answer(cursor, ID):
+def delete_SQL_answer(cursor, ID, owner):
     cursor.execute("""
                 DELETE FROM answer 
-                WHERE  question_id=%(ID)s;
-                """, {'ID': ID})
+                WHERE  question_id=%(ID)s and owner=%(owner)s;
+                """, {'ID': ID,'owner':owner})
 
 @connection.connection_handler
-def delete_SQL_comment_with_question(cursor, ID):
+def delete_SQL_comment_with_question(cursor, ID,owner):
     cursor.execute("""
                 DELETE FROM comment 
-                WHERE  question_id=%(ID)s;
-                """, {'ID': ID})
+                WHERE  question_id=%(ID)s and owner=%(owner)s;
+                """, {'ID': ID,'owner':owner})
 
 
 # @connection.connection_handler
@@ -145,27 +145,33 @@ def delete_SQL_comment_with_question(cursor, ID):
 
 
 @connection.connection_handler
-def delete_SQL_question(cursor, ID):
+def delete_SQL_question(cursor, ID,user):
     cursor.execute("""
-            DELETE FROM question 
-            WHERE  id=%(ID)s;
-            """, {'ID': ID})
+                DELETE FROM answer
+                WHERE question_id=%(ID)s ;
+                DELETE FROM comment
+                WHERE question_id=%(ID)s;
+                DELETE FROM question_tag
+                WHERE question_id=%(ID)s;
+                DELETE FROM question
+                WHERE  id=%(ID)s;
+            """, {'ID': ID,'user':user})
 
 @connection.connection_handler
-def delete_SQL_question_and_its_answer(cursor, ID):
+def delete_SQL_question_and_its_answer(cursor, ID,owner):
     cursor.execute("""
             DELETE FROM answer 
-            WHERE question_id=%(ID)s;
-            """, {'ID': ID})
+            WHERE question_id=%(ID)s and owner=%(owner)s;
+            """, {'ID': ID,'owner':owner})
 
-
-@connection.connection_handler
-def delete_SQL_answer(cursor, ID):
-    cursor.execute("""
-                            DELETE FROM answer 
-                            WHERE  question_id=%(ID)s;
-                           """, {'ID': ID}
-                   )
+#
+# @connection.connection_handler
+# def delete_SQL_answer(cursor, ID):
+#     cursor.execute("""
+#                             DELETE FROM answer
+#                             WHERE  question_id=%(ID)s;
+#                            """, {'ID': ID}
+#                    )
 @connection.connection_handler
 def delete_question_tag(cursor, id):
     cursor.execute("""
@@ -173,11 +179,11 @@ def delete_question_tag(cursor, id):
         WHERE question_id=%(id)s;
     """, {'id': id})
 @connection.connection_handler
-def delete_answer_comment(cursor, id):
+def delete_answer_comment(cursor, id,owner):
     cursor. execute("""
     DELETE FROM comment
-    WHERE answer_id = %(id)s
-    """, {'answer_id': id})
+    WHERE answer_id = %(id)s and owner=%(owner)s;
+    """, {'answer_id': id,'owner':owner})
 
 @connection.connection_handler
 def upvote_questions_SQL(cursor, ID):
@@ -307,11 +313,11 @@ def question_tag(cursor):
     return names
 
 @connection.connection_handler
-def add_comment_to_Q(cursor, id, comment, time):
+def add_comment_to_Q(cursor, id, comment, time,owner):
     cursor.execute("""
-        INSERT INTO comment (question_id, answer_id, message, submission_time, edited_count)
-        VALUES (%(id)s, NULL, %(comment)s,TIMESTAMP %(time)s, NULL)
-    """, {'id': id, 'comment': comment, 'time': time})
+        INSERT INTO comment (question_id, answer_id, message, submission_time, edited_count,owner)
+        VALUES (%(id)s, NULL, %(comment)s,TIMESTAMP %(time)s, NULL,%(owner)s)
+    """, {'id': id, 'comment': comment, 'time': time,'owner':owner})
 
 
 @connection.connection_handler
@@ -325,11 +331,11 @@ def get_comment_for_Q(cursor, id):
 
 
 @connection.connection_handler
-def add_comment_to_A(cursor, id, comment, time):
+def add_comment_to_A(cursor, id, comment, time,owner):
     cursor.execute("""
-        INSERT INTO comment (question_id, answer_id, message, submission_time, edited_count)
-        VALUES (NULL, %(id)s, %(comment)s,TIMESTAMP %(time)s, NULL)
-    """, {'id': id, 'comment': comment, 'time': time})
+        INSERT INTO comment (question_id, answer_id, message, submission_time, edited_count,owner)
+        VALUES (NULL, %(id)s, %(comment)s,TIMESTAMP %(time)s, NULL,%(owner)s)
+    """, {'id': id, 'comment': comment, 'time': time,'owner':owner})
 
 
 @connection.connection_handler
@@ -351,11 +357,11 @@ def get_answer_for_update(cursor, id):
     return answer
 
 @connection.connection_handler
-def delete_comment(cursor, id):
+def delete_comment(cursor, id,owner):
     cursor.execute("""
     DELETE FROM comment
-    WHERE id=%(id)s
-    """, {'id': id})
+    WHERE id=%(id)s and owner=%(owner)s
+    """, {'id': id,'owner':owner})
 
 @connection.connection_handler
 def get_comment_for_edit(cursor, id):
@@ -367,12 +373,12 @@ def get_comment_for_edit(cursor, id):
     return comment
 
 @connection.connection_handler
-def update_comment(cursor, comment, submission_time, id):
+def update_comment(cursor, comment, submission_time, id,owner):
     cursor.execute("""
             UPDATE comment
-            SET message=%(comment)s, submission_time=%(submission_time)s, edited_count=edited_count + 1
+            SET message=%(comment)s, submission_time=%(submission_time)s, edited_count=edited_count + 1,owner=%(owner)s
             WHERE id=%(id)s
-    """, {'id': id, 'comment': comment, 'submission_time': submission_time})
+    """, {'id': id, 'comment': comment, 'submission_time': submission_time,'owner':owner})
 
 @connection.connection_handler
 def delete_existing_tag(cursor,question,tag):
@@ -425,11 +431,11 @@ def SQL_password_username(cursor,psw,user,time):
     """, {'user':user, 'psw':psw, 'time':time})
 
 @connection.connection_handler
-def get_answer_id_by_question_id(cursor, ID):     #SZAR
+def get_answer_id_by_question_id(cursor, id):     #SZAR
     cursor.execute("""
     SELECT * FROM answer
-    WHERE question_id=%(ID)s;
-    """, {'id': ID})
+    WHERE question_id=%(id)s;
+    """, {'id': id})
     row = cursor.fetchall()
     return row
 
@@ -450,6 +456,113 @@ def get_one_user(cursor,username):
     user_row = cursor.fetchall()
     return user_row
 
+@connection.connection_handler
+def write_cookie_value_to_user(cursor, username, cookie_value):
+    cursor.execute("""
+    UPDATE users
+    SET cookie_value=%(cookie_value)s
+    WHERE username=%(username)s
+    """, {'username': username, 'cookie_value': cookie_value})
+
+@connection.connection_handler
+def get_user_question(cursor, username):
+    cursor.execute("""
+    SELECT * FROM question
+    WHERE owner=%(username)s
+    """, {'username': username})
+    rows = cursor.fetchall()
+    return rows
+
+@connection.connection_handler
+def get_user_answer(cursor, username):
+    cursor.execute("""
+    SELECT * FROM answer
+    WHERE owner=%(username)s
+    """, {'username': username})
+    rows = cursor.fetchall()
+    return rows
+
+@connection.connection_handler
+def get_user_comment(cursor, username):
+    cursor.execute("""
+    SELECT * FROM comment
+    WHERE owner=%(username)s
+    """, {'username': username})
+    rows = cursor.fetchall()
+    return rows
+
 def verify_password(text, hashed_password):
     hashed_bytes_password = hashed_password.encode('utf-8')
     return bcrypt.checkpw(text.encode('utf-8'), hashed_bytes_password)
+
+@connection.connection_handler
+def get_owner_by_id(cursor,id):
+    cursor.execute("""
+                    SELECT owner FROM question
+                    WHERE  id = %(id)s;  
+    """,{'id':id})
+
+    names = cursor.fetchall()
+    return names
+
+@connection.connection_handler
+def get_owner_answer(cursor,id):
+    cursor.execute("""
+                        SELECT owner FROM answer
+                        WHERE  id = %(id)s;  
+        """, {'id': id})
+
+    names = cursor.fetchall()
+    return names
+
+@connection.connection_handler
+def get_comment_owner(cursor,id):
+    cursor.execute("""
+                        SELECT owner FROM comment
+                        WHERE  id = %(id)s;  
+        """, {'id': id})
+
+    names = cursor.fetchall()
+    return names
+
+@connection.connection_handler
+def get_user_info(cursor, username):
+    cursor.execute("""
+    SELECT * FROM users
+    WHERE username=%(username)s;
+    """, {'username': username})
+    row = cursor.fetchall()
+    return row
+
+@connection.connection_handler
+def question_upvote_reputation(cursor, username):
+    cursor.execute("""
+    UPDATE users
+    SET reputation = reputation + 5
+    WHERE username=%(username)s;
+    """, {'username': username})
+
+@connection.connection_handler
+def question_downvote_reputation(cursor, username):
+    cursor.execute("""
+    UPDATE users
+    SET reputation = reputation - 2
+    WHERE username=%(username)s;
+    """, {'username': username})
+
+@connection.connection_handler
+def answer_upvote_reputation(cursor, username):
+    cursor.execute("""
+    UPDATE users
+    SET reputation = reputation + 10
+    WHERE username=%(username)s;
+    """, {'username': username})
+
+@connection.connection_handler
+def answer_downvote_reputation(cursor, username):
+    cursor.execute("""
+    UPDATE users
+    SET reputation = reputation - 2
+    WHERE username=%(username)s;
+    """, {'username': username})
+

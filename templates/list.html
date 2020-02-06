@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Ask-Mate</title>
     <link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='style.css') }}">
+<script src="static/home.js"></script>
 </head>
 <body>
 <!--<p id="maintitle">Ask Mate</p>-->
@@ -29,8 +30,11 @@
           <i class="fa fa-search"></i>
     </form>
 </div>
+{% for item in user %}
+<a href="/user/{{ item.id }}" class="buttonanswer bouncy">{{ item.username }}</a>
+{% endfor %}
 <a href="/registration" class = "buttonanswer bouncy" >Registration</a>
-<a href="/login" class = "buttonanswer bouncy" >Sign in</a>
+<a href="/login" class = "buttonanswer bouncy" >Log me In</a>
 <table>
         <thead>
             <tr>
@@ -43,6 +47,7 @@
                 <th>Image</th>
                 <th>Question's Page</th>
                 <th>Vote</th><form action="/search" method="get">
+                <th>Owner</th>
                 </form>
             </tr>
         </thead>
@@ -71,6 +76,7 @@
             <a href='/questions/{{line.id}}/vote_up' class = "buttonvote">upvote <p style="color:#008000"> &#8613;</p></a>
             <a href='/questions/{{line.id}}/vote_down' class = "buttonvote" >downvote <p style="color:#8B0000"> &#8615;</p></a>
         </td>
+    <td>{{ line.owner if line.owner }}</td>
     </tr>
     </tbody>
     {% endfor %}

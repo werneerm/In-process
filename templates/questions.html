@@ -37,6 +37,7 @@
 <a href="/questions/{{id}}/add-comment-to-Q" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Add Comment To Question</a></p>
 
 </div>
+    {{ line.owner if line.owner }}
 {% endfor %}
 </p>
 </td>
@@ -62,6 +63,7 @@
         <th> Message </th>
         <th> Image </th>
         <th>Actions</th>
+    <th>Owner</th>
     </tr>
     <tr>
         <td> {{line.id}} </td>
@@ -84,6 +86,7 @@
             {% endif %}
                 {% endfor %}
         </td>
+    <td>{{line.owner if line.owner}}</td>
     </tr>
 {% endfor %}
 <br>

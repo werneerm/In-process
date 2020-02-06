@@ -8,17 +8,23 @@ app = Flask(__name__)
 app.secret_key = '6w:`tFm%mBLY}ty*QcRRpD+,Jga@Fy\XFxjhga'
 
 
+# @app.route('/')
+# def only_5_question():
+#     question = data_handler.get_top_question_sql()
+#     return render_template('list.html', question=question)
 @app.route('/')
-def only_5_question():
-    question = data_handler.get_top_question_sql()
-    return render_template('list.html', question=question)
-
 @app.route('/list')
 def route_list():
+    # if session['username'] is not None:
     question = data_handler.get_all_question_sql()
     tag = data_handler.question_tag()
     choose_the_one = data_handler.get_all_tag()
-    return render_template('list.html', question=question, tag=tag, match=choose_the_one)
+    user = data_handler.get_one_user(session['username'])
+    return render_template('list.html', question=question, tag=tag, match=choose_the_one, user=user)
+    # question = data_handler.get_all_question_sql()
+    # tag = data_handler.question_tag()
+    # choose_the_one = data_handler.get_all_tag()
+    # return render_template('list.html', question=question, tag=tag, match=choose_the_one)
 
 
 @app.route('/questions/<int:id>', methods=['GET', 'POST'])
@@ -44,7 +50,8 @@ def add_answer(id=None):
         time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         vote_num = 0
         question_id = id
-        data_handler.add_answer_SQL(time, vote_num, question_id, message, image)
+        owner = session['username']
+        data_handler.add_answer_SQL(time, vote_num, question_id, message, image, owner)
         return redirect(url_for('questions_site', id=id))
 
 
@@ -57,7 +64,8 @@ def add_question():
         vote_number = 0
         view_number = 0
         time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        data_handler.add_SQL_question(time, view_number, vote_number, title, message, image)
+        owner = session['username']
+        data_handler.add_SQL_question(time, view_number, vote_number, title, message, image, owner)
         return redirect(url_for('route_list'))
     return render_template('add-question.html')
 
@@ -69,40 +77,45 @@ def edit_question(id=None):
         row = data_handler.question_finder_SQL(id)
         return render_template('edit-question.html', id=id, row=row)
     elif request.method == 'POST':
-        changed_title = request.form['title']
-        changed_message = request.form['message']
-        changed_image = request.form['image']
-        data_handler.question_update_SQL(changed_title, changed_message, changed_image, id)
-        return redirect(url_for('questions_site', id=id))
-
+        row = data_handler.question_finder_SQL(id)
+        user = session['username']
+        user_row = data_handler.get_owner_by_id(id)
+        user_infos = []
+        for i in user_row:
+            user_infos.append(i)
+        if user_infos[0]['owner'] == user:
+            changed_title = request.form['title']
+            changed_message = request.form['message']
+            changed_image = request.form['image']
+            data_handler.question_update_SQL(changed_title, changed_message, changed_image, id,user)
+            return redirect(url_for('questions_site', id=id))
+    return render_template('edit-question.html', id=id, row=row)
 
 @app.route('/questions/<int:id>/d', methods=['GET', 'POST'])
 @app.route('/questions/<int:id>/delete-question', methods=['GET', 'POST'])
 def delete_question(id=None):
     if request.method == 'POST':
-        option = request.form['pick']
-        if option == 'yes':
-            print(id)
-            answer_row = data_handler.get_answer_id_by_question_id(id)
-            list_to_append = []
-            for i in answer_row:
-                list_to_append.append(i)
-            answer_id = list_to_append[0]['id']
-            data_handler.delete_answer_comment(answer_id)
-            data_handler.delete_SQL_question_and_its_answer(id)
-            data_handler.delete_SQL_comment_with_question(id)
-            data_handler.delete_question_tag(id)
-            data_handler.delete_SQL_question(id)
-            return redirect(url_for('route_list'))
-        elif option == 'no':
-            return redirect(url_for('questions_site', id=id))
+        user = session['username']
+        user_row = data_handler.get_owner_by_id(id)
+        user_infos = []
+        for i in user_row:
+            user_infos.append(i)
+        if user_infos[0]['owner'] == user:
+            option = request.form['pick']
+            if option == 'yes':
+                data_handler.delete_SQL_question(id,user)
+                return redirect(url_for('route_list'))
+            elif option == 'no':
+                return redirect(url_for('questions_site', id=id))
     if request.method == 'GET':
         return render_template('question-delete.html', id=id)
 
 
 @app.route('/questions/<int:id>/delete_answer')
 def delete_answer(id=None):
-    data_handler.delete_SQL_answer(id)
+    user = session['username']
+    print(user)
+    data_handler.delete_SQL_answer(id,user)
     return redirect(url_for('questions_site', id=id))
 
 
@@ -127,9 +140,10 @@ def add_comment_to_Q(id):
     if request.method == 'GET':
         return render_template('new-comment.html', id=id)
     if request.method == 'POST':
+        user = session['username']
         comment = request.form['message']
         time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        data_handler.add_comment_to_Q(id, comment, time)
+        data_handler.add_comment_to_Q(id, comment, time,user)
         return redirect(url_for('questions_site', id=id))
 
 @app.route('/answer/<int:id>/add-comment-to-A', methods=['GET', 'POST'])
@@ -137,9 +151,10 @@ def add_comment_to_A(id):
     if request.method == 'GET':
         return render_template('new-comment-for-answer.html', id=id)
     if request.method == 'POST':
+        user= session['username']
         comment = request.form['message']
         time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        data_handler.add_comment_to_A(id, comment, time)
+        data_handler.add_comment_to_A(id, comment, time,user)
         question_id = data_handler.ID_from_answer(id)
         ID_ANS = 0
         for line in question_id:                                #FOSSZARHUGY
@@ -172,12 +187,24 @@ def add_pls(id=None, existing_tag=None):
 @app.route('/questions/<int:id>/vote_up')
 def ques_upvote(id=None):
     data_handler.upvote_questions_SQL(id)
+    question_row = data_handler.get_question_SQL(id)
+    data = []
+    for i in question_row:
+        data.append(i)
+    username = data[0]['owner']
+    data_handler.question_upvote_reputation(username)
     return redirect(url_for('route_list'))
 
 
 @app.route('/questions/<int:id>/vote_down')
 def ques_downvote(id=None):
     data_handler.downvote_questions_SQL(id)
+    question_row = data_handler.get_question_SQL(id)
+    data = []
+    for i in question_row:
+        data.append(i)
+    username = data[0]['owner']
+    data_handler.question_downvote_reputation(username)
     return redirect(url_for('route_list'))
 
 
@@ -188,8 +215,9 @@ def answer_upvote(id=None):
     list_for_realdictrow = []
     for i in realdictrow:
         list_for_realdictrow.append(i)
-    print(list_for_realdictrow)
     question_id = list_for_realdictrow[0]['question_id']
+    username = list_for_realdictrow[0]['owner']
+    data_handler.answer_upvote_reputation(username)
     return redirect(url_for('questions_site', id=question_id))
 
 
@@ -201,6 +229,8 @@ def answer_downvote(id=None):
     for i in realdictrow:
         list_for_realdictrow.append(i)
     question_id = list_for_realdictrow[0]['question_id']
+    username = list_for_realdictrow[0]['owner']
+    data_handler.answer_downvote_reputation(username)
     return redirect(url_for('questions_site', id=question_id))
 
 
@@ -210,28 +240,41 @@ def edit_answer(id=None):
         answer = data_handler.get_answer_for_update(id)
         return render_template('edit-answer.html', answer=answer)
     if request.method == 'POST':
-        new_message = request.form['message']
-        new_image = request.form['image']
-        data_handler.answer_update_SQL(new_message, new_image, id)
-        return redirect(url_for('route_list'))
-
+        user = session['username']
+        user_row = data_handler.get_owner_answer(id)
+        user_infos = []
+        for i in user_row:
+            user_infos.append(i)
+        if user_infos[0]['owner'] == user:
+            new_message = request.form['message']
+            new_image = request.form['image']
+            data_handler.answer_update_SQL(new_message, new_image, id,user)
+            return redirect(url_for('route_list'))
+    return render_template('edit-answer.html', answer=answer)
 
 @app.route('/comment/<int:id>/delete-comment', methods=['GET', 'POST'])
 @app.route('/comment/<int:id>/edit-comment', methods=['GET', 'POST'])
 def comment(id=None):
     if request.path == f'/comment/{id}/delete-comment':
-        data_handler.delete_comment(id)
+        user = session['username']
+        data_handler.delete_comment(id,user)
         return redirect(url_for('route_list'))
     if request.path == f'/comment/{id}/edit-comment':
         if request.method == 'GET':
             comment = data_handler.get_comment_for_edit(id)
             return render_template('edit-comment.html', comment=comment)
         if request.method == 'POST':
-            new_comment = request.form['message']
-            new_sub_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            data_handler.update_comment(new_comment, new_sub_time, id)
-            return redirect(url_for('route_list'))
-
+            user = session['username']
+            user_row = data_handler.get_owner_by_id(id)
+            user_infos = []
+            for i in user_row:
+                user_infos.append(i)
+            if user_infos[0]['owner'] == user:
+                new_comment = request.form['message']
+                new_sub_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                data_handler.update_comment(new_comment, new_sub_time, id,user)
+                return redirect(url_for('route_list'))
+        return render_template('edit-comment.html', comment=comment)
 @app.route('/error')
 def sever_error():
     return render_template('error.html')
@@ -270,9 +313,10 @@ def add_comment_to_answer(question_id=None, answer_id=None):
     question = data_handler.get_question_SQL(question_id)
     answer = data_handler.get_answer_for_question_SQL_with_ans_id(answer_id)
     if request.method == 'POST':
+        user= session['username']
         comment = request.form['message']
         time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        data_handler.add_comment_to_A(answer_id, comment, time)
+        data_handler.add_comment_to_A(answer_id, comment, time,user)
         return redirect(url_for('questions_site', id=question_id))
 
     return render_template('new-comment-for-answer.html', quest=question_id, ans_id=answer_id)
@@ -281,13 +325,15 @@ def add_comment_to_answer(question_id=None, answer_id=None):
 @app.route("/question/<int:question_id>/edit_this/<int:comment_id>/<int:answer_id>", methods=['GET', 'POST'])
 def delete_only_comment(question_id, comment_id, answer_id):
     if request.path == f'/question/{question_id}/delete_this/{comment_id}/{answer_id}':
-        data_handler.delete_comment(comment_id)
+        user=session['username']
+        data_handler.delete_comment(comment_id,user)
         return redirect(url_for('show_answer_comments', question_id=question_id, answer_id=answer_id))
     if request.path == f'/question/{question_id}/edit_this/{comment_id}/{answer_id}':
         if request.method == 'POST':
+            user = session['username']
             new_comment = request.form['message']
             new_sub_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            data_handler.update_comment(new_comment, new_sub_time, comment_id)
+            data_handler.update_comment(new_comment, new_sub_time, comment_id,user)
             return redirect(url_for('show_answer_comments', question_id=question_id, answer_id=answer_id))
     question = data_handler.get_question_SQL(question_id)
     answer = data_handler.get_answer_for_question_SQL_with_ans_id(answer_id)
@@ -326,8 +372,7 @@ def cookie_insertion():
 @app.before_request
 def require_login():
     if 'username' not in session and request.endpoint != 'login':
-        return redirect('/login')
-        # return redirect(url_for('route_list'))
+        return redirect("/login")
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -342,19 +387,44 @@ def login():
 
         user_name = request.form["username"]
         password = request.form["psw"]
-        user_row = data_handler.get_one_user(user_name) #itt kéne megtalálni hogy létezik e a user
-        if not username:
-            # Again, throwing an error is not a user-friendly
-            # way of handling this, but this is just an example
-            raise ValueError("Invalid username or password supplied")
+        user_row = data_handler.get_one_user(user_name)  #itt kéne megtalálni hogy létezik e a user
+        user_infos = []
+        for i in user_row:
+            user_infos.append(i)
+        try:
+            user_name_if_exist = user_infos[0]['username']
+            user_pw_if_exist = user_infos[0]['password']
+            if user_name == user_name_if_exist:
+                if data_handler.verify_password(password, user_pw_if_exist) is True:
+                    session['username'] = user_name
+                    data_handler.write_cookie_value_to_user(user_name, session['username'])
+                    return redirect('/')
+                else:
+                    raise ValueError("Invalid username or password")
+        except IndexError:
+            raise ValueError("Invalid username or password")
+        # if not user:
+        #     # Again, throwing an error is not a user-friendly
+        #     # way of handling this, but this is just an example
+        #     raise ValueError("Invalid username or password supplied")
 
         # Note we don't *return* the response immediately
-        session['username'] =user_name
-        return redirect('/')
+        # session['username'] =user_name
+        # return redirect('/')
+
+@app.route('/user/<int:id>', methods=['GET', 'POST'])
+def user_site(id):
+    actual_username = session['username']
+    user_info = data_handler.get_user_info(actual_username)
+    user_questions = data_handler.get_user_question(actual_username)
+    user_answer = data_handler.get_user_answer(actual_username)
+    user_comment = data_handler.get_user_answer(actual_username)
+
+    return render_template('user_site.html', user_question=user_questions, user_answer=user_answer, user_comment=user_comment, user_info=user_info)
 
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',
-        port=7000,
+        port=8000,
         debug=True,
     )
