@@ -26,7 +26,7 @@ def route_list():
         question = data_handler.get_all_question_sql()
         tag = data_handler.question_tag()
         choose_the_one = data_handler.get_all_tag()
-        return render_template('list.html', question=question, tag=tag, match=choose_the_one)
+        return render_template('list.html', question=question, tag=tag, match=choose_the_one,)
     # question = data_handler.get_all_question_sql()
     # tag = data_handler.question_tag()
     # choose_the_one = data_handler.get_all_tag()
@@ -384,16 +384,12 @@ def cookie_insertion():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == 'GET':
-        return render_template('login.html')
+        fail = "good so far"
+        return render_template('login.html', fail=fail)
     if request.method == "POST":
-        # You should really validate that these fields
-        # are provided, rather than displaying an ugly
-        # error message, but for the sake of a simple
-        # example we'll just assume they are provided
-
         user_name = request.form["username"]
         password = request.form["psw"]
-        user_row = data_handler.get_one_user(user_name)  #itt kéne megtalálni hogy létezik e a user
+        user_row = data_handler.get_one_user(user_name)
         user_infos = []
         for i in user_row:
             user_infos.append(i)
@@ -406,9 +402,14 @@ def login():
                     data_handler.write_cookie_value_to_user(user_name, session['username'])
                     return redirect('/')
                 else:
-                    raise ValueError("Invalid username or password")
+                    fail = "failed"
+                    return render_template('login.html', fail=fail)
+            # else:
+            #     fail = "failed"
+            #     return render_tempalte('login.html', fail=fail)
         except IndexError:
-            raise ValueError("Invalid username or password")
+            fail = "failed"
+            return render_template('login.html', fail=fail)
         # if not user:
         #     # Again, throwing an error is not a user-friendly
         #     # way of handling this, but this is just an example
@@ -445,6 +446,6 @@ def logout():
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',
-        port=7000,
+        port=8000,
         debug=True,
     )

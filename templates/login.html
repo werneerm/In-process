@@ -5,6 +5,12 @@
     <title>Title</title>
     <script type="text/javascript"  src="{{ url_for('static', filename= 'home.js') }}"></script>
     <link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='registration.css') }}">
+    <script>
+            let fail = '{{ fail }}';
+            if (fail === "failed") {
+                alert("Wrong username or password!");
+            }
+</script>
 </head>
 <body>
 <form action="/login" method="post">
