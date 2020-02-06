@@ -566,3 +566,14 @@ def answer_downvote_reputation(cursor, username):
     WHERE username=%(username)s;
     """, {'username': username})
 
+@connection.connection_handler
+def all_tags_used(cursor):
+    cursor.execute("""
+                    SELECT tag.name ,COUNT(tag_id) AS Appearance FROM question_tag
+                    LEFT JOIN tag ON question_tag.tag_id = tag.id
+                    GROUP BY tag.name
+    
+    """)
+
+    names = cursor.fetchall()
+    return names
