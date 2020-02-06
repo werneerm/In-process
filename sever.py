@@ -30,7 +30,6 @@ def route_list():
 
 @app.route('/questions/<int:id>', methods=['GET', 'POST'])
 def questions_site(id=None):
-    #if id is not None:
     question = data_handler.get_question_SQL(id)
     answer = data_handler.get_answer_for_question_SQL(id)
     comment_for_Q = data_handler.get_comment_for_Q(id)
@@ -82,7 +81,6 @@ def add_question():
 
 
 
-#@app.route('/questions/<int:id>', methods=['GET', 'POST'])
 @app.route('/questions/<int:id>/edit-question', methods=['GET', 'POST'])
 def edit_question(id=None):
     if request.method == 'GET':
@@ -181,7 +179,7 @@ def add_comment_to_A(id):
         data_handler.add_comment_to_A(id, comment, time,user)
         question_id = data_handler.ID_from_answer(id)
         ID_ANS = 0
-        for line in question_id:                                #FOSSZARHUGY
+        for line in question_id:
             ID_ANS = line
         return redirect(url_for('route_list'))
 
@@ -420,14 +418,6 @@ def login():
         except IndexError:
             fail = "failed"
             return render_template('login.html', fail=fail)
-        # if not user:
-        #     # Again, throwing an error is not a user-friendly
-        #     # way of handling this, but this is just an example
-        #     raise ValueError("Invalid username or password supplied")
-
-        # Note we don't *return* the response immediately
-        # session['username'] =user_name
-        # return redirect('/')
 
 @app.route('/user/<int:id>', methods=['GET', 'POST'])
 def user_site(id):
@@ -465,6 +455,13 @@ def accept_answer(id=None):
         owner.append(i)
     if user == owner[0]['owner']:
         question_id = int(user_infos[0]['question_id'])
+        answer_row = data_handler.get_answer_by_answer_id(id)
+        print(answer_row)
+        row = []
+        for i in answer_row:
+            row.append(i)
+        answer_owner = row[0]['owner']
+        data_handler.answer_accept_reputation(answer_owner)
         data_handler.accepted_answer(id,question_id)
         question = data_handler.get_question_SQL(question_id)
         answer = data_handler.get_answer_for_question_SQL(question_id)

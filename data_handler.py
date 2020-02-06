@@ -594,6 +594,23 @@ def accepted_answer(cursor,id,question_id):
     """,{'id':id,'question_id':question_id})
 
 @connection.connection_handler
+def get_answer_by_answer_id(cursor, id):
+    cursor.execute("""
+    SELECT * FROM answer
+    WHERE id=%(id)s;
+    """, {'id': id})
+    row = cursor.fetchall()
+    return row
+
+@connection.connection_handler
+def answer_accept_reputation(cursor, username):
+    cursor.execute("""
+    UPDATE users
+    SET reputation = reputation + 15
+    WHERE username=%(username)s;
+    """, {'username': username})
+
+@connection.connection_handler
 def get_question_by_answer_mark_edition(cursor,id):
     cursor.execute("""
      SELECT question_id FROM answer
