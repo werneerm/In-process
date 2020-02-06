@@ -21,15 +21,9 @@ def route_list():
         tag = data_handler.question_tag()
         choose_the_one = data_handler.get_all_tag()
         return render_template('list.html', question=question, tag=tag, match=choose_the_one,)
-    # question = data_handler.get_all_question_sql()
-    # tag = data_handler.question_tag()
-    # choose_the_one = data_handler.get_all_tag()
-    # return render_template('list.html', question=question, tag=tag, match=choose_the_one)
-
 
 @app.route('/questions/<int:id>', methods=['GET', 'POST'])
 def questions_site(id=None):
-    #if id is not None:
     question = data_handler.get_question_SQL(id)
     answer = data_handler.get_answer_for_question_SQL(id)
     comment_for_Q = data_handler.get_comment_for_Q(id)
@@ -70,7 +64,6 @@ def add_question():
     return render_template('add-question.html')
 
 
-#@app.route('/questions/<int:id>', methods=['GET', 'POST'])
 @app.route('/questions/<int:id>/edit-question', methods=['GET', 'POST'])
 def edit_question(id=None):
     if request.method == 'GET':
@@ -168,7 +161,7 @@ def add_comment_to_A(id):
         data_handler.add_comment_to_A(id, comment, time,user)
         question_id = data_handler.ID_from_answer(id)
         ID_ANS = 0
-        for line in question_id:                                #FOSSZARHUGY
+        for line in question_id:
             ID_ANS = line
         return redirect(url_for('route_list'))
 
@@ -407,14 +400,6 @@ def login():
         except IndexError:
             fail = "failed"
             return render_template('login.html', fail=fail)
-        # if not user:
-        #     # Again, throwing an error is not a user-friendly
-        #     # way of handling this, but this is just an example
-        #     raise ValueError("Invalid username or password supplied")
-
-        # Note we don't *return* the response immediately
-        # session['username'] =user_name
-        # return redirect('/')
 
 @app.route('/user/<int:id>', methods=['GET', 'POST'])
 def user_site(id):
