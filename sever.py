@@ -378,16 +378,12 @@ def require_login():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == 'GET':
-        return render_template('login.html')
+        fail = "good so far"
+        return render_template('login.html', fail=fail)
     if request.method == "POST":
-        # You should really validate that these fields
-        # are provided, rather than displaying an ugly
-        # error message, but for the sake of a simple
-        # example we'll just assume they are provided
-
         user_name = request.form["username"]
         password = request.form["psw"]
-        user_row = data_handler.get_one_user(user_name)  #itt kéne megtalálni hogy létezik e a user
+        user_row = data_handler.get_one_user(user_name)
         user_infos = []
         for i in user_row:
             user_infos.append(i)
@@ -400,7 +396,8 @@ def login():
                     data_handler.write_cookie_value_to_user(user_name, session['username'])
                     return redirect('/')
                 else:
-                    raise ValueError("Invalid username or password")
+                    fail = "failed"
+                    return render_template('login.html', fail=fail)
         except IndexError:
             raise ValueError("Invalid username or password")
         # if not user:
