@@ -54,7 +54,7 @@ def get_answer_for_question_SQL(cursor, id):
     cursor.execute("""
         SELECT * FROM answer
         WHERE question_id=%(id)s
-        ORDER BY id;
+        ORDER BY accepted DESC ;
     """, {'id': id})
     answer = cursor.fetchall()
     return answer
@@ -147,6 +147,9 @@ def delete_SQL_comment_with_question(cursor, ID,owner):
 @connection.connection_handler
 def delete_SQL_question(cursor, ID,user):
     cursor.execute("""
+                DELETE FROM comment
+                USING answer
+                WHERE answer.id = comment.answer_id;
                 DELETE FROM answer
                 WHERE question_id=%(ID)s ;
                 DELETE FROM comment
@@ -577,3 +580,24 @@ def all_tags_used(cursor):
 
     names = cursor.fetchall()
     return names
+
+@connection.connection_handler
+def accepted_answer(cursor,id,question_id):
+    cursor.execute("""
+                    UPDATE answer
+                    SET accepted = 0
+                    WHERE question_id = %(question_id)s;
+                    UPDATE answer
+                    SET accepted = accepted + 1
+                    WHERE id = %(id)s;
+                    
+    """,{'id':id,'question_id':question_id})
+
+@connection.connection_handler
+def get_question_by_answer_mark_edition(cursor,id):
+    cursor.execute("""
+     SELECT question_id FROM answer
+     WHERE id=%(id)s;
+     """, {'id': id})
+    q_id = cursor.fetchall()
+    return q_id
