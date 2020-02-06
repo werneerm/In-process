@@ -15,11 +15,12 @@ app.secret_key = '6w:`tFm%mBLY}ty*QcRRpD+,Jga@Fy\XFxjhga'
 @app.route('/')
 @app.route('/list')
 def route_list():
-    if session.get('username') == True:
+    if session.get('username'):
         question = data_handler.get_all_question_sql()
         tag = data_handler.question_tag()
         choose_the_one = data_handler.get_all_tag()
         user = data_handler.get_one_user(session['username'])
+        print(user)
         return render_template('list.html', question=question, tag=tag, match=choose_the_one, user=user)
     else:
         question = data_handler.get_all_question_sql()
