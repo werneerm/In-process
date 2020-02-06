@@ -566,3 +566,11 @@ def answer_downvote_reputation(cursor, username):
     WHERE username=%(username)s;
     """, {'username': username})
 
+@connection.connection_handler
+def all_tags_used(cursor):
+    cursor.execute("""
+                    SELECT tag_id,id,name FROM tag,question_tag
+                    WHERE tag_id = id 
+                    
+    
+    """)
