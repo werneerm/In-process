@@ -369,10 +369,10 @@ def cookie_insertion():
     response.set_cookie('username', username='values')
     return response
 
-@app.before_request
-def require_login():
-    if 'username' not in session and request.endpoint != 'login':
-        return redirect("/login")
+# @app.before_request
+# def require_login():
+#     if 'username' not in session and request.endpoint != 'login':
+#         return redirect("/login")
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -421,6 +421,11 @@ def user_site(id):
     user_comment = data_handler.get_user_answer(actual_username)
 
     return render_template('user_site.html', user_question=user_questions, user_answer=user_answer, user_comment=user_comment, user_info=user_info)
+
+
+# @app.route('/tag')
+# def tag_site():
+
 
 if __name__ == '__main__':
     app.run(
