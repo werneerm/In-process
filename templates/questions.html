@@ -13,21 +13,14 @@
 <div>
    <img src="/static/library_logo.png" alt="library" id="library"/>
 </div>
-<script>console.log("here i come")</script>
-    <script>
-            let fail = '{{ fail }}';
-            if (fail === "failed") {
-                alert("You do not have permission to do that!");
-            }
-</script>
 <a/>
 <p><a href="/list" class="buttonadd" style="border-color:#000000; background-color:rgba(0,0,0,0); color:#000000">Back to main menu</a>
 <table>
 <td>
 <p id="question">
 {% for line in question %}
-    <h3>{{ line.title }} <br>
-        {{ line.message }}<br> {% for item in tag %}
+    <h3><a>Title: </a>{{ line.title }} <br>
+        <a>Message: </a>{{ line.message }}<br> {% for item in tag %}
                 {% if line.id == item.question_id %}
                     {% for i in match %}
                         {% if item.tag_id == i.id %}

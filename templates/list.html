@@ -11,6 +11,12 @@
                 alert("You do not have permission to do that!");
             }
 </script>
+            <script>
+            let notin = '{{ notin }}';
+            if (notin === "notin") {
+                alert("You should sing in");
+            }
+</script>
 </head>
 <body>
 <!--<p id="maintitle">Ask Mate</p>-->
@@ -41,7 +47,7 @@
 {% endfor %}
 <a href="/registration" class = "buttonanswer bouncy" >Registration</a>
 <a href="/login" class = "buttonanswer bouncy" >Log me In</a>
-    <a href="/logout" class = "buttonanswer bouncy" >Log Out u filthy scum</a>
+    <a href="/logout" class = "buttonanswer bouncy" >Log Out</a>
 
 
 <table>
@@ -79,7 +85,7 @@
                 {% endif %}
                 {% endfor %}
             </td>
-            <td> <img src = {{line.image}} style="width:200px;height:200px;"> </td>
+            <td> <img src = {{line.image}} style="width:200px;"> </td>
         <td><a href='/questions/{{line.id}}'>Jump to Question</a></td>
         <td>
             <a href='/questions/{{line.id}}/vote_up' class = "buttonvote">upvote <p style="color:#008000"> &#8613;</p></a>

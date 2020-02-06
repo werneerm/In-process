@@ -73,7 +73,17 @@ def add_question():
         owner = session['username']
         data_handler.add_SQL_question(time, view_number, vote_number, title, message, image, owner)
         return redirect(url_for('route_list'))
-    return render_template('add-question.html')
+    else:
+        if session.get('username'):
+            return render_template('add-question.html')
+        else:
+            question = data_handler.get_all_question_sql()
+            tag = data_handler.question_tag()
+            choose_the_one = data_handler.get_all_tag()
+            notin = "notin"
+            return render_template('list.html', question=question, tag=tag, match=choose_the_one,
+                                   notin=notin)
+
 
 
 #@app.route('/questions/<int:id>', methods=['GET', 'POST'])
