@@ -403,8 +403,12 @@ def login():
                 else:
                     fail = "failed"
                     return render_template('login.html', fail=fail)
+            # else:
+            #     fail = "failed"
+            #     return render_tempalte('login.html', fail=fail)
         except IndexError:
-            raise ValueError("Invalid username or password")
+            fail = "failed"
+            return render_template('login.html', fail=fail)
         # if not user:
         #     # Again, throwing an error is not a user-friendly
         #     # way of handling this, but this is just an example
