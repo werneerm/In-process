@@ -147,6 +147,8 @@ def delete_SQL_comment_with_question(cursor, ID,owner):
 @connection.connection_handler
 def delete_SQL_question(cursor, ID,user):
     cursor.execute("""
+                DELETE FROM comment USING answer
+                WHERE answer.id=comment.answer_id;
                 DELETE FROM answer
                 WHERE question_id=%(ID)s ;
                 DELETE FROM comment
