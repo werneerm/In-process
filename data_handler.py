@@ -442,7 +442,8 @@ def get_answer_id_by_question_id(cursor, id):     #SZAR
 @connection.connection_handler
 def get_all_users(cursor):
     cursor.execute("""
-    SELECT * from users;
+    SELECT * from users
+    ORDER BY id;
     """)
     users = cursor.fetchall()
     return users
