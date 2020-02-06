@@ -28,8 +28,6 @@ def route_list():
     # choose_the_one = data_handler.get_all_tag()
     # return render_template('list.html', question=question, tag=tag, match=choose_the_one)
 
-        return render_template('list.html', question=question, tag=tag, match=choose_the_one,)
-
 @app.route('/questions/<int:id>', methods=['GET', 'POST'])
 def questions_site(id=None):
     question = data_handler.get_question_SQL(id)
@@ -77,8 +75,9 @@ def add_question():
             tag = data_handler.question_tag()
             choose_the_one = data_handler.get_all_tag()
             notin = "notin"
+            username = 'off'
             return render_template('list.html', question=question, tag=tag, match=choose_the_one,
-                                   notin=notin)
+                                   notin=notin, username=username)
 
 
 
@@ -125,7 +124,8 @@ def delete_question(id=None):
                 choose_the_one = data_handler.get_all_tag()
                 user = data_handler.get_one_user(session['username'])
                 fail = "failed"
-                return render_template('list.html', question=question, tag=tag, match=choose_the_one, user=user, id=id, fail=fail)
+                username = 'on'
+                return render_template('list.html', question=question, tag=tag, match=choose_the_one, user=user, id=id, fail=fail, username=username)
 
             return render_template('list.html', id=id, fail=fail)
     if request.method == 'GET':
